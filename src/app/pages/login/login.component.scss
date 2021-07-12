@@ -1,0 +1,32 @@
+.login-content {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 66% 34%;
+
+    .shop-image {
+        background: center / cover no-repeat url('/assets/images/loginPagePicture.png');
+    }
+
+    .right-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: rgb(240, 240, 240);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+        }
+
+        .shop-logo {
+            width: 65%;
+            margin: 5rem 0;
+        }
+
+    }
+}
