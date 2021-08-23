@@ -23,6 +23,7 @@ import { HeaderInterceptor } from './interceptors/header.interceptor';
 import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatRadioModule,
     ReactiveFormsModule,
     MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     {

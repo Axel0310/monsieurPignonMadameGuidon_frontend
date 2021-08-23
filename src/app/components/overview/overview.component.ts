@@ -1,23 +1,24 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Order } from 'src/app/interfaces/order';
 import { Paint } from 'src/app/interfaces/paint';
 import { Repair } from 'src/app/interfaces/repair';
 import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit, OnChanges{
+export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() items!: Order[] | Paint[] | Repair[] | null;
   @Input() itemsType!: 'order' | 'paint' | 'repair';
 
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
-  public displayedColumns: string[] = ['client', 'clientPhone', 'status', 'targetDeliveryDate']
+  public displayedColumns: string[] = [];
 
   constructor() { }
 
@@ -29,15 +30,19 @@ export class OverviewComponent implements OnInit, OnChanges{
   }
 
   ngOnInit(): void {
-    // if(this.itemsType === 'order') {
-    //   console.log('coucou')
-    //   this.dataSource =new MatTableDataSource<Order>();
-    // } else if(this.itemsType === 'paint') {
-    //   new MatTableDataSource<Paint>();
-    // } else {
-    //   new MatTableDataSource<Repair>()
-    // }
-    // this.dataSource = this.itemsType === 'order' ? new MatTableDataSource<Order>() : this.itemsType === 'paint' ? new MatTableDataSource<Paint>() : new MatTableDataSource<Repair>()
+    if(this.itemsType === 'order') {
+      this.displayedColumns = ['client', 'product', 'unitPrice', 'quantity', 'provider', 'status', 'targetDeliveryDate']
+    } else if(this.itemsType === 'paint') {
+      this.displayedColumns = ['client', 'bikeDescription', 'status', 'targetDeliveryDate', 'color']
+    } else {
+      this.displayedColumns = ['client', 'bikeDescription', 'status', 'targetDeliveryDate']
+    }
+  }
+
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
   }
 
 
