@@ -1,18 +1,20 @@
 <div class="login-content">
-    <div class="shop-image"></div>
-    <div class="right-container">
-        <img class="shop-logo" src="assets/images/logo.png">
-        <div class="card">
-            <h2>Connexion</h2>
-            <mat-form-field appearance="fill">
-                <mat-label>Identifiant</mat-label>
-                <input matInput>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Mot de passe</mat-label>
-                <input matInput type="password">
-            </mat-form-field>
-            <button mat-raised-button color="primary">Valider</button>
-        </div>
+  <div class="shop-image"></div>
+  <div class="right-container">
+    <img class="shop-logo" src="assets/images/logo.png" />
+    <div class="card">
+      <h2>Connexion</h2>
+      <form class="signin-form" [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Identifiant</mat-label>
+          <input matInput type="text" formControlName="identifier"/>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput type="password" formControlName="password"/>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="!signinForm.valid">Valider</button>
+      </form>
     </div>
+  </div>
 </div>

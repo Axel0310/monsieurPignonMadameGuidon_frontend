@@ -1,0 +1,60 @@
+<div class="overview-container">
+  <section class="top-container">
+    <button mat-raised-button color="primary">Créer une XXX</button>
+    <h1 class="page-title">Liste des XXX</h1>
+
+    <div class="options-container">
+      <div>
+        <mat-label>Filtrer : </mat-label>
+        <mat-radio-group aria-label="statusFilter">
+          <mat-radio-button value="ongoing">En cours</mat-radio-button>
+          <mat-radio-button value="closed">Clôturés</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Recherche</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="mat-elevation-z8 table-responsive">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="items-table"
+      >
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef>Client</th>
+          <td mat-cell *matCellDef="let item">
+            {{ item.client.firstName }} {{ item.client.lastName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="clientPhone">
+            <th mat-header-cell *matHeaderCellDef>Téléphone</th>
+            <td mat-cell *matCellDef="let item">
+              {{ item.client.phone }}
+            </td>
+          </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let item">{{ item.status }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="targetDeliveryDate">
+          <th mat-header-cell *matHeaderCellDef>Date livraison estimée</th>
+          <td mat-cell *matCellDef="let item">{{ item.targetDeliveryDate | date:"shortDate" }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="item-details">
+    <app-client-info></app-client-info>
+  </section>
+</div>

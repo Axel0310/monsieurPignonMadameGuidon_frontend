@@ -1,5 +1,5 @@
-<!-- <app-nav-bar></app-nav-bar> -->
+<app-nav-bar *ngIf="isLoggedIn$ | async"></app-nav-bar>
 <div class="content">
     <router-outlet></router-outlet>
 </div>
-<!-- <img class="shop-logo" src="assets/images/logo.png"> -->
+<img *ngIf="isLoggedIn$ | async" class="shop-logo" src="assets/images/logo.png">

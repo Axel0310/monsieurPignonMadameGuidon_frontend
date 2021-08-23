@@ -21,6 +21,12 @@
             background-color: rgb(240, 240, 240);
             border-radius: 20px;
             padding: 1rem 2rem;
+
+            .signin-form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         .shop-logo {

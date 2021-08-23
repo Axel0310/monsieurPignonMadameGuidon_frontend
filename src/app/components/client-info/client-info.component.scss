@@ -1,0 +1,22 @@
+.client-info-container {
+    border: black 2px solid;
+    border-radius: 10px;
+    padding: 5px;
+    width: 18em;
+
+    .title {
+        position: relative;
+        top: -1.16em;
+        left: .5em;
+        font-weight: bold;
+        background-color: grey;
+        width: 50px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .info-title {
+        font-weight: bold;
+    }
+
+}

@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth-guard';
 import { LoginComponent } from './pages/login/login.component';
+import { OrdersOverviewComponent } from './pages/orders-overview/orders-overview.component';
+import { PaintsOverviewComponent } from './pages/paints-overview/paints-overview.component';
+import { ParametersComponent } from './pages/parameters/parameters.component';
+import { RepairsOverviewComponent } from './pages/repairs-overview/repairs-overview.component';
 
 const routes: Routes = [
-  { path: 'repairs', component: LoginComponent },
-  { path: 'orders', component: LoginComponent },
-  { path: 'paints', component: LoginComponent },
-  { path: 'parameters', component: LoginComponent },
+  { path: '', component: RepairsOverviewComponent, canActivate: [AuthGuard] },
+  { path: 'orders-overview', component:  OrdersOverviewComponent, canActivate: [AuthGuard] },
+  { path: 'paints-overview', component: PaintsOverviewComponent, canActivate: [AuthGuard]  },
+  { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard]  },
   { path: 'login', component: LoginComponent },
 ];
 

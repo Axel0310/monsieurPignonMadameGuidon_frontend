@@ -1,11 +1,13 @@
 .content {
-    width: 100vw;
+    width: calc(100vw - 10rem);
     height: 100vh;
+    right: 0;
+    position: absolute;
 }
 
 .shop-logo {
     position: absolute;
     top: 1rem;
     right: 2rem;
-    width: 15rem;
+    width: 10rem;
 }
