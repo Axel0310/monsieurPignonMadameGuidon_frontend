@@ -1,13 +1,15 @@
 <div class="overview-container">
   <section class="top-container">
-    <button mat-raised-button color="primary">Créer une XXX</button>
-    <h1 class="page-title">Liste des XXX</h1>
+    <button mat-raised-button color="primary">
+      Créer une {{ itemsTypeTranslation }}
+    </button>
+    <h1 class="page-title">Liste des {{ itemsTypeTranslation }}s</h1>
 
     <div class="options-container">
       <div>
-        <mat-label>Filtrer : </mat-label>
-        <mat-radio-group aria-label="statusFilter">
-          <mat-radio-button value="ongoing">En cours</mat-radio-button>
+        <mat-label>Filtre : </mat-label>
+        <mat-radio-group (change)="updateStatusFilter($event.value)">
+          <mat-radio-button value="ongoing" checked>En cours</mat-radio-button>
           <mat-radio-button value="closed">Clôturés</mat-radio-button>
         </mat-radio-group>
       </div>
@@ -89,7 +91,12 @@
           mat-header-row
           *matHeaderRowDef="displayedColumns; sticky: true"
         ></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="selectItem(row)"
+          [class.selected-row]="selectedItem == row"
+        ></tr>
       </table>
     </div>
   </section>

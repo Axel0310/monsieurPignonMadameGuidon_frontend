@@ -1,1 +1,5 @@
-<app-overview [items]="paints$ | async" [itemsType]="'paint'"></app-overview>
+<app-overview
+  [items]="paints$ | async"
+  [itemsType]="'paint'"
+  (updateStatusFilterEvent)="filterByStatus($event)"
+></app-overview>

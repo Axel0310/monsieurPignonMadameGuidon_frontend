@@ -16,4 +16,8 @@ export class PaintsOverviewComponent {
     this.paints$ = this.paintService.getPaints('ongoing');
   }
 
+  filterByStatus(status: string) {
+    this.paints$ = this.paintService.getPaints(status as 'ongoing' | 'closed');
+  }
+
 }

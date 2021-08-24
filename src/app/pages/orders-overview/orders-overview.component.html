@@ -1,1 +1,5 @@
-<app-overview [items]="orders$ | async" [itemsType]="'order'"></app-overview>
+<app-overview
+  [items]="orders$ | async"
+  [itemsType]="'order'"
+  (updateStatusFilterEvent)="filterByStatus($event)"
+></app-overview>

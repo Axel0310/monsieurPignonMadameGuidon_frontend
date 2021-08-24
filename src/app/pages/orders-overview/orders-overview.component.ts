@@ -16,4 +16,8 @@ export class OrdersOverviewComponent {
     this.orders$ = this.orderService.getOrders('ongoing');
   }
 
+  filterByStatus(status: string) {
+    this.orders$ = this.orderService.getOrders(status as 'ongoing' | 'closed');
+  }
+
 }

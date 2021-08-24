@@ -12,8 +12,12 @@ export class RepairsOverviewComponent {
 
   repairs$: Observable<Repair[]>;
 
-  constructor(private orderService: RepairService) { 
-    this.repairs$ = this.orderService.getRepairs('ongoing');
+  constructor(private repairService: RepairService) { 
+    this.repairs$ = this.repairService.getRepairs('ongoing');
+  }
+
+  filterByStatus(status: string) {
+    this.repairs$ = this.repairService.getRepairs(status as 'ongoing' | 'closed');
   }
 
 }

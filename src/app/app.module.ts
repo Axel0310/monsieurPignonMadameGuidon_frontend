@@ -24,6 +24,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {MatSortModule} from '@angular/material/sort';
     AppRoutingModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    FormsModule,
     MatInputModule,
     MatButtonModule,
     MatTableModule,

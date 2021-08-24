@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Order } from 'src/app/interfaces/order';
 import { Paint } from 'src/app/interfaces/paint';
@@ -16,11 +16,15 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() items!: Order[] | Paint[] | Repair[] | null;
   @Input() itemsType!: 'order' | 'paint' | 'repair';
 
+  public itemsTypeTranslation: string = '';
+
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
   public displayedColumns: string[] = [];
 
-  constructor() { }
+  public selectedItem: Order | Paint | Repair | undefined;
+
+  @Output() updateStatusFilterEvent = new EventEmitter<string>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.items && this.items){
@@ -37,6 +41,8 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.displayedColumns = ['client', 'bikeDescription', 'status', 'targetDeliveryDate']
     }
+
+    this.itemsTypeTranslation = this.itemsType === 'order' ? 'commande' : this.itemsType === 'paint' ? 'peinture' : 'réparation';
   }
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -45,5 +51,12 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  updateStatusFilter(value: string) {
+    this.updateStatusFilterEvent.emit(value);
+  }
+
+  selectItem(item: Order | Paint | Repair) {
+    this.selectedItem = item;
+  }
 
 }
