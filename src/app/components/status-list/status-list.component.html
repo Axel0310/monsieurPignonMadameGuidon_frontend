@@ -1,20 +1,19 @@
 <h3>Statut</h3>
-<select>
+<mat-radio-group [(ngModel)]="status" class="status-list">
     <ng-container *ngIf="itemType === 'order'">
-        <option disabled>A commander</option>
-        <option disabled>Panier</option>
-        <option disabled>Commandé</option>
-        <option disabled>A commander</option>
+        <mat-radio-button value="A commander">A commander</mat-radio-button>
+        <mat-radio-button value="Panier">Panier</mat-radio-button>
+        <mat-radio-button value="Commandé">Commandé</mat-radio-button>
     </ng-container>
     <ng-container *ngIf="itemType === 'repair'">
-        <option disabled>A faire</option>
-        <option disabled>Fait</option>
+        <mat-radio-button value="A faire">A faire</mat-radio-button>
+        <mat-radio-button value="Fait">Fait</mat-radio-button>
     </ng-container>
     <ng-container *ngIf="itemType === 'paint'">
-        <option disabled>En attente</option>
-        <option disabled>En peinture</option>
+        <mat-radio-button value="En attente">En attente</mat-radio-button>
+        <mat-radio-button value="En peinture">En peinture</mat-radio-button>
     </ng-container>
-    <option disabled>Client notifié</option>
-    <option disabled>Livré</option>
-</select>
+    <mat-radio-button value="Client notifié">Client notifié</mat-radio-button>
+    <mat-radio-button value="Livré">Livré</mat-radio-button>
+</mat-radio-group>
     

@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 
 @Injectable()
+//Provide session cookie in each requests
 export class HeaderInterceptor implements HttpInterceptor {
   intercept(
     request: HttpRequest<any>,

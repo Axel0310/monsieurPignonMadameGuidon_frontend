@@ -25,6 +25,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
+import { SelectClientComponent } from './components/forms/select-client/select-client.component';
+import { CreateItemsComponent } from './components/forms/create-items/create-items.component';
+import { LocalizationListComponent } from './components/localization-list/localization-list.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { ExpenseTableComponent } from './components/expense-table/expense-table.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,10 @@ import { FormsModule } from '@angular/forms';
     StatusListComponent,
     ItemsListComponent,
     ItemsTableComponent,
+    SelectClientComponent,
+    CreateItemsComponent,
+    LocalizationListComponent,
+    ExpenseTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +63,8 @@ import { FormsModule } from '@angular/forms';
     MatRadioModule,
     ReactiveFormsModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule
   ],
   providers: [
     {

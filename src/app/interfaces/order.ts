@@ -1,19 +1,7 @@
-import { Shop } from './shop';
-import { Client } from './client';
 import { Product } from './product';
+import { Item } from './item';
 
-export interface Order {
-  shop: Shop;
-  client: Client;
-  targetDeliveryDate: Date;
+export interface Order extends Item {
   status: 'A commander' | 'Panier' | 'Commandé' | 'Client notifié' | 'Livré';
-  products: [
-    {
-      product: Product;
-      quantity: number;
-    }
-  ];
-  billRef?: string;
-  comment?: string;
-  commercialOpportunity?: string;
+  products: Product[];
 }

@@ -1,17 +1,9 @@
-import { Shop } from './shop';
-import { Client } from './client';
-import { Product } from './product';
 import { Expense } from './expense';
+import { Item } from './item';
 
-export interface Paint {
-  shop: Shop;
-  client: Client;
+export interface Paint extends Item {
   bikeDescription: string;
   color: string;
-  targetCompletionDate: Date;
   status: 'En attente' | 'En peinture' | 'Client notifié' | 'Livré';
   expenses: Expense[];
-  billRef?: string;
-  comment?: string;
-  commercialOpportunity?: string;
 }

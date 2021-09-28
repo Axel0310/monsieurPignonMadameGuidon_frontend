@@ -1,9 +1,7 @@
 import { Provider } from '@angular/core';
+import { Expense } from './expense';
 
-export interface Product {
-  name: string;
-  price: number;
-  quantity: number;
+export interface Product extends Expense {
   reference: string;
   provider: Provider;
 }

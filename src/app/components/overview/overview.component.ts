@@ -37,6 +37,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.items && this.items) {
       this.dataSource.data = this.items;
+      this.selectedItem = this.items[0];
       console.log(this.items);
     }
   }
@@ -82,7 +83,6 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
-      console.log(item)
       switch (property) {
         case 'client': return item.client.lastName;
         case 'product': return item.products[0].name;

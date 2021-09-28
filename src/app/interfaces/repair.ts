@@ -1,17 +1,9 @@
-import { Client } from './client';
 import { Expense } from './expense';
-import { Shop } from './shop';
+import { Item } from './item';
 
-export interface Repair {
-  shop: Shop;
-  client: Client;
+export interface Repair extends Item {
   bikeDescription: string;
-  color: string;
-  targetCompletionDate: Date;
   localization: 'En boutique' | 'Attente pièce' | 'Domicile gérant';
   status: 'A faire' | 'Fait' | 'Client notifié' | 'Livré';
   expenses: Expense[];
-  billRef?: string;
-  comment?: string;
-  commercialOpportunity?: string;
 }

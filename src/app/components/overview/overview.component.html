@@ -78,7 +78,7 @@
             Date livraison estimée
           </th>
           <td mat-cell *matCellDef="let item">
-            {{ item.targetDeliveryDate | date: "shortDate" }}
+            {{ item.targetDeliveryDate | date: "d/M/yy" }}
           </td>
         </ng-container>
 
@@ -101,8 +101,47 @@
     </div>
   </section>
 
-  <section class="item-details">
-    <app-client-info></app-client-info>
-    <button (click)="copyToClipboard()">Copier info</button>
+  <section *ngIf="selectedItem" class="item-details">
+    <div class="row first-row">
+      <app-client-info [client]="selectedItem.client"></app-client-info>
+      <app-status-list [status]="selectedItem.status" [itemType]="itemsType"></app-status-list>
+      <app-localization-list *ngIf="itemsType === 'repair'" [repair]="selectedItem"></app-localization-list>
+      <app-expense-table [products]="selectedItem.products" [expenses]="selectedItem.expenses"></app-expense-table>
+    </div>
+    <div class="row second-row">
+      <div>
+        <mat-form-field class="input-info creation-date">
+          <mat-label>Création</mat-label>
+          <input matInput type="text" [value]="selectedItem.createdAt | date: 'd/M/yy'" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="input-info update-date">
+          <mat-label>Dernière modification</mat-label>
+          <input matInput type="text" [value]="selectedItem.updatedAt | date: 'd/M/yy'" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field class="input-info target-delivery-date">
+          <mat-label>Date livraison</mat-label>
+          <input matInput type="text" [value]="selectedItem.targetDeliveryDate | date: 'd/M/yy'" [readonly]="true">
+        </mat-form-field>
+      </div>
+      <mat-form-field *ngIf="itemsType === 'paint'" class="input-info">
+        <mat-label>Couleur</mat-label>
+        <input matInput type="text" [value]="selectedItem.color" [readonly]="true">
+      </mat-form-field>
+      <mat-form-field class="input-info">
+        <mat-label>Commentaire</mat-label>
+        <input matInput [value]="selectedItem.comment" [readonly]="true">
+      </mat-form-field>
+      
+    </div>
+    <div class="row third-row">
+      <mat-form-field class="input-info">
+        <mat-label>N° facture</mat-label>
+        <input matInput type="text" [value]="selectedItem.billRef" [readonly]="true">
+      </mat-form-field>
+      <mat-form-field class="input-info">
+        <mat-label>V+1</mat-label>
+        <input matInput type="text" [value]="selectedItem.commercialOpportunity" [readonly]="true">
+      </mat-form-field>
+    </div>
   </section>
 </div>
