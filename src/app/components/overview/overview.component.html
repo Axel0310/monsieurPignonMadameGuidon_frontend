@@ -1,6 +1,6 @@
 <div class="overview-container">
   <section class="top-container">
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="openItemCreationDialog()">
       Créer une {{ itemsTypeTranslation }}
     </button>
     <h1 class="page-title">Liste des {{ itemsTypeTranslation }}s</h1>
@@ -126,6 +126,10 @@
       <mat-form-field *ngIf="itemsType === 'paint'" class="input-info">
         <mat-label>Couleur</mat-label>
         <input matInput type="text" [value]="selectedItem.color" [readonly]="true">
+      </mat-form-field>
+      <mat-form-field *ngIf="itemsType === 'paint' || itemsType === 'repair'" class="input-info">
+        <mat-label>Description vélo</mat-label>
+        <input matInput type="text" [value]="selectedItem.bikeDescription" [readonly]="true">
       </mat-form-field>
       <mat-form-field class="input-info">
         <mat-label>Commentaire</mat-label>

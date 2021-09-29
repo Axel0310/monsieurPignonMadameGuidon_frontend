@@ -26,10 +26,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
 import { SelectClientComponent } from './components/forms/select-client/select-client.component';
-import { CreateItemsComponent } from './components/forms/create-items/create-items.component';
+import { ItemCreationDialogComponent } from './components/item-creation-dialog/item-creation-dialog.component';
 import { LocalizationListComponent } from './components/localization-list/localization-list.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ExpenseTableComponent } from './components/expense-table/expense-table.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatDialogModule} from '@angular/material/dialog';
+import { OrderService } from './services/order.service';
+import { AuthenticationService } from './services/authentication.service';
+import { PaintService } from './services/paint.service';
+import { RepairService } from './services/repair.service';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -46,7 +53,7 @@ import { ExpenseTableComponent } from './components/expense-table/expense-table.
     ItemsListComponent,
     ItemsTableComponent,
     SelectClientComponent,
-    CreateItemsComponent,
+    ItemCreationDialogComponent,
     LocalizationListComponent,
     ExpenseTableComponent,
   ],
@@ -64,7 +71,10 @@ import { ExpenseTableComponent } from './components/expense-table/expense-table.
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatStepperModule,
+    MatDialogModule,
+    MatAutocompleteModule,
   ],
   providers: [
     {
@@ -72,6 +82,10 @@ import { ExpenseTableComponent } from './components/expense-table/expense-table.
       useClass: HeaderInterceptor,
       multi: true,
     },
+    AuthenticationService,
+    OrderService,
+    PaintService,
+    RepairService,
   ],
   bootstrap: [AppComponent],
 })
