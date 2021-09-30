@@ -1,0 +1,85 @@
+<form [formGroup]="newOrderForm" (ngSubmit)="onCreateOrder()">
+  <table formArrayName="products">
+    <thead>
+      <th></th>
+      <th>Produits</th>
+      <th>Quantité</th>
+      <th>Prix</th>
+      <th>Fournisseur</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products.controls; let i = index">
+        <ng-container [formGroupName]="i">
+          <td (click)="removeProduct(i)">X</td>
+          <td>
+            <mat-form-field appearance="fill">
+              <input matInput formControlName="name" required />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
+              <input
+                matInput
+                type="number"
+                formControlName="quantity"
+                required
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
+              <input matInput type="number" formControlName="price" required />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
+              <input matInput formControlName="provider" required />
+            </mat-form-field>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+
+  <p (click)="addProduct()">Ajouter un produit</p>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Date de livraison estimée</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [min]="minDate"
+      formControlName="targetDeliveryDate"
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Statut</mat-label>
+    <select matNativeControl formControlName="status" required>
+      <option value="A commander">A commander</option>
+      <option value="Panier">Panier</option>
+      <option value="Commandé">Commandé</option>
+      <option value="Client notifié">Client notifié</option>
+      <option value="Livré">Livré</option>
+    </select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Référence facture</mat-label>
+    <input matInput formControlName="billRef" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Commentaire</mat-label>
+    <input matInput formControlName="comment" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>V+1</mat-label>
+    <input matInput formControlName="commercialOpportunity" />
+  </mat-form-field>
+  <button>Ok</button>
+</form>

@@ -26,4 +26,8 @@ export class ClientService {
       this.currentClient.next(undefined);
   }
 
+  createClient(client: Client): Observable<Client> {
+    return this.http.post<Client>(`${this.API_URL}/create`, { firstName: client.firstName, lastName: client.lastName, phone: client.phone});
+  }
+
 }

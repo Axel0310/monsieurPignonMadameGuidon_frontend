@@ -28,7 +28,8 @@ import { FormsModule } from '@angular/forms';
 import { SelectClientComponent } from './components/forms/select-client/select-client.component';
 import { ItemCreationDialogComponent } from './components/item-creation-dialog/item-creation-dialog.component';
 import { LocalizationListComponent } from './components/localization-list/localization-list.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { ExpenseTableComponent } from './components/expense-table/expense-table.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -37,6 +38,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { PaintService } from './services/paint.service';
 import { RepairService } from './services/repair.service';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { CreateOrderComponent } from './components/forms/create-order/create-order.component';
+
 
 @NgModule({
   declarations: [
@@ -56,6 +59,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     ItemCreationDialogComponent,
     LocalizationListComponent,
     ExpenseTableComponent,
+    CreateOrderComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +79,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatStepperModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatNativeDateModule
   ],
   providers: [
     {

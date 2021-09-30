@@ -127,7 +127,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
 
   openItemCreationDialog(): void {
     const dialogRef = this.dialog.open(ItemCreationDialogComponent, {
-      width: '500px',
+      width: 'fit-content',
       data: {itemType: this.itemsType}
     });
 

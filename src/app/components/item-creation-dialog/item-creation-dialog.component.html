@@ -4,10 +4,11 @@
     <mat-step [stepControl]="" label="Client">
       <app-select-client></app-select-client>
       <div mat-dialog-actions>
-        <button mat-button matStepperNext>Suivant</button>
+        <button mat-button matStepperNext [disabled]="!(selectedClient | async)">Suivant</button>
       </div>
     </mat-step>
     <mat-step [stepControl]="" label="Item">
+      <app-create-order></app-create-order>
       <div mat-dialog-actions>
         <button mat-button matStepperPrevious>Précécent</button>
         <button mat-button mat-dialog-close>Créer</button>

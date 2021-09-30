@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client } from 'src/app/interfaces/client';
@@ -9,7 +9,7 @@ import { ClientService } from 'src/app/services/client.service';
   templateUrl: './select-client.component.html',
   styleUrls: ['./select-client.component.scss']
 })
-export class SelectClientComponent implements OnInit {
+export class SelectClientComponent {
 
   public clientFormSelector: 'newClient' | 'existingClient' = 'existingClient';
 
@@ -23,15 +23,12 @@ export class SelectClientComponent implements OnInit {
   get lastName() { return this.newClientForm.get('lastName'); }
   get phone() { return this.newClientForm.get('phone'); }
 
-  public clientName: string = '';
+  public nameSearch: string = '';
   public fetchedClients: BehaviorSubject<Client[]> = new BehaviorSubject<Client[]>([]);
   public selectedClient: Observable<Client | undefined>;
 
   constructor(private clientService: ClientService) { 
     this.selectedClient = this.clientService.currentClient$;
-  }
-
-  ngOnInit(): void {
   }
 
   onNameSearch(name: string) {
@@ -44,5 +41,15 @@ export class SelectClientComponent implements OnInit {
 
   onClientSelected(client: Client) {
     this.clientService.setCurrentClient(client);
+    this.nameSearch = '';
+    this.fetchedClients.next([]);
+  }
+
+  onCreateClient() {
+    this.clientService.createClient({...this.newClientForm.value})
+    .subscribe(clientCreated => {
+      this.clientService.setCurrentClient(clientCreated);
+      this.clientFormSelector = 'existingClient';
+    })
   }
 }
