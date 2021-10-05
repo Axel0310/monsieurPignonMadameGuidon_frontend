@@ -39,7 +39,7 @@ export class AuthenticationService {
     return this.getLoggedShop().pipe(map((shop) => !!shop));
   }
 
-  getLoggedShop(): Observable<Shop | undefined> {
+  getLoggedShop() {
     if (this.loggedShop$.value === undefined) {
       this.http
         .get<Shop>(`${this.API_URL}/auth/isLoggedIn`)

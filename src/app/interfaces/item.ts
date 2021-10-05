@@ -2,6 +2,7 @@ import { Client } from "./client";
 import { Shop } from "./shop";
 
 export interface Item {
+  _id: string;
   shop: Shop;
   client: Client;
   targetDeliveryDate: Date;
