@@ -16,6 +16,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      mat-radio-button {
+        margin-right: 10px;
+      }
     }
 
     .items-table {

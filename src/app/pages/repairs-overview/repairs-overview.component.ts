@@ -13,11 +13,11 @@ export class RepairsOverviewComponent {
   repairs$: Observable<Repair[]>;
 
   constructor(private repairService: RepairService) { 
-    this.repairs$ = this.repairService.getRepairs('ongoing');
+    this.repairs$ = this.repairService.getRepairs('A faire');
   }
 
   filterByStatus(status: string) {
-    this.repairs$ = this.repairService.getRepairs(status as 'ongoing' | 'closed');
+    this.repairs$ = this.repairService.getRepairs(status);
   }
 
 }

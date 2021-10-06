@@ -25,6 +25,7 @@ import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creati
 export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() items!: Order[] | Paint[] | Repair[] | null;
   @Input() itemsType!: 'order' | 'paint' | 'repair';
+  @Output() updateStatusFilterEvent = new EventEmitter<string>();
 
   public itemsTypeTranslation: string = '';
 
@@ -34,11 +35,10 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
 
   public selectedItem: Order | Paint | Repair | undefined;
 
-  @Output() updateStatusFilterEvent = new EventEmitter<string>();
-
-  constructor(public dialog: MatDialog) {
-    
-  }
+  public statusList: string[] = ['Client notifié', 'Livré'];
+  public selectedStatus!: string;
+ 
+  constructor(public dialog: MatDialog) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.items && this.items) {
@@ -52,6 +52,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.itemsType === 'order') {
       this.displayedColumns = [
         'client',
+        'phone',
         'product',
         'unitPrice',
         'quantity',
@@ -59,21 +60,29 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'status',
         'targetDeliveryDate',
       ];
+      this.statusList = ['A commander', 'Panier', 'Commandé', ...this.statusList]
+      this.selectedStatus = 'A commander';
     } else if (this.itemsType === 'paint') {
       this.displayedColumns = [
         'client',
+        'phone',
         'bikeDescription',
         'status',
         'targetDeliveryDate',
         'color',
       ];
+      this.statusList = ['En attente', 'En peinture', ...this.statusList]
+      this.selectedStatus = 'En attente';
     } else {
       this.displayedColumns = [
         'client',
+        'phone',
         'bikeDescription',
         'status',
         'targetDeliveryDate',
       ];
+      this.statusList = ['A faire', 'Fait', ...this.statusList]
+      this.selectedStatus = 'A faire';
     }
 
     this.itemsTypeTranslation =
@@ -106,8 +115,8 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     };
   }
 
-  updateStatusFilter(value: string) {
-    this.updateStatusFilterEvent.emit(value);
+  updateStatusFilter() {
+    this.updateStatusFilterEvent.emit(this.selectedStatus);
   }
 
   selectItem(item: Order | Paint | Repair) {

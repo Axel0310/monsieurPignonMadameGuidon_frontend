@@ -1,14 +1,13 @@
-<form [formGroup]="newOrderForm" (input)="onOrderFormChange()">
-  <table formArrayName="products">
+<form [formGroup]="newPaintForm" (input)="onPaintFormChange()">
+  <table formArrayName="expenses">
     <thead>
       <th></th>
-      <th>Produits</th>
+      <th>Produits/Service</th>
       <th>Quantité</th>
       <th>Prix</th>
-      <th>Fournisseur</th>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products.controls; let i = index">
+      <tr *ngFor="let expense of expenses.controls; let i = index">
         <ng-container [formGroupName]="i">
           <td>
             <fa-icon
@@ -37,26 +36,20 @@
               <input matInput type="number" formControlName="price" required />
             </mat-form-field>
           </td>
-          <td>
-            <mat-form-field appearance="fill">
-              <input matInput formControlName="provider" required />
-            </mat-form-field>
-          </td>
         </ng-container>
       </tr>
     </tbody>
   </table>
 
-  <p (click)="addProduct()" class="new-line">+ Ajouter un produit</p>
+  <p (click)="addExpense()" class="new-line">+ Ajouter un produit</p>
 
   <div class="other-inputs">
     <div>
       <mat-form-field appearance="fill" class="input">
         <mat-label>Statut</mat-label>
         <select matNativeControl formControlName="status" required>
-          <option value="A commander">A commander</option>
-          <option value="Panier">Panier</option>
-          <option value="Commandé">Commandé</option>
+          <option value="En attente">En attente</option>
+          <option value="En peinture">En peinture</option>
           <option value="Client notifié">Client notifié</option>
           <option value="Livré">Livré</option>
         </select>
@@ -75,6 +68,16 @@
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="input">
+        <mat-label>Description vélo</mat-label>
+        <input matInput formControlName="bikeDescription" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="input">
+        <mat-label>Couleur</mat-label>
+        <input matInput formControlName="color" required />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="input">

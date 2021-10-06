@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Créer une {{ data.itemType }}</h1>
+<h1 mat-dialog-title>Créer une {{ data.itemType === 'order' ? 'commande' : data.itemType === 'paint' ? 'peinture' : 'réparation' }}</h1>
 <div mat-dialog-content>
   <mat-stepper #stepper>
     <mat-step [stepControl]="" label="Client">
@@ -7,8 +7,10 @@
         <button mat-button matStepperNext [disabled]="!(selectedClient | async)">Suivant</button>
       </div>
     </mat-step>
-    <mat-step [stepControl]="" label="Item">
-      <app-create-order (isFormValid)="updateIsFormValid($event)"></app-create-order>
+    <mat-step [stepControl]="" [label]="data.itemType === 'order' ? 'Commande' : data.itemType === 'paint' ? 'Peinture' : 'Réparation'" [ngSwitch]="data.itemType">
+      <app-create-order *ngSwitchCase="'order'" (isFormValid)="updateIsFormValid($event)"></app-create-order>
+      <app-create-paint *ngSwitchCase="'paint'" (isFormValid)="updateIsFormValid($event)"></app-create-paint>
+      <app-create-repair *ngSwitchCase="'repair'" (isFormValid)="updateIsFormValid($event)"></app-create-repair>
       <div mat-dialog-actions>
         <button mat-button matStepperPrevious>Précécent</button>
         <button mat-button (click)="onCreateClick()" [disabled]="!isFormValid">Créer</button>

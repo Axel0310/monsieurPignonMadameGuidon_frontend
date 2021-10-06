@@ -1,59 +1,66 @@
-<mat-radio-group [(ngModel)]="clientFormSelector">
-  <mat-radio-button value="existingClient" checked
-    >Client existant</mat-radio-button
+<div class="client-selection-form">
+  <mat-radio-group [(ngModel)]="clientFormSelector">
+    <mat-radio-button value="existingClient" checked
+      >Client existant</mat-radio-button
+    >
+    <mat-radio-button value="newClient">Nouveau client</mat-radio-button>
+  </mat-radio-group>
+
+  <form
+    *ngIf="clientFormSelector === 'newClient'; else existingClientForm"
+    [formGroup]="newClientForm"
+    (ngSubmit)="onCreateClient()"
   >
-  <mat-radio-button value="newClient">Nouveau client</mat-radio-button>
-</mat-radio-group>
-
-<form
-  *ngIf="clientFormSelector === 'newClient'; else existingClientForm"
-  [formGroup]="newClientForm"
-  (ngSubmit)="onCreateClient()"
->
-  <mat-form-field appearance="fill">
-    <mat-label>Prénom</mat-label>
-    <input matInput formControlName="firstName" required placeholder="..." />
-    <mat-error *ngIf="firstName.hasError('required')">Prénom requis</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Nom</mat-label>
-    <input matInput formControlName="lastName" required placeholder="..." />
-    <mat-error *ngIf="lastName.hasError('required')">Nom requis</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Téléphone</mat-label>
-    <input matInput formControlName="phone" required placeholder="..." />
-    <mat-error *ngIf="phone.hasError('required')">Téléphone requis</mat-error>
-  </mat-form-field>
-
-  <button mat-button [disabled]="!newClientForm.valid">Créer client</button>
-</form>
-
-<ng-template #existingClientForm>
-  <mat-form-field appearance="fill">
-    <mat-label>Chercher par nom</mat-label>
-    <input
-      matInput
-      placeholder="..."
-      [value]="nameSearch"
-      [matAutocomplete]="auto"
-      (input)="onNameSearch($event.target.value)"
-    />
-    <mat-autocomplete #auto="matAutocomplete" panelWidth="'width: fit-content'">
-      <mat-option
-        *ngFor="let client of fetchedClients | async"
-        (click)="onClientSelected(client)"
+    <mat-form-field appearance="fill">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="firstName" required placeholder="..." />
+      <mat-error *ngIf="firstName.hasError('required')"
+        >Prénom requis</mat-error
       >
-        {{ client.firstName }} {{ client.lastName }} ({{ client.phone }})
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <p *ngIf="selectedClient | async">
-    Client sélectionné: {{ (selectedClient | async).firstName }}
-    {{ (selectedClient | async).lastName }} ({{
-      (selectedClient | async).phone
-    }})
-  </p>
-</ng-template>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="lastName" required placeholder="..." />
+      <mat-error *ngIf="lastName.hasError('required')">Nom requis</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="phone" required placeholder="..." />
+      <mat-error *ngIf="phone.hasError('required')">Téléphone requis</mat-error>
+    </mat-form-field>
+
+    <button mat-button [disabled]="!newClientForm.valid">Créer client</button>
+  </form>
+
+  <ng-template #existingClientForm>
+    <mat-form-field appearance="fill">
+      <mat-label>Chercher par nom</mat-label>
+      <input
+        matInput
+        placeholder="..."
+        [value]="nameSearch"
+        [matAutocomplete]="auto"
+        (input)="onNameSearch($event.target.value)"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        panelWidth="'width: fit-content'"
+      >
+        <mat-option
+          *ngFor="let client of fetchedClients | async"
+          (click)="onClientSelected(client)"
+        >
+          {{ client.firstName }} {{ client.lastName }} ({{ client.phone }})
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <p *ngIf="selectedClient | async">
+      Client sélectionné: {{ (selectedClient | async).firstName }}
+      {{ (selectedClient | async).lastName }} ({{
+        (selectedClient | async).phone
+      }})
+    </p>
+  </ng-template>
+</div>

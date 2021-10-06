@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Order } from 'src/app/interfaces/order';
 import { OrderService } from 'src/app/services/order.service';
@@ -13,11 +13,11 @@ export class OrdersOverviewComponent {
   orders$: Observable<Order[]>;
 
   constructor(private orderService: OrderService) { 
-    this.orders$ = this.orderService.getOrders('ongoing');
+    this.orders$ = this.orderService.getOrders('A commander');
   }
 
   filterByStatus(status: string) {
-    this.orders$ = this.orderService.getOrders(status as 'ongoing' | 'closed');
+    this.orders$ = this.orderService.getOrders(status);
   }
 
 }

@@ -39,6 +39,9 @@ import { PaintService } from './services/paint.service';
 import { RepairService } from './services/repair.service';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { CreateOrderComponent } from './components/forms/create-order/create-order.component';
+import { CreatePaintComponent } from './components/forms/create-paint/create-paint.component';
+import { CreateRepairComponent } from './components/forms/create-repair/create-repair.component';
+import {MatCheckboxModule} from '@angular/material/checkbox'; 
 
 
 @NgModule({
@@ -60,6 +63,8 @@ import { CreateOrderComponent } from './components/forms/create-order/create-ord
     LocalizationListComponent,
     ExpenseTableComponent,
     CreateOrderComponent,
+    CreatePaintComponent,
+    CreateRepairComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,7 +84,8 @@ import { CreateOrderComponent } from './components/forms/create-order/create-ord
     MatStepperModule,
     MatDialogModule,
     MatAutocompleteModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [
     {

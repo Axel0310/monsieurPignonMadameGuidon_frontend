@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/services/order.service';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-create-order',
@@ -30,6 +31,8 @@ export class CreateOrderComponent {
   products = this.newOrderForm.get('products') as FormArray;
 
   minDate: Date;
+
+  faTrashAlt = faTrashAlt;
 
   constructor(private fb: FormBuilder, private orderService: OrderService) { 
     this.minDate = new Date();

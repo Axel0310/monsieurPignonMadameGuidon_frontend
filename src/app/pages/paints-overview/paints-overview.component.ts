@@ -13,11 +13,11 @@ export class PaintsOverviewComponent {
   paints$: Observable<Paint[]>;
 
   constructor(private paintService: PaintService) { 
-    this.paints$ = this.paintService.getPaints('ongoing');
+    this.paints$ = this.paintService.getPaints('En attente');
   }
 
   filterByStatus(status: string) {
-    this.paints$ = this.paintService.getPaints(status as 'ongoing' | 'closed');
+    this.paints$ = this.paintService.getPaints(status);
   }
 
 }
