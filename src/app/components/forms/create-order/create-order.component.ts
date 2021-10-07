@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Provider } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/services/order.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { ProviderService } from 'src/app/services/provider.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-order',
@@ -18,7 +20,7 @@ export class CreateOrderComponent {
         name: ['', [Validators.required]],
         quantity: [1, [Validators.required]],
         price: [0, [Validators.required]],
-        provider: ['60b355dbaa984223d8da3d23', [Validators.required]],
+        provider: ['', [Validators.required]],
       }),
     ]),
     status: ['A commander', [Validators.required]],
@@ -34,8 +36,11 @@ export class CreateOrderComponent {
 
   faTrashAlt = faTrashAlt;
 
-  constructor(private fb: FormBuilder, private orderService: OrderService) { 
+  public providersList: Observable<Provider[]>;
+
+  constructor(private fb: FormBuilder, private orderService: OrderService, private providerService: ProviderService) { 
     this.minDate = new Date();
+    this.providersList = this.providerService.getProviders();
   }
 
   addProduct() {
@@ -55,5 +60,6 @@ export class CreateOrderComponent {
   onOrderFormChange() {
     this.orderService.setOrderBeingCreated(this.newOrderForm.value);
     this.isFormValid.emit(this.newOrderForm.valid);
+    console.log(this.providersList)
   }
 }

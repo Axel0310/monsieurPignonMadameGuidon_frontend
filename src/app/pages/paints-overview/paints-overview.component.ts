@@ -13,11 +13,15 @@ export class PaintsOverviewComponent {
   paints$: Observable<Paint[]>;
 
   constructor(private paintService: PaintService) { 
-    this.paints$ = this.paintService.getPaints('En attente');
+    this.paints$ = this.paintService.getPaints();
   }
 
   filterByStatus(status: string) {
-    this.paints$ = this.paintService.getPaints(status);
+    this.paintService.fetchPaints(status);
+  }
+
+  updatePaint(updatedPaint: any) {
+    this.paintService.updatePaint(updatedPaint.id, updatedPaint.updates);
   }
 
 }

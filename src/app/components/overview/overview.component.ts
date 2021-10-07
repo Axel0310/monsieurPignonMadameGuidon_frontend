@@ -23,9 +23,10 @@ import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creati
   styleUrls: ['./overview.component.scss'],
 })
 export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() items!: Order[] | Paint[] | Repair[] | null;
+  @Input() items!: Order[] | Paint[] | Repair[];
   @Input() itemsType!: 'order' | 'paint' | 'repair';
   @Output() updateStatusFilterEvent = new EventEmitter<string>();
+  @Output() updateItemEvent = new EventEmitter<any>();
 
   public itemsTypeTranslation: string = '';
 
@@ -37,14 +38,16 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
 
   public statusList: string[] = ['Client notifié', 'Livré'];
   public selectedStatus!: string;
- 
+
   constructor(public dialog: MatDialog) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.items && this.items) {
       this.dataSource.data = this.items;
-      this.selectedItem = this.items[0];
-      console.log(this.items);
+      const previousSelectedItem = this.getItemById(this.selectedItem?._id);
+      this.selectedItem = previousSelectedItem
+        ? previousSelectedItem
+        : this.items[0];
     }
   }
 
@@ -60,7 +63,12 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'status',
         'targetDeliveryDate',
       ];
-      this.statusList = ['A commander', 'Panier', 'Commandé', ...this.statusList]
+      this.statusList = [
+        'A commander',
+        'Panier',
+        'Commandé',
+        ...this.statusList,
+      ];
       this.selectedStatus = 'A commander';
     } else if (this.itemsType === 'paint') {
       this.displayedColumns = [
@@ -71,7 +79,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'targetDeliveryDate',
         'color',
       ];
-      this.statusList = ['En attente', 'En peinture', ...this.statusList]
+      this.statusList = ['En attente', 'En peinture', ...this.statusList];
       this.selectedStatus = 'En attente';
     } else {
       this.displayedColumns = [
@@ -81,7 +89,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'status',
         'targetDeliveryDate',
       ];
-      this.statusList = ['A faire', 'Fait', ...this.statusList]
+      this.statusList = ['A faire', 'Fait', ...this.statusList];
       this.selectedStatus = 'A faire';
     }
 
@@ -99,11 +107,16 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
-        case 'client': return item.client.lastName;
-        case 'product': return item.products[0].name;
-        case 'unitPrice': return item.products[0].price;
-        case 'quantity': return item.products[0].quantity;
-        case 'provider': return item.products[0].provider;
+        case 'client':
+          return item.client.lastName;
+        case 'product':
+          return item.products[0].name;
+        case 'unitPrice':
+          return item.products[0].price;
+        case 'quantity':
+          return item.products[0].quantity;
+        case 'provider':
+          return item.products[0].provider;
         case 'targetDeliveryDate': {
           const date = new Date(item.targetDeliveryDate);
           return date;
@@ -137,11 +150,28 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   openItemCreationDialog(): void {
     const dialogRef = this.dialog.open(ItemCreationDialogComponent, {
       width: 'fit-content',
-      data: {itemType: this.itemsType}
+      data: { itemType: this.itemsType },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
+  }
+
+  updateItem(updates: any) {
+    this.updateItemEvent.emit({ id: this.selectedItem?._id, updates });
+    if (updates.status) {
+      this.selectedStatus = updates.status;
+    }
+  }
+
+  getItemById(id: string | undefined) {
+    if (id) {
+      return (this.items as []).find(
+        (item: { _id: string }) => item._id === id
+      );
+    } else {
+      return undefined;
+    }
   }
 }

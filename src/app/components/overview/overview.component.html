@@ -110,7 +110,7 @@
   <section *ngIf="selectedItem" class="item-details">
     <div class="row first-row">
       <app-client-info [client]="selectedItem.client"></app-client-info>
-      <app-status-list [status]="selectedItem.status" [itemType]="itemsType"></app-status-list>
+      <app-status-list [status]="selectedItem.status" [itemType]="itemsType" (statusUpdatedEvent)="updateItem($event)"></app-status-list>
       <app-localization-list *ngIf="itemsType === 'repair'" [repair]="selectedItem"></app-localization-list>
       <app-expense-table [products]="selectedItem.products" [expenses]="selectedItem.expenses"></app-expense-table>
     </div>

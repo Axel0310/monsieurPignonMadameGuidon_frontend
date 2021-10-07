@@ -13,6 +13,9 @@ import { ClientService } from './client.service';
 })
 export class OrderService {
   private API_URL = `${environment.API_URL}/orders`;
+
+  private orders: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
+
   private _orderBeingCreated: BehaviorSubject<Order | undefined> =
     new BehaviorSubject<Order | undefined>(undefined);
 
@@ -28,10 +31,19 @@ export class OrderService {
     this.clientService.currentClient$.subscribe(
       (client) => (this._currentClient = client)
     );
+    this.fetchOrders('A commander');
   }
 
-  getOrders(status: string): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.API_URL}/status/${status}`);
+  getOrders(): Observable<Order[]> {
+    return this.orders.asObservable();
+  }
+
+  fetchOrders(status: string) {
+    this.http
+      .get<Order[]>(`${this.API_URL}/status/${status}`)
+      .subscribe((fetchedOrders) => {
+        this.orders.next(fetchedOrders);
+      });
   }
 
   setOrderBeingCreated(order: Order) {
@@ -47,6 +59,15 @@ export class OrderService {
       shop: this._currentShop?._id,
       client: this._currentClient?._id,
       ...this._orderBeingCreated.value,
-    })
+    });
+  }
+
+  updateOrder(id: string, updates: object) {
+    this.http
+      .patch<Order>(`${this.API_URL}/${id}`, {...updates})
+      .subscribe((updatedOrder) => {
+        console.log(updatedOrder);
+        this.fetchOrders(updatedOrder.status);
+      });
   }
 }

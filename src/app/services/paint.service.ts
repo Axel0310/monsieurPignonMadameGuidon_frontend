@@ -14,9 +14,11 @@ import { ClientService } from './client.service';
 })
 export class PaintService {
   private API_URL = `${environment.API_URL}/paints`;
- 
+
+  private paints: BehaviorSubject<Paint[]> = new BehaviorSubject<Paint[]>([]);
+
   private _paintBeingCreated: BehaviorSubject<Paint | undefined> =
-  new BehaviorSubject<Paint | undefined>(undefined);
+    new BehaviorSubject<Paint | undefined>(undefined);
 
   private _currentShop: Shop | undefined;
   private _currentClient: Client | undefined;
@@ -30,10 +32,19 @@ export class PaintService {
     this.clientService.currentClient$.subscribe(
       (client) => (this._currentClient = client)
     );
+    this.fetchPaints('En attente');
   }
 
-  getPaints(status: string): Observable<Paint[]> {
-    return this.http.get<Paint[]>(`${this.API_URL}/status/${status}`)
+  getPaints(): Observable<Paint[]> {
+    return this.paints.asObservable();
+  }
+
+  fetchPaints(status: string) {
+    this.http
+      .get<Paint[]>(`${this.API_URL}/status/${status}`)
+      .subscribe((fetchedPaints) => {
+        this.paints.next(fetchedPaints);
+      });
   }
 
   setPaintBeingCreated(paint: Paint) {
@@ -49,6 +60,15 @@ export class PaintService {
       shop: this._currentShop?._id,
       client: this._currentClient?._id,
       ...this._paintBeingCreated.value,
-    })
+    });
+  }
+
+  updatePaint(id: string, updates: object) {
+    this.http
+      .patch<Paint>(`${this.API_URL}/${id}`, {...updates})
+      .subscribe((updatedPaint) => {
+        console.log(updatedPaint);
+        this.fetchPaints(updatedPaint.status);
+      });
   }
 }

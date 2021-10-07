@@ -1,5 +1,5 @@
 <h3>Statut</h3>
-<mat-radio-group [(ngModel)]="status" class="status-list">
+<mat-radio-group [(ngModel)]="status" class="status-list" (change)="updateStatus($event.value)">
     <ng-container *ngIf="itemType === 'order'">
         <mat-radio-button value="A commander">A commander</mat-radio-button>
         <mat-radio-button value="Panier">Panier</mat-radio-button>

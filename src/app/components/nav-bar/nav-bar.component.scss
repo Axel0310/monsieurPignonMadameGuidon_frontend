@@ -4,7 +4,7 @@
     background-color: rgb(0, 110, 255);
     color: whitesmoke;
     font-weight: bold;
-    padding: 2rem 1rem;
+    padding: 20px 0 0 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -18,7 +18,8 @@
         height: 8rem;
     }
 
-    a {
+    a, .logout {
+        cursor: pointer;
         display: flex;
 
         &:hover {

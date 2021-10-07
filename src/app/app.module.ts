@@ -42,6 +42,7 @@ import { CreateOrderComponent } from './components/forms/create-order/create-ord
 import { CreatePaintComponent } from './components/forms/create-paint/create-paint.component';
 import { CreateRepairComponent } from './components/forms/create-repair/create-repair.component';
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
+import { ProviderService } from './services/provider.service';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     OrderService,
     PaintService,
     RepairService,
+    ProviderService,
   ],
   bootstrap: [AppComponent],
 })

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-status-list',
@@ -9,5 +9,10 @@ export class StatusListComponent{
 
   @Input() itemType!: string;
   @Input() status!: string;
+  @Output() statusUpdatedEvent = new EventEmitter<any>();
+
+  updateStatus(newStatus: string) {
+    this.statusUpdatedEvent.emit({status: newStatus});
+  }
 
 }

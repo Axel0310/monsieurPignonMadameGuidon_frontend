@@ -13,11 +13,15 @@ export class OrdersOverviewComponent {
   orders$: Observable<Order[]>;
 
   constructor(private orderService: OrderService) { 
-    this.orders$ = this.orderService.getOrders('A commander');
+    this.orders$ = this.orderService.getOrders();
   }
 
   filterByStatus(status: string) {
-    this.orders$ = this.orderService.getOrders(status);
+    this.orderService.fetchOrders(status);
+  }
+
+  updateOrder(updatedOrder: any) {
+    this.orderService.updateOrder(updatedOrder.id, updatedOrder.updates);
   }
 
 }

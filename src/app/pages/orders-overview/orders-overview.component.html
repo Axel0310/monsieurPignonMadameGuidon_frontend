@@ -2,4 +2,5 @@
   [items]="orders$ | async"
   [itemsType]="'order'"
   (updateStatusFilterEvent)="filterByStatus($event)"
+  (updateItemEvent)="updateOrder($event)"
 ></app-overview>

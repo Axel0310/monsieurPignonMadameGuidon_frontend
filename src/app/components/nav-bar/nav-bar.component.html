@@ -13,8 +13,15 @@
       <p>Peintures</p>
     </a>
   </div>
-  <a routerLink="/parameters">
-    <fa-icon [icon]="faCog"></fa-icon>
-    <p>Paramètres</p>
-  </a>
+  <div>
+    <a routerLink="/parameters">
+      <fa-icon [icon]="faCog"></fa-icon>
+      <p>Paramètres</p>
+    </a>
+    <div (click)="onLogout()" class="logout">
+      <fa-icon [icon]="faSignOut"></fa-icon>
+      <p>Déconnexion</p>
+    </div>
+  </div>
+  
 </nav>
