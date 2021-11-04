@@ -1,0 +1,17 @@
+<mat-list>
+  <form (ngSubmit)="onSubmit()" [formGroup]="providerForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Créer un fournisseur</mat-label>
+      <input matInput formControlName="name"/>
+    </mat-form-field>
+    <button mat-raised-button color="primary">Créer</button>
+  </form>
+  <mat-list-item *ngFor="let provider of providers$ | async">
+    <fa-icon
+      [icon]="faTrashAlt"
+      (click)="deleteProvider(provider._id)"
+      class="delete-icon"
+    ></fa-icon>
+    <span>{{ provider.name }}</span>
+  </mat-list-item>
+</mat-list>

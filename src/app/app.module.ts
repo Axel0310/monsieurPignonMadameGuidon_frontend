@@ -43,6 +43,9 @@ import { CreatePaintComponent } from './components/forms/create-paint/create-pai
 import { CreateRepairComponent } from './components/forms/create-repair/create-repair.component';
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import { ProviderService } from './services/provider.service';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatListModule} from '@angular/material/list';
+import { ManageProvidersComponent } from './components/forms/manage-providers/manage-providers.component';
 
 
 @NgModule({
@@ -66,6 +69,7 @@ import { ProviderService } from './services/provider.service';
     CreateOrderComponent,
     CreatePaintComponent,
     CreateRepairComponent,
+    ManageProvidersComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +90,9 @@ import { ProviderService } from './services/provider.service';
     MatDialogModule,
     MatAutocompleteModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTabsModule,
+    MatListModule
   ],
   providers: [
     {

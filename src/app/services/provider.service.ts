@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Provider } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Provider } from '../interfaces/provider';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,15 @@ export class ProviderService {
           this._providers.next([...this._providers.value, createdProvider]);
         })
       );
+  }
+
+  deleteProvider(id: string) {
+    return this.http
+    .delete<Provider>(`${this.API_URL}/${id}`)
+    .pipe(
+      tap((deletedProvider: Provider) => {
+        this._providers.next([...this._providers.value].filter(provider => provider._id !== deletedProvider._id));
+      })
+    );
   }
 }

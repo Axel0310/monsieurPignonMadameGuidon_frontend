@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output, Provider } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/services/order.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { ProviderService } from 'src/app/services/provider.service';
 import { Observable } from 'rxjs';
+import { Provider } from 'src/app/interfaces/provider';
 
 @Component({
   selector: 'app-create-order',
