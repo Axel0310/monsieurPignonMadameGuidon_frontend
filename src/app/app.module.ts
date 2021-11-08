@@ -46,6 +46,8 @@ import { ProviderService } from './services/provider.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { ManageProvidersComponent } from './components/forms/manage-providers/manage-providers.component';
+import { ManagePasswordComponent } from './components/forms/manage-password/manage-password.component';
+import { ShopService } from './services/shop.service';
 
 
 @NgModule({
@@ -70,6 +72,7 @@ import { ManageProvidersComponent } from './components/forms/manage-providers/ma
     CreatePaintComponent,
     CreateRepairComponent,
     ManageProvidersComponent,
+    ManagePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,8 +106,9 @@ import { ManageProvidersComponent } from './components/forms/manage-providers/ma
     AuthenticationService,
     OrderService,
     PaintService,
-    RepairService,
     ProviderService,
+    RepairService,
+    ShopService,
   ],
   bootstrap: [AppComponent],
 })

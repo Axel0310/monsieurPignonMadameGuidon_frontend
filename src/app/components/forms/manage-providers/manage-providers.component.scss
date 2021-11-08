@@ -5,3 +5,10 @@
         color: red;
     }
 }
+
+.providers-list {
+    max-height: 500px;
+    overflow: scroll;
+    width: fit-content;
+    max-width: 500px;
+}
