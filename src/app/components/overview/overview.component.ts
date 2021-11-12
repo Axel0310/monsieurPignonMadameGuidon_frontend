@@ -137,7 +137,16 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   copyToClipboard() {
-    navigator.clipboard.writeText('hello world').then(
+    const i = this.selectedItem as Paint;
+    const getContentToCopy = () => {
+      let content: string = '';
+      i.expenses.forEach(expense => {
+        content = content + `${expense.name},${expense.price},${expense.quantity};`
+      })
+      return content;
+    }
+
+    navigator.clipboard.writeText(getContentToCopy()).then(
       function () {
         console.log('Copied into clipboard');
       },

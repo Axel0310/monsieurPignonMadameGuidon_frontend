@@ -31,7 +31,7 @@
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Téléphone</th>
           <td mat-cell *matCellDef="let item">
-            {{ item.client.phone }}
+            {{ item.client.phone | phoneFormat }}
           </td>
         </ng-container>
 
@@ -56,7 +56,7 @@
             Prix unitaire
           </th>
           <td mat-cell *matCellDef="let item">
-            {{ item.products[0].price }}
+            {{ item.products[0].price | currency }}
           </td>
         </ng-container>
 
@@ -113,6 +113,7 @@
       <app-status-list [status]="selectedItem.status" [itemType]="itemsType" (statusUpdatedEvent)="updateItem($event)"></app-status-list>
       <app-localization-list *ngIf="itemsType === 'repair'" [repair]="selectedItem"></app-localization-list>
       <app-expense-table [products]="selectedItem.products" [expenses]="selectedItem.expenses"></app-expense-table>
+      <button (click)="copyToClipboard()">Copy</button>
     </div>
     <div class="row second-row">
       <div>

@@ -52,7 +52,7 @@
           *ngFor="let client of fetchedClients | async"
           (click)="onClientSelected(client)"
         >
-          {{ client.firstName }} {{ client.lastName }} ({{ client.phone }})
+          {{ client.firstName }} {{ client.lastName }} ({{ client.phone | phoneFormat }})
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

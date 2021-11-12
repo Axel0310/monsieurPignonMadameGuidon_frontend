@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -48,7 +48,11 @@ import {MatListModule} from '@angular/material/list';
 import { ManageProvidersComponent } from './components/forms/manage-providers/manage-providers.component';
 import { ManagePasswordComponent } from './components/forms/manage-password/manage-password.component';
 import { ShopService } from './services/shop.service';
+import { PhoneFormatPipe } from './pipes/phone-format.pipe';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
@@ -73,6 +77,7 @@ import { ShopService } from './services/shop.service';
     CreateRepairComponent,
     ManageProvidersComponent,
     ManagePasswordComponent,
+    PhoneFormatPipe
   ],
   imports: [
     BrowserModule,
@@ -109,6 +114,11 @@ import { ShopService } from './services/shop.service';
     ProviderService,
     RepairService,
     ShopService,
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR'},
+    {
+      provide: LOCALE_ID,
+      useValue: 'fr-FR'
+    },
   ],
   bootstrap: [AppComponent],
 })

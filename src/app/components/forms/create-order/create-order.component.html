@@ -3,8 +3,8 @@
     <thead>
       <th></th>
       <th>Produits</th>
-      <th>Quantité</th>
       <th>Prix</th>
+      <th>Quantité</th>
       <th>Fournisseur</th>
     </thead>
     <tbody>
@@ -24,17 +24,17 @@
           </td>
           <td>
             <mat-form-field appearance="fill">
+              <input matInput type="number" formControlName="price" required />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
               <input
                 matInput
                 type="number"
                 formControlName="quantity"
                 required
               />
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field appearance="fill">
-              <input matInput type="number" formControlName="price" required />
             </mat-form-field>
           </td>
           <td>
