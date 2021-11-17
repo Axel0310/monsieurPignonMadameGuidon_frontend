@@ -13,7 +13,7 @@
           <td>
             <fa-icon
               [icon]="faTrashAlt"
-              (click)="removeExpense(i)"
+              (click)="removeProduct(i)"
               class="delete-icon"
             ></fa-icon>
           </td>
@@ -24,7 +24,7 @@
           </td>
           <td>
             <mat-form-field appearance="fill">
-              <input matInput type="number" formControlName="price" required />
+              <input matInput type="number" formControlName="price" required (change)="updateTotalPrice()"/>
             </mat-form-field>
           </td>
           <td>
@@ -34,6 +34,7 @@
                 type="number"
                 formControlName="quantity"
                 required
+                (change)="updateTotalPrice()"
               />
             </mat-form-field>
           </td>
@@ -45,6 +46,9 @@
             </mat-form-field>
           </td>
         </ng-container>
+      </tr>
+      <tr>
+        <td colspan="4" class="total-price">Total: {{totalPrice | currency}}</td>
       </tr>
     </tbody>
   </table>

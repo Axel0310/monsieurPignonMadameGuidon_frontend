@@ -4,14 +4,17 @@
       <fa-icon [icon]="faTools"></fa-icon>
       <p>Réparations</p>
     </a>
+    <fa-icon [icon]="faPlusSquare" (click)="openItemCreationDialog('repair')"></fa-icon>
     <a routerLink="/orders-overview">
       <fa-icon [icon]="faTruck"></fa-icon>
       <p>Commandes</p>
     </a>
+    <fa-icon [icon]="faPlusSquare" (click)="openItemCreationDialog('order')"></fa-icon>
     <a routerLink="/paints-overview">
       <fa-icon [icon]="faPaintRoller"></fa-icon>
       <p>Peintures</p>
     </a>
+    <fa-icon [icon]="faPlusSquare" (click)="openItemCreationDialog('paint')"></fa-icon>
   </div>
   <div>
     <a routerLink="/parameters">

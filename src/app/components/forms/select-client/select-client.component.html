@@ -59,7 +59,7 @@
     <p *ngIf="selectedClient | async">
       Client sélectionné: {{ (selectedClient | async).firstName }}
       {{ (selectedClient | async).lastName }} ({{
-        (selectedClient | async).phone
+        (selectedClient | async).phone | phoneFormat
       }})
     </p>
   </ng-template>

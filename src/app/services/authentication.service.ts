@@ -39,11 +39,13 @@ export class AuthenticationService {
     return this.getLoggedShop().pipe(map((shop) => !!shop));
   }
 
-  getLoggedShop() {
+  getLoggedShop(): BehaviorSubject<Shop | undefined> {
     if (this.loggedShop$.value === undefined) {
       this.http
         .get<Shop>(`${this.API_URL}/auth/isLoggedIn`)
-        .subscribe((shop) => this.loggedShop$.next(shop));
+        .subscribe((shop) => {
+          this.loggedShop$.next(shop)
+        });
     }
     return this.loggedShop$;
   }

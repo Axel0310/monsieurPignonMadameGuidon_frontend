@@ -5,6 +5,7 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { ProviderService } from 'src/app/services/provider.service';
 import { Observable } from 'rxjs';
 import { Provider } from 'src/app/interfaces/provider';
+import { Product } from 'src/app/interfaces/product';
 
 @Component({
   selector: 'app-create-order',
@@ -37,6 +38,8 @@ export class CreateOrderComponent {
 
   faTrashAlt = faTrashAlt;
 
+  totalPrice: number = 0;
+
   public providersList: Observable<Provider[]>;
 
   constructor(private fb: FormBuilder, private orderService: OrderService, private providerService: ProviderService) { 
@@ -56,11 +59,15 @@ export class CreateOrderComponent {
 
   removeProduct(index: number) {
     this.products.removeAt(index);
+    this.updateTotalPrice()
   }
 
   onOrderFormChange() {
     this.orderService.setOrderBeingCreated(this.newOrderForm.value);
     this.isFormValid.emit(this.newOrderForm.valid);
-    console.log(this.providersList)
+  }
+
+  updateTotalPrice() {
+    this.totalPrice = this.products.value.reduce((total: number, product: Product) => total + product.price * product.quantity, 0);
   }
 }

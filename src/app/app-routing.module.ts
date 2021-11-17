@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth-guard';
+import { IsLoggedInGuard } from './guards/isLoggedIn-guard';
 import { LoginComponent } from './pages/login/login.component';
 import { OrdersOverviewComponent } from './pages/orders-overview/orders-overview.component';
 import { PaintsOverviewComponent } from './pages/paints-overview/paints-overview.component';
@@ -11,7 +12,7 @@ const routes: Routes = [
   { path: '', component: RepairsOverviewComponent, canActivate: [AuthGuard] },
   { path: 'orders-overview', component:  OrdersOverviewComponent, canActivate: [AuthGuard] },
   { path: 'paints-overview', component: PaintsOverviewComponent, canActivate: [AuthGuard]  },
-  { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard]  },
+  { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
 ];
 

@@ -6,8 +6,11 @@ import {
   faPaintRoller,
   faCog,
   faSignOutAlt,
+  faPlusSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-nav-bar',
@@ -20,6 +23,7 @@ export class NavBarComponent {
   faPaintRoller = faPaintRoller;
   faCog = faCog;
   faSignOut = faSignOutAlt;
+  faPlusSquare = faPlusSquare;
 
   onLogout() {
     this.authService.logout().subscribe((outcome) => {
@@ -32,6 +36,18 @@ export class NavBarComponent {
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
+
+  openItemCreationDialog(itemType: string): void {
+    const dialogRef = this.dialog.open(ItemCreationDialogComponent, {
+      width: 'fit-content',
+      data: { itemType: itemType },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
 }

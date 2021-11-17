@@ -3,8 +3,8 @@
     <thead>
       <th></th>
       <th>Produits/Service</th>
-      <th>Quantité</th>
       <th>Prix</th>
+      <th>Quantité</th>
     </thead>
     <tbody>
       <tr *ngFor="let expense of expenses.controls; let i = index">
@@ -23,20 +23,24 @@
           </td>
           <td>
             <mat-form-field appearance="fill">
+              <input matInput type="number" formControlName="price" required (change)="updateTotalPrice()"/>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
               <input
                 matInput
                 type="number"
                 formControlName="quantity"
                 required
+                (change)="updateTotalPrice()"
               />
             </mat-form-field>
           </td>
-          <td>
-            <mat-form-field appearance="fill">
-              <input matInput type="number" formControlName="price" required />
-            </mat-form-field>
-          </td>
         </ng-container>
+      </tr>
+      <tr>
+        <td colspan="4" class="total-price">Total: {{totalPrice | currency}}</td>
       </tr>
     </tbody>
   </table>

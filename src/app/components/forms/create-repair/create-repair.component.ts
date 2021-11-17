@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RepairService } from 'src/app/services/repair.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { Expense } from 'src/app/interfaces/expense';
 
 @Component({
   selector: 'app-create-repair',
@@ -35,6 +36,8 @@ export class CreateRepairComponent {
 
   faTrashAlt = faTrashAlt;
 
+  totalPrice: number = 0;
+
   constructor(private fb: FormBuilder, private repairService: RepairService) { 
     this.minDate = new Date();
   }
@@ -50,11 +53,16 @@ export class CreateRepairComponent {
 
   removeExpense(index: number) {
     this.expenses.removeAt(index);
+    this.updateTotalPrice();
   }
 
   onRepairFormChange() {
     this.repairService.setRepairBeingCreated(this.newRepairForm.value);
     this.isFormValid.emit(this.newRepairForm.valid);
+  }
+
+  updateTotalPrice() {
+    this.totalPrice = this.expenses.value.reduce((total: number, expense: Expense) => total + expense.price * expense.quantity, 0);
   }
 
 }

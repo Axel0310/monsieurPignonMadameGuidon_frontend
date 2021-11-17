@@ -14,8 +14,6 @@ import { Paint } from 'src/app/interfaces/paint';
 import { Repair } from 'src/app/interfaces/repair';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
-import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creation-dialog.component';
 
 @Component({
   selector: 'app-overview',
@@ -39,7 +37,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   public statusList: string[] = ['Client notifié', 'Livré'];
   public selectedStatus!: string;
 
-  constructor(public dialog: MatDialog) {}
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.items && this.items) {
@@ -154,17 +152,6 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         console.log('Failed to copy into clipboard');
       }
     );
-  }
-
-  openItemCreationDialog(): void {
-    const dialogRef = this.dialog.open(ItemCreationDialogComponent, {
-      width: 'fit-content',
-      data: { itemType: this.itemsType },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
   }
 
   updateItem(updates: any) {
