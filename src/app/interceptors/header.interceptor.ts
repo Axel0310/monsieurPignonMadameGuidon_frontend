@@ -10,10 +10,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 //Provide session cookie in each requests
 export class HeaderInterceptor implements HttpInterceptor {
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
       withCredentials: true,
     });

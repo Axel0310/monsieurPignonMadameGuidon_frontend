@@ -1,0 +1,43 @@
+<mat-toolbar class="bottom-nav-bar">
+  <button mat-icon-button [matMenuTriggerFor]="orderMenu">
+    <mat-icon>local_shipping</mat-icon>
+  </button>
+  <mat-menu #orderMenu>
+    <button mat-menu-item>
+      <mat-icon>manage_search</mat-icon>
+      <span>Gérer</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Créer</span>
+    </button>
+  </mat-menu>
+
+  <button mat-icon-button [matMenuTriggerFor]="repairMenu">
+    <mat-icon>handyman</mat-icon>
+  </button>
+  <mat-menu #repairMenu>
+    <button mat-menu-item>
+      <mat-icon>manage_search</mat-icon>
+      <span>Gérer</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Créer</span>
+    </button>
+  </mat-menu>
+
+  <button mat-icon-button [matMenuTriggerFor]="paintMenu">
+    <mat-icon>format_paint</mat-icon>
+  </button>
+  <mat-menu #paintMenu>
+    <button mat-menu-item>
+      <mat-icon>manage_search</mat-icon>
+      <span>Gérer</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Créer</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

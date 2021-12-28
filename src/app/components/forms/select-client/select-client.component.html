@@ -9,7 +9,7 @@
   <form
     *ngIf="clientFormSelector === 'newClient'; else existingClientForm"
     [formGroup]="newClientForm"
-    (ngSubmit)="onCreateClient()"
+    (ngSubmit)="onCreateClient(stepper)"
   >
     <mat-form-field appearance="fill">
       <mat-label>Prénom</mat-label>

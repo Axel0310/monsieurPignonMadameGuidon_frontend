@@ -51,6 +51,11 @@ import { ShopService } from './services/shop.service';
 import { PhoneFormatPipe } from './pipes/phone-format.pipe';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { MobileBottomNavbarComponent } from './components/mobile-bottom-navbar/mobile-bottom-navbar.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import { MobileTopNavbarComponent } from './components/mobile-top-navbar/mobile-top-navbar.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -77,7 +82,9 @@ registerLocaleData(localeFr, 'fr');
     CreateRepairComponent,
     ManageProvidersComponent,
     ManagePasswordComponent,
-    PhoneFormatPipe
+    PhoneFormatPipe,
+    MobileBottomNavbarComponent,
+    MobileTopNavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +107,10 @@ registerLocaleData(localeFr, 'fr');
     MatNativeDateModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatListModule
+    MatListModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule
   ],
   providers: [
     {

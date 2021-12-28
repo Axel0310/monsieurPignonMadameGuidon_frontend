@@ -1,28 +1,37 @@
 <nav class="nav-bar-cont">
   <div class="main-nav-cont">
     <a routerLink="/">
-      <fa-icon [icon]="faTools"></fa-icon>
+      <mat-icon>handyman</mat-icon>
       <p>Réparations</p>
     </a>
-    <fa-icon [icon]="faPlusSquare" (click)="openItemCreationDialog('repair')"></fa-icon>
+    <div class="create-link" (click)="openItemCreationDialog('repair')">
+      <mat-icon>add_circle_outline</mat-icon>
+      <p>Créer</p>
+    </div>
     <a routerLink="/orders-overview">
-      <fa-icon [icon]="faTruck"></fa-icon>
+      <mat-icon>local_shipping</mat-icon>
       <p>Commandes</p>
     </a>
-    <fa-icon [icon]="faPlusSquare" (click)="openItemCreationDialog('order')"></fa-icon>
+    <div class="create-link" (click)="openItemCreationDialog('order')">
+      <mat-icon>add_circle_outline</mat-icon>
+      <p>Créer</p>
+    </div>
     <a routerLink="/paints-overview">
-      <fa-icon [icon]="faPaintRoller"></fa-icon>
+      <mat-icon>format_paint</mat-icon>
       <p>Peintures</p>
     </a>
-    <fa-icon [icon]="faPlusSquare" (click)="openItemCreationDialog('paint')"></fa-icon>
+    <div class="create-link" (click)="openItemCreationDialog('paint')">
+      <mat-icon>add_circle_outline</mat-icon>
+      <p>Créer</p>
+    </div>
   </div>
   <div>
     <a routerLink="/parameters">
-      <fa-icon [icon]="faCog"></fa-icon>
+      <mat-icon>settings</mat-icon>
       <p>Paramètres</p>
     </a>
     <div (click)="onLogout()" class="logout">
-      <fa-icon [icon]="faSignOut"></fa-icon>
+      <mat-icon>logout</mat-icon>
       <p>Déconnexion</p>
     </div>
   </div>

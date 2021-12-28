@@ -107,6 +107,8 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
       switch (property) {
         case 'client':
           return item.client.lastName;
+        case 'phone':
+          return item.client.phone;
         case 'product':
           return item.products[0].name;
         case 'unitPrice':
@@ -114,7 +116,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         case 'quantity':
           return item.products[0].quantity;
         case 'provider':
-          return item.products[0].provider;
+          return item.products[0].provider.name;
         case 'targetDeliveryDate': {
           const date = new Date(item.targetDeliveryDate);
           return date;

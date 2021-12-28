@@ -1,0 +1,16 @@
+@import "../../../styles/variables";
+
+.top-nav-bar {
+  background-color: $color-background-dark;
+  color: $color-content-dark;
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  top: 0;
+  box-shadow: 0px 0px 8px 0px #000000;
+  height: 40px;
+
+  .shop-logo {
+      width: 150px;
+  }
+}

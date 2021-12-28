@@ -1,13 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  faTruck,
-  faTools,
-  faPaintRoller,
-  faCog,
-  faSignOutAlt,
-  faPlusSquare,
-} from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,12 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent {
-  faTruck = faTruck;
-  faTools = faTools;
-  faPaintRoller = faPaintRoller;
-  faCog = faCog;
-  faSignOut = faSignOutAlt;
-  faPlusSquare = faPlusSquare;
 
   onLogout() {
     this.authService.logout().subscribe((outcome) => {
@@ -42,7 +28,7 @@ export class NavBarComponent {
 
   openItemCreationDialog(itemType: string): void {
     const dialogRef = this.dialog.open(ItemCreationDialogComponent, {
-      width: 'fit-content',
+      width: '80vw',
       data: { itemType: itemType },
     });
 

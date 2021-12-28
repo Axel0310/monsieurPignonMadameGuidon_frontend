@@ -1,13 +1,19 @@
+@import "../styles/variables";
+
 .content {
-    width: calc(100vw - 10rem);
-    height: 100vh;
-    right: 0;
-    position: absolute;
+  width: 100vw; 
+  height: 100vh;
+  right: 0;
+  position: absolute;
+
+  &.loggedIn {
+    width: calc(100vw - #{$nav-bar-width}); 
+  }
 }
 
 .shop-logo {
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
-    width: 10rem;
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  width: 10rem;
 }

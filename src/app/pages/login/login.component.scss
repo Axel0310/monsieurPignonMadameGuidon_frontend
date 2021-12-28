@@ -1,38 +1,42 @@
-.login-content {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 66% 34%;
+@import "../../../styles/variables";
 
-    .shop-image {
-        background: center / cover no-repeat url('/assets/images/loginPagePicture.png');
+@media (max-width: $screen-md) {
+  .shop-image {
+    display: none;
+  }
+}
+
+.shop-image {
+  background: center / cover no-repeat
+    url("/assets/images/loginPagePicture.png");
+  float: left;
+  height: 100vh;
+  width: 60vw;
+}
+
+.right-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgb(240, 240, 240);
+    border-radius: 20px;
+    padding: 1rem 2rem;
+
+    .signin-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+  }
 
-    .right-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            background-color: rgb(240, 240, 240);
-            border-radius: 20px;
-            padding: 1rem 2rem;
-
-            .signin-form {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        .shop-logo {
-            width: 65%;
-            margin: 5rem 0;
-        }
-
-    }
+  .shop-logo {
+    width: 230px;
+    margin: 8em 0 2em 0;
+  }
 }

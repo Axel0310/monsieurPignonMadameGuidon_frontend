@@ -1,0 +1,11 @@
+@import "../../../styles/variables";
+
+.bottom-nav-bar {
+  background-color: $color-primary-main;
+  color: $color-content-light;
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+}
