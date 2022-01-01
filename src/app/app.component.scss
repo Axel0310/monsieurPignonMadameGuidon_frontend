@@ -9,6 +9,12 @@
   &.loggedIn {
     width: calc(100vw - #{$nav-bar-width}); 
   }
+
+  &.mobileView {
+    padding: $mobile-nav-bar-height 0;
+    width: 100vw;
+    position: initial;
+  }
 }
 
 .shop-logo {

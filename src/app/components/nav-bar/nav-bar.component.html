@@ -1,32 +1,41 @@
 <nav class="nav-bar-cont">
-  <div class="main-nav-cont">
-    <a routerLink="/">
-      <mat-icon>handyman</mat-icon>
-      <p>Réparations</p>
-    </a>
-    <div class="create-link" (click)="openItemCreationDialog('repair')">
-      <mat-icon>add_circle_outline</mat-icon>
-      <p>Créer</p>
+  <div>
+    <div class="nav-category">
+      <a routerLink="/repairs-overview" routerLinkActive="active">
+        <mat-icon>handyman</mat-icon>
+        <p>Réparations</p>
+      </a>
+      <div class="create-link" (click)="openItemCreationDialog('repair')">
+        <mat-icon>add_circle_outline</mat-icon>
+        <p>Créer</p>
+      </div>
     </div>
-    <a routerLink="/orders-overview">
-      <mat-icon>local_shipping</mat-icon>
-      <p>Commandes</p>
-    </a>
-    <div class="create-link" (click)="openItemCreationDialog('order')">
-      <mat-icon>add_circle_outline</mat-icon>
-      <p>Créer</p>
+
+    <div class="nav-category">
+      <a routerLink="/orders-overview" routerLinkActive="active">
+        <mat-icon>local_shipping</mat-icon>
+        <p>Commandes</p>
+      </a>
+      <div class="create-link" (click)="openItemCreationDialog('order')">
+        <mat-icon>add_circle_outline</mat-icon>
+        <p>Créer</p>
+      </div>
     </div>
-    <a routerLink="/paints-overview">
-      <mat-icon>format_paint</mat-icon>
-      <p>Peintures</p>
-    </a>
-    <div class="create-link" (click)="openItemCreationDialog('paint')">
-      <mat-icon>add_circle_outline</mat-icon>
-      <p>Créer</p>
+
+    <div class="nav-category">
+      <a routerLink="/paints-overview" routerLinkActive="active">
+        <mat-icon>format_paint</mat-icon>
+        <p>Peintures</p>
+      </a>
+      <div class="create-link" (click)="openItemCreationDialog('paint')">
+        <mat-icon>add_circle_outline</mat-icon>
+        <p>Créer</p>
+      </div>
     </div>
   </div>
+
   <div>
-    <a routerLink="/parameters">
+    <a routerLink="/parameters" routerLinkActive="active">
       <mat-icon>settings</mat-icon>
       <p>Paramètres</p>
     </a>
@@ -35,5 +44,4 @@
       <p>Déconnexion</p>
     </div>
   </div>
-  
 </nav>

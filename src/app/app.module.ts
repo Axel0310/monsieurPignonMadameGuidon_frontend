@@ -49,6 +49,7 @@ import { ManageProvidersComponent } from './components/forms/manage-providers/ma
 import { ManagePasswordComponent } from './components/forms/manage-password/manage-password.component';
 import { ShopService } from './services/shop.service';
 import { PhoneFormatPipe } from './pipes/phone-format.pipe';
+import { OrderByPipe } from './pipes/order-by.pipe';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MobileBottomNavbarComponent } from './components/mobile-bottom-navbar/mobile-bottom-navbar.component';
@@ -83,6 +84,7 @@ registerLocaleData(localeFr, 'fr');
     ManageProvidersComponent,
     ManagePasswordComponent,
     PhoneFormatPipe,
+    OrderByPipe,
     MobileBottomNavbarComponent,
     MobileTopNavbarComponent
   ],

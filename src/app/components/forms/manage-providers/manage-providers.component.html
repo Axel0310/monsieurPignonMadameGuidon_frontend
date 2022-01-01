@@ -3,10 +3,12 @@
     <mat-label>Créer un fournisseur</mat-label>
     <input matInput formControlName="name" />
   </mat-form-field>
-  <button mat-raised-button color="primary" [disabled]="!providerForm.valid">Créer</button>
+  <button mat-raised-button color="primary" [disabled]="!providerForm.valid">
+    Créer
+  </button>
 </form>
 <mat-list class="providers-list">
-  <mat-list-item *ngFor="let provider of providers$ | async">
+  <mat-list-item *ngFor="let provider of ((providers$ | async) | orderBy:'name')">
     <fa-icon
       [icon]="faTrashAlt"
       (click)="deleteProvider(provider._id)"

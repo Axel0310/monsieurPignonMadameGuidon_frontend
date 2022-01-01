@@ -1,14 +1,24 @@
-.delete-icon {
-    margin-right: 10px;
+@import "../../../../styles/variables";
 
-    &:hover {
-        color: red;
-    }
+.delete-icon {
+  margin-right: 10px;
+
+  &:hover {
+    color: red;
+  }
 }
 
 .providers-list {
-    max-height: 500px;
-    overflow: scroll;
-    width: fit-content;
-    max-width: 500px;
+  max-height: 500px;
+  max-width: 500px;
+  overflow: scroll;
+  width: fit-content;
+
+  @media (max-width: $screen-md) {
+    padding: 10px 0;
+    max-height: none;
+    max-width: none;
+    width: 100vw;
+    height: 350px;
+  }
 }

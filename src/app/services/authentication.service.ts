@@ -21,7 +21,7 @@ export class AuthenticationService {
       .post<Shop>(`${this.API_URL}/auth/signin`, { identifier, password })
       .pipe(
         tap(
-          (shop) => (this.loggedShop$.next(shop), this.router.navigate(['/']))
+          (shop) => (this.loggedShop$.next(shop), this.router.navigate(['/repairs-overview']))
         ),
         catchError(handleError)
       );

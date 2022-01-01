@@ -1,6 +1,9 @@
+@import "../../../styles/variables";
+
 .overview-container {
   height: 100%;
   position: relative;
+  background-color: $color-background-light;
 
   .top-container {
     height: 60%;
@@ -29,13 +32,15 @@
 
   .item-details {
     height: 40%;
-    background-color: rgb(204, 204, 204);
+    background-color: $color-background-dark;
     display: flex;
     flex-direction: column;
+    overflow: overlay;
 
     .row {
       display: flex;
       margin-top: 15px;
+      flex-wrap: wrap;
 
       * {
         margin-right: 10px;

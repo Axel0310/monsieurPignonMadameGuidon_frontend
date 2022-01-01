@@ -1,43 +1,61 @@
 <mat-toolbar class="bottom-nav-bar">
-  <button mat-icon-button [matMenuTriggerFor]="orderMenu">
-    <mat-icon>local_shipping</mat-icon>
-  </button>
-  <mat-menu #orderMenu>
-    <button mat-menu-item>
-      <mat-icon>manage_search</mat-icon>
-      <span>Gérer</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>add_circle_outline</mat-icon>
-      <span>Créer</span>
-    </button>
-  </mat-menu>
-
-  <button mat-icon-button [matMenuTriggerFor]="repairMenu">
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="repairMenu"
+    routerLinkActive="active"
+  >
     <mat-icon>handyman</mat-icon>
+    <mat-menu #repairMenu>
+      <button mat-menu-item>
+        <a mat-menu-item routerLink="/repairs-overview">
+          <mat-icon>manage_search</mat-icon>
+          <span>Gérer</span>
+        </a>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>add_circle_outline</mat-icon>
+        <span>Créer</span>
+      </button>
+    </mat-menu>
   </button>
-  <mat-menu #repairMenu>
-    <button mat-menu-item>
-      <mat-icon>manage_search</mat-icon>
-      <span>Gérer</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>add_circle_outline</mat-icon>
-      <span>Créer</span>
-    </button>
-  </mat-menu>
 
-  <button mat-icon-button [matMenuTriggerFor]="paintMenu">
-    <mat-icon>format_paint</mat-icon>
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="orderMenu"
+    routerLinkActive="active"
+  >
+    <mat-icon>local_shipping</mat-icon>
+    <mat-menu #orderMenu>
+      <button mat-menu-item>
+        <a mat-menu-item routerLink="/orders-overview">
+          <mat-icon>manage_search</mat-icon>
+          <span>Gérer</span>
+        </a>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>add_circle_outline</mat-icon>
+        <span>Créer</span>
+      </button>
+    </mat-menu>
   </button>
-  <mat-menu #paintMenu>
-    <button mat-menu-item>
-      <mat-icon>manage_search</mat-icon>
-      <span>Gérer</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>add_circle_outline</mat-icon>
-      <span>Créer</span>
-    </button>
-  </mat-menu>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="paintMenu"
+    routerLinkActive="active"
+  >
+    <mat-icon>format_paint</mat-icon>
+    <mat-menu #paintMenu>
+      <button mat-menu-item>
+        <a mat-menu-item routerLink="/paints-overview">
+          <mat-icon>manage_search</mat-icon>
+          <span>Gérer</span>
+        </a>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>add_circle_outline</mat-icon>
+        <span>Créer</span>
+      </button>
+    </mat-menu>
+  </button>
 </mat-toolbar>

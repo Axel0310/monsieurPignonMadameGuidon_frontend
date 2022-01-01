@@ -13,9 +13,9 @@ export class NavBarComponent {
 
   onLogout() {
     this.authService.logout().subscribe((outcome) => {
-      if(outcome.message === 'Succesfully disconnected.') {
-        console.log("ok")
-        this.router.navigate(['login'])
+      if (outcome.message === 'Succesfully disconnected.') {
+        console.log('ok');
+        this.router.navigate(['login']);
       }
     });
   }

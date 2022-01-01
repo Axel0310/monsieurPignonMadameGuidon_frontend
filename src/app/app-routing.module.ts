@@ -9,7 +9,7 @@ import { ParametersComponent } from './pages/parameters/parameters.component';
 import { RepairsOverviewComponent } from './pages/repairs-overview/repairs-overview.component';
 
 const routes: Routes = [
-  { path: '', component: RepairsOverviewComponent, canActivate: [AuthGuard] },
+  { path: 'repairs-overview', component: RepairsOverviewComponent, canActivate: [AuthGuard] },
   { path: 'orders-overview', component:  OrdersOverviewComponent, canActivate: [AuthGuard] },
   { path: 'paints-overview', component: PaintsOverviewComponent, canActivate: [AuthGuard]  },
   { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard] },

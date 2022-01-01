@@ -1,0 +1,9 @@
+@import "../../../styles/variables";
+
+.menu-content {
+    padding: 10px;
+
+    @media (max-width: $screen-md) {
+        padding: 10px 0;
+    }
+}

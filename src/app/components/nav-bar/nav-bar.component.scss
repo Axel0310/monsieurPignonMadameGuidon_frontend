@@ -5,23 +5,22 @@
     width: $nav-bar-width;
     background-color: $color-primary-main;
     color: $color-content-light;
-    padding: 20px 0 0 10px;
+    padding: 20px 0 0 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     font-size: 1.5rem;
     float: left;
 
-    .main-nav-cont {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 8rem;
+    .nav-category {
+        margin: 0 0 15px 0;
+        padding: 5px 0;
     }
 
     a, .logout, .create-link {
         cursor: pointer;
         display: flex;
+        padding: 0 0 0 8px;
 
         &:hover {
             color: $color-background-dark;
@@ -29,10 +28,15 @@
     }
 
     p {
-        margin-left: 0.4rem;
+        margin: 0 0 0 0.4rem;
     }
 
     .create-link {
         margin-left: 2em;
+    }
+
+    .active {
+        background-color: $color-background-light;
+        color: $color-primary-main;
     }
 }

@@ -2,7 +2,7 @@
 
 <!-- <img  class="shop-logo" src="assets/images/logo.png"> -->
 <app-mobile-top-navbar *ngIf="(isLoggedIn$ | async) && isMobileView"></app-mobile-top-navbar>
-<div class="content" [class.loggedIn]="isLoggedIn$ | async">
+<div class="content" [class.loggedIn]="isLoggedIn$ | async" [class.mobileView]="isMobileView">
     <router-outlet></router-outlet>
 </div>
 <app-mobile-bottom-navbar *ngIf="(isLoggedIn$ | async) && isMobileView"></app-mobile-bottom-navbar>
