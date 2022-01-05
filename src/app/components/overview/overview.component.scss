@@ -2,40 +2,79 @@
 
 .overview-container {
   height: 100%;
-  position: relative;
-  background-color: $color-background-light;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0 10px;
 
-  .top-container {
-    height: 60%;
+  .overview-header {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 10px;
 
-    .page-title {
+    .filters-icon {
       position: absolute;
-      top: 10px;
-      left: 50%;
+      top: 50px;
     }
 
-    .options-container {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .overview-header-title {
+      flex-basis: 50%;
+    }
 
-      mat-radio-button {
-        margin-right: 10px;
+    .overview-header-search {
+      flex-basis: 30%;
+    }
+
+    mat-radio-button {
+      margin-right: 10px;
+    }
+
+    .filters-icon {
+      cursor: pointer;
+    }
+
+    @media (max-width: $screen-md) {
+      .overview-header-title,
+      .overview-header-search {
+        flex-basis: 100%;
+        margin: 0 0 10px;
+        width: 100%;
       }
-    }
 
-    .items-table {
-      width: 100%;
+      .overview-header-title {
+        text-align: center;
+      }
+
+      .mat-expansion-panel {
+        width: 100%;
+        box-shadow: none;
+        background-color: inherit;
+      }
+
+      // .mat-expansion-panel-body {
+      //   padding: 0 !important;
+      // }
     }
   }
 
+  .items-table {
+    width: 100%;
+  }
+
   .item-details {
-    height: 40%;
+    flex-basis: 45%;
+    margin: 0 -10px;
+    padding: 5px 10px;
     background-color: $color-background-dark;
     display: flex;
     flex-direction: column;
     overflow: overlay;
+
+    @media (max-width: $screen-md) {
+      flex-basis: 44%;
+    }
 
     .row {
       display: flex;
@@ -47,7 +86,9 @@
       }
     }
 
-    .first-row, .second-row, .third-row {
+    .first-row,
+    .second-row,
+    .third-row {
       justify-content: space-between;
     }
 
@@ -69,10 +110,10 @@
 
 .table-responsive {
   overflow-x: auto;
-  height: 300px;
+  flex-basis: 45%;
+  margin: 0 0 15px 0;
 
   .mat-row .mat-cell {
-    border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
     cursor: pointer;
   }
@@ -82,6 +123,12 @@
   }
 
   .selected-row {
-      background-color: cornflowerblue;
+    background-color: cornflowerblue;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    padding: 0 10px;
   }
 }

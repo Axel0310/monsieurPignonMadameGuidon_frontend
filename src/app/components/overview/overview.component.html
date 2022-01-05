@@ -1,19 +1,29 @@
 <div class="overview-container">
-  <section class="top-container">
-    <h1 class="page-title">Liste des {{ itemsTypeTranslation }}s</h1>
+    <div class="overview-header">
+      <mat-icon *ngIf="$isMobileView | async" class="filters-icon" (click)="toggleExpansionPanel()">filter_list</mat-icon>
+      <h1 class="overview-header-title">
+        Liste des {{ itemsTypeTranslation }}s
+      </h1>
 
-    <div class="options-container">
-      <div>
-        <mat-label>Filtrer par statut : </mat-label>
-        <mat-radio-group [(ngModel)]="selectedStatus" (change)="updateStatusFilter()">
-          <mat-radio-button *ngFor="let status of statusList" [value]="status">{{status}}</mat-radio-button>
-        </mat-radio-group>
-      </div>
+      <ng-template #filters>
+        <mat-form-field appearance="fill" class="overview-header-search">
+          <mat-label>Recherche</mat-label>
+          <input matInput />
+        </mat-form-field>
+  
+        <div>
+          <mat-label>Filtrer : </mat-label>
+          <mat-radio-group [(ngModel)]="selectedStatus" (change)="updateStatusFilter()">
+            <mat-radio-button *ngFor="let status of statusList" [value]="status">{{status}}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </ng-template>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Recherche</mat-label>
-        <input matInput />
-      </mat-form-field>
+      <ng-template [ngTemplateOutlet]="filters" *ngIf="!($isMobileView | async)"></ng-template>
+
+      <mat-expansion-panel *ngIf="$isMobileView | async" [expanded]="panelOpenState" class="filters-expansion-panel">
+        <ng-template [ngTemplateOutlet]="filters"></ng-template>
+      </mat-expansion-panel>
     </div>
 
     <div class="mat-elevation-z8 table-responsive">
@@ -102,54 +112,101 @@
         ></tr>
       </table>
     </div>
-  </section>
+  
 
-  <section *ngIf="selectedItem" class="item-details">
+  <div *ngIf="selectedItem" class="item-details">
     <div class="row first-row">
       <app-client-info [client]="selectedItem.client"></app-client-info>
-      <app-status-list [status]="selectedItem.status" [itemType]="itemsType" (statusUpdatedEvent)="updateItem($event)"></app-status-list>
-      <app-localization-list *ngIf="itemsType === 'repair'" [repair]="selectedItem"></app-localization-list>
-      <app-expense-table [products]="selectedItem.products" [expenses]="selectedItem.expenses"></app-expense-table>
+      <app-status-list
+        [status]="selectedItem.status"
+        [itemType]="itemsType"
+        (statusUpdatedEvent)="updateItem($event)"
+      ></app-status-list>
+      <app-localization-list
+        *ngIf="itemsType === 'repair'"
+        [repair]="selectedItem"
+      ></app-localization-list>
+      <app-expense-table
+        [products]="selectedItem.products"
+        [expenses]="selectedItem.expenses"
+      ></app-expense-table>
       <button (click)="copyToClipboard()">Copy</button>
     </div>
     <div class="row second-row">
       <div>
         <mat-form-field class="input-info creation-date">
           <mat-label>Création</mat-label>
-          <input matInput type="text" [value]="selectedItem.createdAt | date: 'd/M/yy'" [readonly]="true">
+          <input
+            matInput
+            type="text"
+            [value]="selectedItem.createdAt | date: 'd/M/yy'"
+            [readonly]="true"
+          />
         </mat-form-field>
         <mat-form-field class="input-info update-date">
           <mat-label>Dernière modification</mat-label>
-          <input matInput type="text" [value]="selectedItem.updatedAt | date: 'd/M/yy'" [readonly]="true">
+          <input
+            matInput
+            type="text"
+            [value]="selectedItem.updatedAt | date: 'd/M/yy'"
+            [readonly]="true"
+          />
         </mat-form-field>
         <mat-form-field class="input-info target-delivery-date">
           <mat-label>Date livraison</mat-label>
-          <input matInput type="text" [value]="selectedItem.targetDeliveryDate | date: 'd/M/yy'" [readonly]="true">
+          <input
+            matInput
+            type="text"
+            [value]="selectedItem.targetDeliveryDate | date: 'd/M/yy'"
+            [readonly]="true"
+          />
         </mat-form-field>
       </div>
       <mat-form-field *ngIf="itemsType === 'paint'" class="input-info">
         <mat-label>Couleur</mat-label>
-        <input matInput type="text" [value]="selectedItem.color" [readonly]="true">
+        <input
+          matInput
+          type="text"
+          [value]="selectedItem.color"
+          [readonly]="true"
+        />
       </mat-form-field>
-      <mat-form-field *ngIf="itemsType === 'paint' || itemsType === 'repair'" class="input-info">
+      <mat-form-field
+        *ngIf="itemsType === 'paint' || itemsType === 'repair'"
+        class="input-info"
+      >
         <mat-label>Description vélo</mat-label>
-        <input matInput type="text" [value]="selectedItem.bikeDescription" [readonly]="true">
+        <input
+          matInput
+          type="text"
+          [value]="selectedItem.bikeDescription"
+          [readonly]="true"
+        />
       </mat-form-field>
       <mat-form-field class="input-info">
         <mat-label>Commentaire</mat-label>
-        <input matInput [value]="selectedItem.comment" [readonly]="true">
+        <input matInput [value]="selectedItem.comment" [readonly]="true" />
       </mat-form-field>
-      
     </div>
     <div class="row third-row">
       <mat-form-field class="input-info">
         <mat-label>N° facture</mat-label>
-        <input matInput type="text" [value]="selectedItem.billRef" [readonly]="true">
+        <input
+          matInput
+          type="text"
+          [value]="selectedItem.billRef"
+          [readonly]="true"
+        />
       </mat-form-field>
       <mat-form-field class="input-info">
         <mat-label>V+1</mat-label>
-        <input matInput type="text" [value]="selectedItem.commercialOpportunity" [readonly]="true">
+        <input
+          matInput
+          type="text"
+          [value]="selectedItem.commercialOpportunity"
+          [readonly]="true"
+        />
       </mat-form-field>
     </div>
-  </section>
+  </div>
 </div>

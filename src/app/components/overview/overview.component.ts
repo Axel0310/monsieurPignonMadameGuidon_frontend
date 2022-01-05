@@ -14,6 +14,8 @@ import { Paint } from 'src/app/interfaces/paint';
 import { Repair } from 'src/app/interfaces/repair';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { ScreenSizeService } from 'src/app/services/screen-size.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-overview',
@@ -37,7 +39,17 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   public statusList: string[] = ['Client notifié', 'Livré'];
   public selectedStatus!: string;
 
-  constructor() {}
+  public panelOpenState = false;
+
+  public $isMobileView: Observable<boolean>
+
+  toggleExpansionPanel() {
+    this.panelOpenState = !this.panelOpenState;
+  }
+
+  constructor(private screenSize: ScreenSizeService) {
+    this.$isMobileView = this.screenSize.getIsMobileView();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.items && this.items) {

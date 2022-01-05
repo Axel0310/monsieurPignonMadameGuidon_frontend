@@ -57,6 +57,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { MobileTopNavbarComponent } from './components/mobile-top-navbar/mobile-top-navbar.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { ScreenSizeService } from './services/screen-size.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -86,7 +88,7 @@ registerLocaleData(localeFr, 'fr');
     PhoneFormatPipe,
     OrderByPipe,
     MobileBottomNavbarComponent,
-    MobileTopNavbarComponent
+    MobileTopNavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,7 +114,8 @@ registerLocaleData(localeFr, 'fr');
     MatListModule,
     MatToolbarModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule
   ],
   providers: [
     {
@@ -126,6 +129,7 @@ registerLocaleData(localeFr, 'fr');
     ProviderService,
     RepairService,
     ShopService,
+    ScreenSizeService,
     {provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR'},
     {
       provide: LOCALE_ID,
