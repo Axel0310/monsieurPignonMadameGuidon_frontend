@@ -1,0 +1,31 @@
+.item-creation-dialog-cont {
+    position: relative;
+
+  .close-icon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+  }
+
+  .mat-dialog-title {
+    text-align: center;
+    margin: 0;
+  }
+
+  .mat-dialog-content {
+    max-height: 80vh;
+
+    .mat-horizontal-content-container {
+      padding: 0;
+    }
+
+    .mat-dialog-actions {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+    }
+  }
+
+  
+}

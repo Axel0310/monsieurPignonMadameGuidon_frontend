@@ -1,20 +1,25 @@
-<h1 mat-dialog-title>Créer une {{ data.itemType === 'order' ? 'commande' : data.itemType === 'paint' ? 'peinture' : 'réparation' }}</h1>
-<div mat-dialog-content>
-  <mat-stepper #stepper>
-    <mat-step [stepControl]="" label="Client">
-      <app-select-client></app-select-client>
-      <div mat-dialog-actions>
-        <button mat-button matStepperNext [disabled]="!(selectedClient | async)">Suivant</button>
-      </div>
-    </mat-step>
-    <mat-step [stepControl]="" [label]="data.itemType === 'order' ? 'Commande' : data.itemType === 'paint' ? 'Peinture' : 'Réparation'" [ngSwitch]="data.itemType">
-      <app-create-order *ngSwitchCase="'order'" (isFormValid)="updateIsFormValid($event)"></app-create-order>
-      <app-create-paint *ngSwitchCase="'paint'" (isFormValid)="updateIsFormValid($event)"></app-create-paint>
-      <app-create-repair *ngSwitchCase="'repair'" (isFormValid)="updateIsFormValid($event)"></app-create-repair>
-      <div mat-dialog-actions>
-        <button mat-button matStepperPrevious>Précécent</button>
-        <button mat-button (click)="onCreateClick()" [disabled]="!isFormValid">Créer</button>
-      </div>
-    </mat-step>
-  </mat-stepper>
+<div class="item-creation-dialog-cont">
+  <h1 mat-dialog-title>Créer une {{ data.itemType === 'order' ? 'commande' : data.itemType === 'paint' ? 'peinture' : 'réparation' }}</h1>
+  <i class="material-icons close-icon" (click)="onClickClose()">close</i>
+  <div mat-dialog-content>
+    <mat-stepper #stepper>
+      <mat-step [stepControl]="" [label]="data.itemType === 'order' ? 'Commande' : data.itemType === 'paint' ? 'Peinture' : 'Réparation'" [ngSwitch]="data.itemType">
+        <app-create-order *ngSwitchCase="'order'" (isFormValid)="updateIsFormValid($event)"></app-create-order>
+        <app-create-paint *ngSwitchCase="'paint'" (isFormValid)="updateIsFormValid($event)"></app-create-paint>
+        <app-create-repair *ngSwitchCase="'repair'" (isFormValid)="updateIsFormValid($event)"></app-create-repair>
+        <div mat-dialog-actions>
+          <button mat-button matStepperNext [disabled]="!isFormValid">Suivant</button>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="" label="Client">
+        <app-select-client (createItem)="onCreateClick()"></app-select-client>
+        
+        <div mat-dialog-actions>
+          <button mat-button matStepperPrevious>Précécent</button>
+          <button mat-button (click)="onCreateClick()" [disabled]="!(selectedClient | async)">Valider</button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
 </div>
+

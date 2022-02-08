@@ -1,31 +1,33 @@
-<table>
-    <thead>
-        <tr>
-            <th>Produits/Services</th>
-            <th>Prix</th>
-            <th>Quantité</th>
-            <th *ngIf="products">Fournisseur</th>
-        </tr>
-    </thead>
-    <tbody>
-        <ng-container *ngIf="products; else expenseTable">
-            <tr *ngFor="let product of products">
-                <td>{{product.name}}</td>
-                <td>{{product.price | currency}}</td>
-                <td>{{product.quantity}}</td>
-                <td>{{product.provider.name}}</td>
-            </tr>
-        </ng-container> 
-        <ng-template #expenseTable>
-            <tr *ngFor="let expense of expenses">
-                <td>{{expense.name}}</td>
-                <td>{{expense.price | currency}}</td>
-                <td>{{expense.quantity}}</td>
-            </tr>
-        </ng-template>
-        <tr>
-            <td colspan="2">Total</td>
-            <td>{{totalPrice | currency}}</td>
-        </tr>
-    </tbody>
+<table class="expenses-table">
+  <thead>
+    <tr>
+      <th>Produits/Services</th>
+      <th>Prix</th>
+      <th>Quantité</th>
+      <th *ngIf="products">Fournisseur</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="products; else expenseTable">
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td class="price-cell">{{ product.price | currency }}</td>
+        <td class="quantity-cell">{{ product.quantity }}</td>
+        <td>{{ product.provider.name }}</td>
+      </tr>
+    </ng-container>
+    <ng-template #expenseTable>
+      <tr *ngFor="let expense of expenses">
+        <td>{{ expense.name }}</td>
+        <td class="price-cell">{{ expense.price | currency }}</td>
+        <td class="quantity-cell">{{ expense.quantity }}</td>
+      </tr>
+    </ng-template>
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td>Total</td>
+      <td class="quantity-cell">{{ totalPrice | currency }}</td>
+    </tr>
+  </tfoot>
 </table>

@@ -1,22 +1,30 @@
+@import "../../../styles/variables";
+
 .client-info-container {
+    position: relative;
     border: black 2px solid;
     border-radius: 10px;
-    padding: 5px;
-    width: 18em;
+    padding: 10px;
+    min-width: 230px;
+    width: fit-content;
+    margin: 15px 0 0 0;
 
     .title {
-        position: relative;
-        top: -1.16em;
-        left: .5em;
+        position: absolute;
+        top: -16px;
+        left: 5px;
         font-weight: bold;
-        background-color: rgb(204, 204, 204);
+        background-color: $color-background-dark;
         width: 50px;
         text-align: center;
-        margin: 0;
     }
 
     .info-title {
         font-weight: bold;
+    }
+
+    p {
+        margin: 0;
     }
 
 }

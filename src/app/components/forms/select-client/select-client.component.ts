@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client } from 'src/app/interfaces/client';
 import { ClientService } from 'src/app/services/client.service';
@@ -11,6 +10,9 @@ import { ClientService } from 'src/app/services/client.service';
   styleUrls: ['./select-client.component.scss'],
 })
 export class SelectClientComponent {
+
+  @Output() createItem = new EventEmitter();
+
   public clientFormSelector: 'newClient' | 'existingClient' = 'existingClient';
 
   newClientForm = new FormGroup({
@@ -55,13 +57,12 @@ export class SelectClientComponent {
     this.fetchedClients.next([]);
   }
 
-  onCreateClient(stepper: MatStepper) {
+  onCreateClient() {
     this.clientService
       .createClient({ ...this.newClientForm.value })
       .subscribe((clientCreated) => {
         this.clientService.setCurrentClient(clientCreated);
-        this.clientFormSelector = 'existingClient';
-        stepper.next()
+        this.createItem.emit();
       });
   }
 }

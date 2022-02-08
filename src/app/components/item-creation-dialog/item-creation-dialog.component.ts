@@ -79,4 +79,8 @@ export class ItemCreationDialogComponent implements OnInit {
   updateIsFormValid(isFormValid: boolean) {
     this.isFormValid = isFormValid;
   }
+
+  onClickClose(): void {
+    this.dialogRef.close();
+  }
 }

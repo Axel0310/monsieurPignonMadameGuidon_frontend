@@ -16,6 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ScreenSizeService } from 'src/app/services/screen-size.service';
 import { Observable } from 'rxjs';
+import { RepairService } from 'src/app/services/repair.service';
 
 @Component({
   selector: 'app-overview',
@@ -26,6 +27,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() items!: Order[] | Paint[] | Repair[];
   @Input() itemsType!: 'order' | 'paint' | 'repair';
   @Output() updateStatusFilterEvent = new EventEmitter<string>();
+  @Output() updateStateFilterEvent = new EventEmitter<string>();
   @Output() updateItemEvent = new EventEmitter<any>();
 
   public itemsTypeTranslation: string = '';
@@ -36,8 +38,9 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
 
   public selectedItem: Order | Paint | Repair | undefined;
 
-  public statusList: string[] = ['Client notifié', 'Livré'];
-  public selectedStatus!: string;
+  public statusList: string[] = ['Client notifié'];
+  public selectedState: string = 'ongoing';
+  public filteredStatus!: string[];
 
   public panelOpenState = false;
 
@@ -47,7 +50,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     this.panelOpenState = !this.panelOpenState;
   }
 
-  constructor(private screenSize: ScreenSizeService) {
+  constructor(private screenSize: ScreenSizeService, private repairService: RepairService) {
     this.$isMobileView = this.screenSize.getIsMobileView();
   }
 
@@ -79,7 +82,6 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'Commandé',
         ...this.statusList,
       ];
-      this.selectedStatus = 'A commander';
     } else if (this.itemsType === 'paint') {
       this.displayedColumns = [
         'client',
@@ -90,7 +92,6 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'color',
       ];
       this.statusList = ['En attente', 'En peinture', ...this.statusList];
-      this.selectedStatus = 'En attente';
     } else {
       this.displayedColumns = [
         'client',
@@ -100,7 +101,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
         'targetDeliveryDate',
       ];
       this.statusList = ['A faire', 'Fait', ...this.statusList];
-      this.selectedStatus = 'A faire';
+      this.filteredStatus = this.repairService.getFilteredStatusValue();
     }
 
     this.itemsTypeTranslation =
@@ -140,8 +141,12 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
     };
   }
 
-  updateStatusFilter() {
-    this.updateStatusFilterEvent.emit(this.selectedStatus);
+  updateFilteredStatus(clickedStatus: string) {
+    this.updateStatusFilterEvent.emit(clickedStatus);
+  }
+
+  updateStateFilter() {
+    this.updateStateFilterEvent.emit(this.selectedState);
   }
 
   selectItem(item: Order | Paint | Repair) {
@@ -171,7 +176,7 @@ export class OverviewComponent implements OnInit, OnChanges, AfterViewInit {
   updateItem(updates: any) {
     this.updateItemEvent.emit({ id: this.selectedItem?._id, updates });
     if (updates.status) {
-      this.selectedStatus = updates.status;
+      // this.selectedStatus = updates.status;
     }
   }
 

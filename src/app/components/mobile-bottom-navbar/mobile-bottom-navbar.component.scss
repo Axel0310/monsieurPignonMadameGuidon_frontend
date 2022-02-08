@@ -10,7 +10,6 @@
   height: $mobile-nav-bar-height;
 
   .active {
-    border-radius: 50%;
-    box-shadow: 0 0 5px $color-primary-dark;
+    color: $color-content-dark;
   }
 }

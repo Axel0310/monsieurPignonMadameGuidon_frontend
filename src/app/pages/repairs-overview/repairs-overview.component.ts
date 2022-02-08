@@ -16,8 +16,12 @@ export class RepairsOverviewComponent {
     this.repairs$ = this.repairService.getRepairs();
   }
 
-  filterByStatus(status: string) {
-    this.repairService.fetchRepairs(status);
+  updateStatusFilter(status: string) {
+    this.repairService.updateStatusFilter(status);
+  }
+
+  updateStateFilter(status: 'ongoing' | 'closed') {
+    this.repairService.setFilteredState(status);
   }
 
   updateRepair(updatedRepair: any) {

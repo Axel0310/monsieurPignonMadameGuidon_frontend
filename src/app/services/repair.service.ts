@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Client } from '../interfaces/client';
 import { Repair } from '../interfaces/repair';
@@ -14,15 +15,20 @@ import { ClientService } from './client.service';
 export class RepairService {
   private API_URL = `${environment.API_URL}/repairs`;
 
-  private repairs: BehaviorSubject<Repair[]> = new BehaviorSubject<Repair[]>(
-    []
-  );
+  private repairs$: BehaviorSubject<Repair[]> = new BehaviorSubject<Repair[]>([]);
+
+  private repairsHistory$: BehaviorSubject<Repair[]> = new BehaviorSubject<Repair[]>([]);
 
   private _repairBeingCreated: BehaviorSubject<Repair | undefined> =
     new BehaviorSubject<Repair | undefined>(undefined);
 
   private _currentShop: Shop | undefined;
   private _currentClient: Client | undefined;
+
+  private historyIndex: number = 0;
+
+  private filteredState: BehaviorSubject<'ongoing' | 'closed'> = new BehaviorSubject<'ongoing' | 'closed'>('ongoing');
+  private filteredStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(
     private http: HttpClient,
@@ -33,19 +39,59 @@ export class RepairService {
     this.clientService.currentClient$.subscribe(
       (client) => (this._currentClient = client)
     );
-    this.fetchRepairs('A faire');
+    this.fetchRepairsOngoing();
+    this.fetchRepairsHistory();
   }
 
   getRepairs(): Observable<Repair[]> {
-    return this.repairs.asObservable();
+    return combineLatest([this.repairs$, this.repairsHistory$, this.filteredState, this.filteredStatus]).pipe(
+      map(([repairs, repairsHistory, currentState, currentStatusFiltered]) => {
+        if(currentState === 'ongoing') {
+          return repairs.filter(repair => !currentStatusFiltered.includes(repair.status))
+        } else {
+          return repairsHistory;
+        }
+      })
+    )
   }
 
-  fetchRepairs(status: string) {
+  setFilteredState(state: 'ongoing' | 'closed') {
+    console.log(this.repairsHistory$.value)
+    this.filteredState.next(state)
+  }
+
+  getFilteredStatusValue() {
+    return this.filteredStatus.value;
+  }
+
+  updateStatusFilter(status: string): void {
+    let statusFilter = this.filteredStatus.value;
+    console.log('initial value => ', statusFilter)
+    if(statusFilter.includes(status)) {
+      statusFilter = statusFilter.filter(currentStatus => currentStatus !== status)
+      console.log('after filter => ', statusFilter)
+    } else {
+      statusFilter.push(status)
+      console.log('after push => ', statusFilter)
+    }
+    this.filteredStatus.next(statusFilter);
+  }
+
+  fetchRepairsOngoing() {
     this.http
-      .get<Repair[]>(`${this.API_URL}/status/${status}`)
+      .get<Repair[]>(`${this.API_URL}/status/ongoing`)
       .subscribe((fetchedRepairs) => {
-        this.repairs.next(fetchedRepairs);
+        this.repairs$.next(fetchedRepairs);
       });
+  }
+
+  fetchRepairsHistory() {
+    this.http
+      .get<Repair[]>(`${this.API_URL}/status/closed/${this.historyIndex}`)
+      .subscribe((fetchedRepairsHistory) => {
+        this.repairsHistory$.next([...this.repairsHistory$.value, ...fetchedRepairsHistory]);
+      });
+    this.historyIndex++;
   }
 
   setRepairBeingCreated(repair: Repair) {
@@ -69,7 +115,7 @@ export class RepairService {
       .patch<Repair>(`${this.API_URL}/${id}`, {...updates})
       .subscribe((updatedRepair) => {
         console.log(updatedRepair);
-        this.fetchRepairs(updatedRepair.status);
+        this.fetchRepairsOngoing();
       });
   }
 }

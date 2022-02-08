@@ -1,5 +1,19 @@
-table {
-    th {
-        padding-right: 30px;
+.expenses-table {
+    th, td {
+        padding-right: 20px;
     }
+
+    .price-cell {
+        text-align: end;
+    }
+
+    .quantity-cell {
+        text-align: center;
+    }
+
+    .total-row {
+        font-weight: bold;
+    }
+
+
 }

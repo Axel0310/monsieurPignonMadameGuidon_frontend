@@ -1,6 +1,7 @@
 <app-overview
   [items]="repairs$ | async"
   [itemsType]="'repair'"
-  (updateStatusFilterEvent)="filterByStatus($event)"
+  (updateStatusFilterEvent)="updateStatusFilter($event)"
+  (updateStateFilterEvent)="updateStateFilter($event)"
   (updateItemEvent)="updateRepair($event)"
 ></app-overview>
