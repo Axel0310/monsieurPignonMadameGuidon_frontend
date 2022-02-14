@@ -16,8 +16,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { OverviewComponent } from './components/overview/overview.component';
 import { ClientInfoComponent } from './components/client-info/client-info.component';
 import { StatusListComponent } from './components/status-list/status-list.component';
-import { ItemsListComponent } from './components/items-list/items-list.component';
-import { ItemsTableComponent } from './components/items-table/items-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderInterceptor } from './interceptors/header.interceptor';
 import { MatTableModule } from '@angular/material/table';
@@ -30,6 +28,7 @@ import { ItemCreationDialogComponent } from './components/item-creation-dialog/i
 import { LocalizationListComponent } from './components/localization-list/localization-list.component';
 import {MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { ExpenseTableComponent } from './components/expense-table/expense-table.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -59,6 +58,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MobileTopNavbarComponent } from './components/mobile-top-navbar/mobile-top-navbar.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ScreenSizeService } from './services/screen-size.service';
+import { ItemsTableComponent } from './components/items-table/items-table.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -74,8 +74,6 @@ registerLocaleData(localeFr, 'fr');
     OverviewComponent,
     ClientInfoComponent,
     StatusListComponent,
-    ItemsListComponent,
-    ItemsTableComponent,
     SelectClientComponent,
     ItemCreationDialogComponent,
     LocalizationListComponent,
@@ -89,6 +87,8 @@ registerLocaleData(localeFr, 'fr');
     OrderByPipe,
     MobileBottomNavbarComponent,
     MobileTopNavbarComponent,
+    ItemDetailsComponent,
+    ItemsTableComponent,
   ],
   imports: [
     BrowserModule,

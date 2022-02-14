@@ -19,6 +19,8 @@ export class RepairService {
 
   private repairsHistory$: BehaviorSubject<Repair[]> = new BehaviorSubject<Repair[]>([]);
 
+  private searchedRepairs$: BehaviorSubject<Repair[]> = new BehaviorSubject<Repair[]>([]);
+
   private _repairBeingCreated: BehaviorSubject<Repair | undefined> =
     new BehaviorSubject<Repair | undefined>(undefined);
 
@@ -27,8 +29,10 @@ export class RepairService {
 
   private historyIndex: number = 0;
 
-  private filteredState: BehaviorSubject<'ongoing' | 'closed'> = new BehaviorSubject<'ongoing' | 'closed'>('ongoing');
-  private filteredStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  private searchQuery: string = '';
+
+  private selectedState$: BehaviorSubject<'ongoing' | 'closed'> = new BehaviorSubject<'ongoing' | 'closed'>('ongoing');
+  private filteredStatus$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(
     private http: HttpClient,
@@ -44,9 +48,11 @@ export class RepairService {
   }
 
   getRepairs(): Observable<Repair[]> {
-    return combineLatest([this.repairs$, this.repairsHistory$, this.filteredState, this.filteredStatus]).pipe(
-      map(([repairs, repairsHistory, currentState, currentStatusFiltered]) => {
-        if(currentState === 'ongoing') {
+    return combineLatest([this.repairs$, this.repairsHistory$, this.selectedState$, this.filteredStatus$, this.searchedRepairs$]).pipe(
+      map(([repairs, repairsHistory, currentState, currentStatusFiltered, searchedRepairs]) => {
+        if(this.searchQuery !== '') {
+          return searchedRepairs;
+        } else if(currentState === 'ongoing') {
           return repairs.filter(repair => !currentStatusFiltered.includes(repair.status))
         } else {
           return repairsHistory;
@@ -56,25 +62,25 @@ export class RepairService {
   }
 
   setFilteredState(state: 'ongoing' | 'closed') {
-    console.log(this.repairsHistory$.value)
-    this.filteredState.next(state)
+    this.selectedState$.next(state)
   }
 
-  getFilteredStatusValue() {
-    return this.filteredStatus.value;
+  getSelectedState() {
+    return this.selectedState$.asObservable();
+  }
+
+  getFilteredStatus() {
+    return this.filteredStatus$.asObservable();
   }
 
   updateStatusFilter(status: string): void {
-    let statusFilter = this.filteredStatus.value;
-    console.log('initial value => ', statusFilter)
+    let statusFilter = this.filteredStatus$.value;
     if(statusFilter.includes(status)) {
       statusFilter = statusFilter.filter(currentStatus => currentStatus !== status)
-      console.log('after filter => ', statusFilter)
     } else {
       statusFilter.push(status)
-      console.log('after push => ', statusFilter)
     }
-    this.filteredStatus.next(statusFilter);
+    this.filteredStatus$.next(statusFilter);
   }
 
   fetchRepairsOngoing() {
@@ -115,7 +121,18 @@ export class RepairService {
       .patch<Repair>(`${this.API_URL}/${id}`, {...updates})
       .subscribe((updatedRepair) => {
         console.log(updatedRepair);
-        this.fetchRepairsOngoing();
       });
+  }
+
+  searchRepairs(query: string) {
+    this.searchQuery = query;
+    if(this.searchQuery !== '') {
+      this.http
+      .get<Repair[]>(`${this.API_URL}/search/${this.searchQuery}`)
+      .subscribe((fetchedRepairs) => {
+        console.log(fetchedRepairs)
+        this.searchedRepairs$.next(fetchedRepairs);
+      });
+    }
   }
 }

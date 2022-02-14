@@ -1,0 +1,87 @@
+<div class="item-details">
+  <ng-container *ngIf="item; else noSelection">
+    <div class="first-col column">
+      <app-client-info [client]="item.client"></app-client-info>
+      <mat-form-field class="input-info creation-date" appearance="fill">
+        <mat-label>Création</mat-label>
+        <input matInput type="text" [value]="item.createdAt | date: 'd/M/yy'" />
+      </mat-form-field>
+      <mat-form-field class="input-info update-date" appearance="fill">
+        <mat-label>Dernière modification</mat-label>
+        <input matInput type="text" [value]="item.updatedAt | date: 'd/M/yy'" />
+      </mat-form-field>
+      <mat-form-field class="input-info target-delivery-date" appearance="fill">
+        <mat-label>Date livraison</mat-label>
+        <input
+          matInput
+          type="text"
+          [value]="item.targetDeliveryDate | date: 'd/M/yy'"
+        />
+      </mat-form-field>
+      <mat-form-field class="input-info" appearance="fill">
+        <mat-label>N° facture</mat-label>
+        <input matInput type="text" [value]="item.billRef" />
+      </mat-form-field>
+    </div>
+
+    <div class="second-col column">
+      <div class="status-cont">
+        <app-status-list
+          [status]="item.status"
+          [itemType]="itemType"
+          (statusUpdatedEvent)="updateItem($event)"
+        ></app-status-list>
+        <app-localization-list
+          *ngIf="itemType === 'repair'"
+          [repair]="item"
+          (updateLocalizationEvent)="updateItem($event)"
+        ></app-localization-list>
+      </div>
+
+      <mat-form-field *ngIf="itemType === 'paint'" class="input-info">
+        <mat-label>Couleur</mat-label>
+        <input matInput type="text" [value]="item.color" [readonly]="true" />
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="itemType === 'paint' || itemType === 'repair'"
+        class="input-info"
+      >
+        <mat-label>Description vélo</mat-label>
+        <input
+          matInput
+          type="text"
+          [value]="item.bikeDescription"
+          [readonly]="true"
+        />
+      </mat-form-field>
+      <mat-form-field class="input-info">
+        <mat-label>Commentaire</mat-label>
+        <input matInput [value]="item.comment" [readonly]="true" />
+      </mat-form-field>
+      <mat-form-field class="input-info">
+        <mat-label>V+1</mat-label>
+        <input
+          matInput
+          type="text"
+          [value]="item.commercialOpportunity"
+          [readonly]="true"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="third-col column">
+      <div class="expenses-table-cont">
+        <app-expense-table
+          [products]="item.products"
+          [expenses]="item.expenses"
+        ></app-expense-table>
+        <mat-icon (click)="copyToClipboard()" class="clipboard-icon"
+          >content_copy</mat-icon
+        >
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noSelection>
+    <p>Aucune selection</p>
+  </ng-template>
+</div>

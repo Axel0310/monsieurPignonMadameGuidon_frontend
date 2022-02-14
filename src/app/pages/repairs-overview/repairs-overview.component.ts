@@ -11,9 +11,13 @@ import { RepairService } from 'src/app/services/repair.service';
 export class RepairsOverviewComponent {
 
   repairs$: Observable<Repair[]>;
+  filteredStatus$: Observable<string[]>;
+  selectedState$: Observable<string>;
 
   constructor(private repairService: RepairService) { 
     this.repairs$ = this.repairService.getRepairs();
+    this.filteredStatus$ = this.repairService.getFilteredStatus();
+    this.selectedState$ = this.repairService.getSelectedState();
   }
 
   updateStatusFilter(status: string) {
@@ -26,6 +30,10 @@ export class RepairsOverviewComponent {
 
   updateRepair(updatedRepair: any) {
     this.repairService.updateRepair(updatedRepair.id, updatedRepair.updates);
+  }
+
+  searchRepairs(searchInput: string) {
+    this.repairService.searchRepairs(searchInput);
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="overview-container">
   <div class="overview-header">
     <mat-icon
-      *ngIf="$isMobileView | async"
+      *ngIf="isMobileView$ | async"
       class="filters-icon"
       (click)="toggleExpansionPanel()"
       >filter_list</mat-icon
@@ -11,26 +11,26 @@
     <ng-template #filters>
       <mat-form-field appearance="fill" class="overview-header-search">
         <mat-label>Recherche</mat-label>
-        <input matInput />
+        <input matInput (change)="onSearch()" [(ngModel)]="searchInput"/>
       </mat-form-field>
 
       <div>
         <mat-label>Filtrer : </mat-label>
 
         <mat-radio-group
-          [(ngModel)]="selectedState"
-          (change)="updateStateFilter()"
+          [value]="selectedState$ | async"
+          (change)="updateStateFilter($event.value)"
         >
           <mat-radio-button value="ongoing">En cours</mat-radio-button>
           <mat-radio-button value="closed">Historique</mat-radio-button>
         </mat-radio-group>
-        <div>
+        <div class="status-list-cont">
           <mat-checkbox
             *ngFor="let status of statusList"
             [value]="status"
             (change)="updateFilteredStatus(status)"
-            [disabled]="selectedState === 'closed'"
-            [checked]="!filteredStatus.includes(status)"
+            [disabled]="(selectedState$ | async) === 'closed'"
+            [checked]="!(filteredStatus$ | async).includes(status)"
             >{{ status }}</mat-checkbox
           >
         </div>
@@ -39,11 +39,11 @@
 
     <ng-template
       [ngTemplateOutlet]="filters"
-      *ngIf="!($isMobileView | async)"
+      *ngIf="!(isMobileView$ | async)"
     ></ng-template>
 
     <mat-expansion-panel
-      *ngIf="$isMobileView | async"
+      *ngIf="isMobileView$ | async"
       [expanded]="panelOpenState"
       class="filters-expansion-panel"
     >
@@ -51,181 +51,9 @@
     </mat-expansion-panel>
   </div>
 
-  <div class="mat-elevation-z8 table-responsive">
-    <table mat-table matSort [dataSource]="dataSource" class="items-table">
-      <ng-container matColumnDef="client">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.client.firstName }} {{ item.client.lastName }}
-        </td>
-      </ng-container>
+  <app-items-table [items]="items" [itemsType]="itemsType" [selectedItem]="selectedItem" (selectItemEvent)="selectItem($event)"></app-items-table>
 
-      <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Téléphone</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.client.phone | phoneFormat }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="bikeDescription">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          Description vélo
-        </th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.bikeDescription }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="product">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Produit</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.products[0].name }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="unitPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix unitaire</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.products[0].price | currency }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="quantity">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantité</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.products[0].quantity }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="provider">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fournisseur</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.products[0].provider.name }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Statut</th>
-        <td mat-cell *matCellDef="let item">{{ item.status }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="targetDeliveryDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          Date livraison estimée
-        </th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.targetDeliveryDate | date: "d/M/yy" }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="color">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Couleur</th>
-        <td mat-cell *matCellDef="let item">{{ item.color }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        (click)="selectItem(row)"
-        [class.selected-row]="selectedItem == row"
-      ></tr>
-    </table>
-  </div>
-
-  <div *ngIf="selectedItem" class="item-details">
-    <div class="first-col column">
-      <app-client-info [client]="selectedItem.client"></app-client-info>
-      <mat-form-field class="input-info creation-date" appearance="fill">
-        <mat-label>Création</mat-label>
-        <input
-          matInput
-          type="text"
-          [value]="selectedItem.createdAt | date: 'd/M/yy'"
-        />
-      </mat-form-field>
-      <mat-form-field class="input-info update-date" appearance="fill">
-        <mat-label>Dernière modification</mat-label>
-        <input
-          matInput
-          type="text"
-          [value]="selectedItem.updatedAt | date: 'd/M/yy'"
-        />
-      </mat-form-field>
-      <mat-form-field class="input-info target-delivery-date" appearance="fill">
-        <mat-label>Date livraison</mat-label>
-        <input
-          matInput
-          type="text"
-          [value]="selectedItem.targetDeliveryDate | date: 'd/M/yy'"
-        />
-      </mat-form-field>
-      <mat-form-field class="input-info" appearance="fill">
-        <mat-label>N° facture</mat-label>
-        <input matInput type="text" [value]="selectedItem.billRef" />
-      </mat-form-field>
-    </div>
-
-    <div class="second-col column">
-      <div class="status-cont">
-        <app-status-list
-          [status]="selectedItem.status"
-          [itemType]="itemsType"
-          (statusUpdatedEvent)="updateItem($event)"
-        ></app-status-list>
-        <app-localization-list
-          *ngIf="itemsType === 'repair'"
-          [repair]="selectedItem"
-        ></app-localization-list>
-      </div>
-
-      <mat-form-field *ngIf="itemsType === 'paint'" class="input-info">
-        <mat-label>Couleur</mat-label>
-        <input
-          matInput
-          type="text"
-          [value]="selectedItem.color"
-          [readonly]="true"
-        />
-      </mat-form-field>
-      <mat-form-field
-        *ngIf="itemsType === 'paint' || itemsType === 'repair'"
-        class="input-info"
-      >
-        <mat-label>Description vélo</mat-label>
-        <input
-          matInput
-          type="text"
-          [value]="selectedItem.bikeDescription"
-          [readonly]="true"
-        />
-      </mat-form-field>
-      <mat-form-field class="input-info">
-        <mat-label>Commentaire</mat-label>
-        <input matInput [value]="selectedItem.comment" [readonly]="true" />
-      </mat-form-field>
-      <mat-form-field class="input-info">
-        <mat-label>V+1</mat-label>
-        <input
-          matInput
-          type="text"
-          [value]="selectedItem.commercialOpportunity"
-          [readonly]="true"
-        />
-      </mat-form-field>
-    </div>
-
-    <div class="third-col column">
-      <div class="expenses-table-cont">
-        <app-expense-table
-          [products]="selectedItem.products"
-          [expenses]="selectedItem.expenses"
-        ></app-expense-table>
-        <mat-icon (click)="copyToClipboard()" class="clipboard-icon"
-          >content_copy</mat-icon
-        >
-      </div>
-    </div>
+  <app-item-details [item]="selectedItem" [itemType]="itemsType" (updateItemEvent)="updateItem($event)"></app-item-details>
 
     <!-- <div class="row first-row">
       <app-client-info [client]="selectedItem.client"></app-client-info>
@@ -322,5 +150,4 @@
         />
       </mat-form-field>
     </div> -->
-  </div>
 </div>

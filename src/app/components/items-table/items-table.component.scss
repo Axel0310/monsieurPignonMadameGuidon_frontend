@@ -1,0 +1,30 @@
+@import "../../../styles/variables";
+
+.items-table {
+  width: 100%;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  flex-basis: 45%;
+  margin: 0 0 15px 0;
+
+  .mat-row .mat-cell {
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
+
+  .mat-row:hover .mat-cell {
+    border-color: currentColor;
+  }
+
+  .selected-row {
+    background-color: cornflowerblue;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    padding: 0 10px;
+  }
+}
