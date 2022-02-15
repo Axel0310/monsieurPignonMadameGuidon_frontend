@@ -1,20 +1,10 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Order } from 'src/app/interfaces/order';
 import { Paint } from 'src/app/interfaces/paint';
 import { Repair } from 'src/app/interfaces/repair';
 import { ScreenSizeService } from 'src/app/services/screen-size.service';
-import { Observable } from 'rxjs';
-import { RepairService } from 'src/app/services/repair.service';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-overview',
@@ -26,10 +16,12 @@ export class OverviewComponent implements OnInit {
   @Input() itemsType!: 'order' | 'paint' | 'repair';
   @Input() selectedState$!: Observable<string>;
   @Input() filteredStatus$!: Observable<string[]>;
+  @Input() canLoadMoreHistory$!: Observable<string[]>;
   @Output() updateStatusFilterEvent = new EventEmitter<string>();
   @Output() updateStateFilterEvent = new EventEmitter<string>();
   @Output() updateItemEvent = new EventEmitter<any>();
   @Output() searchEvent = new EventEmitter<string>();
+  @Output() loadMoreHistoryEvent = new EventEmitter();
 
   public itemsTypeTranslation: string = '';
 
@@ -39,15 +31,17 @@ export class OverviewComponent implements OnInit {
 
   public panelOpenState = false;
 
-  public isMobileView$: Observable<boolean>
+  public isMobileView$: Observable<boolean>;
 
   public searchInput: string = '';
+
+  public displayLoadMoreHistory$: Observable<boolean> | undefined;
 
   toggleExpansionPanel() {
     this.panelOpenState = !this.panelOpenState;
   }
 
-  constructor(private screenSize: ScreenSizeService, private repairService: RepairService) {
+  constructor(private screenSize: ScreenSizeService) {
     this.isMobileView$ = this.screenSize.getIsMobileView();
   }
 
@@ -71,6 +65,15 @@ export class OverviewComponent implements OnInit {
         : this.itemsType === 'paint'
         ? 'peinture'
         : 'réparation';
+
+    this.displayLoadMoreHistory$ = combineLatest([
+      this.canLoadMoreHistory$,
+      this.selectedState$,
+    ]).pipe(
+      map(([canLoad, state]) => {
+        return canLoad && state === 'closed';
+      })
+    );
   }
 
   updateFilteredStatus(clickedStatus: string) {
@@ -94,5 +97,9 @@ export class OverviewComponent implements OnInit {
 
   onSearch() {
     this.searchEvent.emit(this.searchInput);
+  }
+
+  loadMoreHistory() {
+    this.loadMoreHistoryEvent.emit();
   }
 }

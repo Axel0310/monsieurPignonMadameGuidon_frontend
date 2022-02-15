@@ -3,8 +3,10 @@
   [itemsType]="'repair'"
   [filteredStatus$]="filteredStatus$"
   [selectedState$]="selectedState$"
+  [canLoadMoreHistory$]="canLoadMoreHistory$"
   (updateStatusFilterEvent)="updateStatusFilter($event)"
   (updateStateFilterEvent)="updateStateFilter($event)"
   (updateItemEvent)="updateRepair($event)"
   (searchEvent)="searchRepairs($event)"
+  (loadMoreHistoryEvent)="loadMoreHistory()"
 ></app-overview>

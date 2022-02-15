@@ -13,11 +13,13 @@ export class RepairsOverviewComponent {
   repairs$: Observable<Repair[]>;
   filteredStatus$: Observable<string[]>;
   selectedState$: Observable<string>;
+  canLoadMoreHistory$: Observable<boolean>;
 
   constructor(private repairService: RepairService) { 
     this.repairs$ = this.repairService.getRepairs();
     this.filteredStatus$ = this.repairService.getFilteredStatus();
     this.selectedState$ = this.repairService.getSelectedState();
+    this.canLoadMoreHistory$ = this.repairService.getCanLoadMoreHistory();
   }
 
   updateStatusFilter(status: string) {
@@ -34,6 +36,10 @@ export class RepairsOverviewComponent {
 
   searchRepairs(searchInput: string) {
     this.repairService.searchRepairs(searchInput);
+  }
+
+  loadMoreHistory() {
+    this.repairService.fetchRepairsHistory();
   }
 
 }

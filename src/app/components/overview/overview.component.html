@@ -51,7 +51,7 @@
     </mat-expansion-panel>
   </div>
 
-  <app-items-table [items]="items" [itemsType]="itemsType" [selectedItem]="selectedItem" (selectItemEvent)="selectItem($event)"></app-items-table>
+  <app-items-table [items]="items" [itemsType]="itemsType" [selectedItem]="selectedItem" [displayLoadMoreHistory$]="displayLoadMoreHistory$" (selectItemEvent)="selectItem($event)" (loadMoreHistoryEvent)="loadMoreHistory()"></app-items-table>
 
   <app-item-details [item]="selectedItem" [itemType]="itemsType" (updateItemEvent)="updateItem($event)"></app-item-details>
 

@@ -6,8 +6,8 @@
 
 .table-responsive {
   overflow-x: auto;
-  flex-basis: 45%;
   margin: 0 0 15px 0;
+  height: 95%;
 
   .mat-row .mat-cell {
     border-top: 1px solid transparent;
@@ -26,5 +26,18 @@
   td.mat-cell,
   td.mat-footer-cell {
     padding: 0 10px;
+  }
+
+  .message {
+    width: fit-content;
+    margin: auto;
+  }
+
+  .load-more-history {
+    cursor: pointer;
+
+    &:hover {
+      color: $color-primary-main;
+    }
   }
 }

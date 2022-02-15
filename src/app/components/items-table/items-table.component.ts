@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-items-table',
@@ -21,7 +22,9 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() items: any;
   @Input() itemsType!: string;
   @Input() selectedItem!: any;
+  @Input() displayLoadMoreHistory$!: Observable<boolean>;
   @Output() selectItemEvent = new EventEmitter<any>();
+  @Output() loadMoreHistoryEvent = new EventEmitter();
 
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
@@ -60,6 +63,9 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if(changes.canLoadMoreHistory) {
+      console.log(changes.canLoadMoreHistory)
+    }
     if (changes.items && this.items) {
       this.dataSource.data = this.items;
       const previousSelectedItem = this.getItemById(this.selectedItem?._id);
@@ -111,5 +117,9 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   selectItem(item: any) {
     this.selectItemEvent.emit(item);
+  }
+
+  loadMoreHistory() {
+    this.loadMoreHistoryEvent.emit()
   }
 }

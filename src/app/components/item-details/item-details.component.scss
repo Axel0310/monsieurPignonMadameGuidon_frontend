@@ -1,12 +1,11 @@
 @import "../../../styles/variables";
 
 .item-details {
-  flex-basis: 45%;
   margin: 0 -10px;
   padding: 5px 10px;
   background-color: $color-background-dark;
   display: flex;
-  // flex-direction: column;
+  height: 100%;
   overflow: overlay;
 
   @media (max-width: $screen-md) {
@@ -74,5 +73,9 @@
         color: $color-primary-main;
       }
     }
+  }
+
+  .no-selection-message {
+    margin: auto;
   }
 }
