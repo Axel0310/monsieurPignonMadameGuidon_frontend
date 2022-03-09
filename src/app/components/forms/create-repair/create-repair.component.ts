@@ -13,6 +13,11 @@ export class CreateRepairComponent {
 
   @Output() isFormValid = new EventEmitter<boolean>();
 
+  minDate: Date = new Date();
+  defaultDate: Date = this.minDate;
+
+  
+
   newRepairForm = this.fb.group({
     expenses: this.fb.array([
       this.fb.group({
@@ -24,7 +29,7 @@ export class CreateRepairComponent {
     bikeDescription: ['', [Validators.required]],
     localization: ['En boutique', [Validators.required]],
     status: ['A faire', [Validators.required]],
-    targetDeliveryDate: [new Date(), [Validators.required]],
+    targetDeliveryDate: [this.defaultDate, [Validators.required]],
     billRef: ['', [Validators.required]],
     comment: [''],
     commercialOpportunity: [''],
@@ -32,14 +37,15 @@ export class CreateRepairComponent {
 
   expenses = this.newRepairForm.get('expenses') as FormArray;
 
-  minDate: Date;
+  
 
   faTrashAlt = faTrashAlt;
 
   totalPrice: number = 0;
 
-  constructor(private fb: FormBuilder, private repairService: RepairService) { 
-    this.minDate = new Date();
+  constructor(private fb: FormBuilder, private repairService: RepairService) {
+    this.defaultDate.setMinutes(0);
+    this.defaultDate.setHours(this.defaultDate.getHours() + 1);
   }
 
   addExpense() {

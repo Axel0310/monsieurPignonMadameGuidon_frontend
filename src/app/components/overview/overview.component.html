@@ -12,14 +12,17 @@
       <mat-form-field appearance="fill" class="overview-header-search">
         <mat-label>Recherche</mat-label>
         <input matInput (change)="onSearch()" [(ngModel)]="searchInput"/>
+        <button *ngIf="searchInput" matSuffix mat-icon-button (click)="deleteSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
       </mat-form-field>
 
       <div>
         <mat-label>Filtrer : </mat-label>
-
         <mat-radio-group
           [value]="selectedState$ | async"
           (change)="updateStateFilter($event.value)"
+          [disabled]="searchInput !== ''"
         >
           <mat-radio-button value="ongoing">En cours</mat-radio-button>
           <mat-radio-button value="closed">Historique</mat-radio-button>
@@ -29,7 +32,7 @@
             *ngFor="let status of statusList"
             [value]="status"
             (change)="updateFilteredStatus(status)"
-            [disabled]="(selectedState$ | async) === 'closed'"
+            [disabled]="(selectedState$ | async) === 'closed' || searchInput !== ''"
             [checked]="!(filteredStatus$ | async).includes(status)"
             >{{ status }}</mat-checkbox
           >

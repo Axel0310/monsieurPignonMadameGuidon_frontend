@@ -177,6 +177,8 @@ export class RepairService {
           console.log(fetchedRepairs);
           this.searchedRepairs$.next(fetchedRepairs);
         });
+    } else {
+      this.searchedRepairs$.next([]);
     }
   }
 }

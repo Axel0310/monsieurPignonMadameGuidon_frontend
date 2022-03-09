@@ -34,4 +34,6 @@ export class ItemDetailsComponent {
     this.updateItemEvent.emit(update);
   }
 
+  openEditDialog() {}
+
 }

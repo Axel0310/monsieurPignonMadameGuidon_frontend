@@ -1,39 +1,64 @@
 @import "./variables";
 
 .mat-form-field {
+  margin: 5px;
 
-    margin: 5px;
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
 
-    .mat-form-field-wrapper {
-        padding-bottom: 0;
-    }
-    
-    .mat-form-field-underline {
-        width: 0;
-    }
-    
-    .mat-form-field-appearence-fill .mat-form-field-flex {
-        padding: .25em 0 0 .25em;
-    }
+  .mat-form-field-underline {
+    width: 0;
+  }
+
+  .mat-form-field-appearence-fill .mat-form-field-flex {
+    padding: 0.25em 0 0 0.25em;
+  }
 }
 
-.cdk-overlay-pane{
-    width: fit-content !important;
-    max-width: 100vw !important;
+.cdk-overlay-pane {
+  width: fit-content !important;
+  max-width: 100vw !important;
 }
 
 .mat-horizontal-stepper-header-container {
-    height: 45px;
-    margin: 10px 0;
+  height: 45px;
+  margin: 10px 0;
 
-    .mat-step-header {
-      height: 45px;
-      display: flex;
-      overflow: visible;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  .mat-step-header {
+    height: 45px;
+    display: flex;
+    overflow: visible;
+    justify-content: center;
+    flex-wrap: wrap;
   }
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: $color-primary-dark !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle,
+.mat-radio-button.mat-accent
+  .mat-radio-ripple
+  .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
+.mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+  background-color: $color-primary-dark !important;
+}
+
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: $color-primary-dark !important;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 4px 0 0 4px !important;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-infix {
+  padding: 4px 0 5px 0 !important;
+}
 
 // @media (max-width: $screen-md) {
 
@@ -47,21 +72,21 @@
 //         padding: 25px 5px !important;
 //         position: relative;
 
-        // .mat-dialog-content {
+// .mat-dialog-content {
 
-        //     max-height: 80vh;
+//     max-height: 80vh;
 
-        //     .mat-horizontal-content-container {
-        //         padding: 0;
-        //     }
+//     .mat-horizontal-content-container {
+//         padding: 0;
+//     }
 
-        //     .mat-dialog-actions {
-        //         position: absolute;
-        //         right: 30px;
-        //         bottom: 30px
-        //     }
+//     .mat-dialog-actions {
+//         position: absolute;
+//         right: 30px;
+//         bottom: 30px
+//     }
 
-        // }
+// }
 //     }
 
 // }

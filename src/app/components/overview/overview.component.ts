@@ -99,6 +99,11 @@ export class OverviewComponent implements OnInit {
     this.searchEvent.emit(this.searchInput);
   }
 
+  deleteSearch() {
+    this.searchInput = '';
+    this.searchEvent.emit(this.searchInput);
+  }
+
   loadMoreHistory() {
     this.loadMoreHistoryEvent.emit();
   }

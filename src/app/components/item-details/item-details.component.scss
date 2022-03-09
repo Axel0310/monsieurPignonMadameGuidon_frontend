@@ -51,7 +51,7 @@
   }
 
   .input-info {
-    width: 108px;
+    width: 100%;
     height: 40px;
     // label {
     //   font-weight: bolder;
@@ -68,6 +68,7 @@
       top: 0;
       right: -15px;
       cursor: pointer;
+      font-size: 20px;
 
       &:hover {
         color: $color-primary-main;
@@ -77,5 +78,25 @@
 
   .no-selection-message {
     margin: auto;
+  }
+
+  .edit-icon {
+    position: absolute;
+    right: 25px;
+    cursor: pointer;
+    background-color: $color-content-light;
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      color: $color-primary-main;
+    }
+  }
+
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    padding: 0 !important;
   }
 }

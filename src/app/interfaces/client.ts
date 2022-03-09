@@ -3,4 +3,9 @@ export interface Client {
   firstName: string;
   lastName: string;
   phone: string;
+  history: {
+    repairs: string[];
+    paints: string[];
+    orders: string[];
+  }
 }

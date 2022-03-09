@@ -59,6 +59,7 @@ import { MobileTopNavbarComponent } from './components/mobile-top-navbar/mobile-
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ScreenSizeService } from './services/screen-size.service';
 import { ItemsTableComponent } from './components/items-table/items-table.component';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -115,7 +116,10 @@ registerLocaleData(localeFr, 'fr');
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   providers: [
     {
