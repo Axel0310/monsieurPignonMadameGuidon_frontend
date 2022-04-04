@@ -24,7 +24,7 @@ export class CreatePaintComponent {
     bikeDescription: ['', [Validators.required]],
     color: ['', [Validators.required]],
     status: ['En attente', [Validators.required]],
-    targetDeliveryDate: [new Date(), [Validators.required]],
+    deliveryDate: [new Date(), [Validators.required]],
     billRef: ['', [Validators.required]],
     comment: [''],
     commercialOpportunity: [''],

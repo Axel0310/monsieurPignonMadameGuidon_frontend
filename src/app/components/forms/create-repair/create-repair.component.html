@@ -76,7 +76,7 @@
           matInput
           [matDatepicker]="picker"
           [min]="minDate"
-          formControlName="targetDeliveryDate"
+          formControlName="deliveryDate"
           required
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -84,7 +84,7 @@
       </mat-form-field> -->
       <mat-form-field>
         <mat-label>Date de livraison</mat-label>
-        <input matInput [ngxMatDatetimePicker]="picker" formControlName="targetDeliveryDate"
+        <input matInput [ngxMatDatetimePicker]="picker" formControlName="deliveryDate"
            [min]="minDate" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <ngx-mat-datetime-picker #picker [showSeconds]="false" [stepMinute]="30">

@@ -29,7 +29,7 @@ export class CreateRepairComponent {
     bikeDescription: ['', [Validators.required]],
     localization: ['En boutique', [Validators.required]],
     status: ['A faire', [Validators.required]],
-    targetDeliveryDate: [this.defaultDate, [Validators.required]],
+    deliveryDate: [this.defaultDate, [Validators.required]],
     billRef: ['', [Validators.required]],
     comment: [''],
     commercialOpportunity: [''],

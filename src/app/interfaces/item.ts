@@ -5,7 +5,7 @@ export interface Item {
   _id: string;
   shop: Shop;
   client: Client;
-  targetDeliveryDate: Date;
+  deliveryDate: Date;
   billRef: string;
   comment?: string;
   commercialOpportunity?: string;

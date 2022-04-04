@@ -1,19 +1,32 @@
+@import "../../../styles/variables";
+
 .expenses-table {
-    th, td {
-        padding-right: 20px;
-    }
+  th,
+  td {
+    padding-right: 20px;
+  }
 
-    .price-cell {
-        text-align: end;
-    }
+  .name-cell {
+    max-width: 200px;
+  }
 
-    .quantity-cell {
-        text-align: center;
-    }
+  .price-cell {
+    text-align: end;
+  }
 
-    .total-row {
-        font-weight: bold;
-    }
+  .quantity-cell {
+    text-align: center;
+  }
 
+  .total-row {
+    font-weight: bold;
+  }
 
+  thead {
+    color: $color-primary-dark;
+  }
+
+  tfoot {
+    color: $color-primary-main;
+  }
 }

@@ -10,7 +10,7 @@
   <tbody>
     <ng-container *ngIf="products; else expenseTable">
       <tr *ngFor="let product of products">
-        <td>{{ product.name }}</td>
+        <td class="name-cell">{{ product.name }}</td>
         <td class="price-cell">{{ product.price | currency }}</td>
         <td class="quantity-cell">{{ product.quantity }}</td>
         <td>{{ product.provider.name }}</td>
@@ -18,7 +18,7 @@
     </ng-container>
     <ng-template #expenseTable>
       <tr *ngFor="let expense of expenses">
-        <td>{{ expense.name }}</td>
+        <td class="name-cell">{{ expense.name }}</td>
         <td class="price-cell">{{ expense.price | currency }}</td>
         <td class="quantity-cell">{{ expense.quantity }}</td>
       </tr>

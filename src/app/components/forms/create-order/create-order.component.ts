@@ -26,7 +26,7 @@ export class CreateOrderComponent {
       }),
     ]),
     status: ['A commander', [Validators.required]],
-    targetDeliveryDate: [new Date(), [Validators.required]],
+    deliveryDate: [new Date(), [Validators.required]],
     billRef: ['', [Validators.required]],
     comment: [''],
     commercialOpportunity: [''],

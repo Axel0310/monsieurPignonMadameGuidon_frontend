@@ -2,26 +2,105 @@
   <ng-container *ngIf="item; else noSelection">
     <div class="first-col column">
       <app-client-info [client]="item.client"></app-client-info>
-      <mat-form-field class="input-info creation-date" appearance="fill">
-        <mat-label>Création</mat-label>
-        <input matInput type="text" [value]="item.createdAt | date: 'd/M/yy'" />
-      </mat-form-field>
-      <mat-form-field class="input-info update-date" appearance="fill">
-        <mat-label>Dernière modification</mat-label>
-        <input matInput type="text" [value]="item.updatedAt | date: 'd/M/yy'" />
-      </mat-form-field>
-      <mat-form-field class="input-info target-delivery-date" appearance="fill">
-        <mat-label>Date livraison</mat-label>
+      <div class="inputs-wrapper-flex">
+        <div class="input-container">
+          <label for="bill-number" class="input-label">N° facture</label>
+          <input
+            id="bill-number"
+            type="text"
+            [value]="item.billRef"
+            class="input small-width"
+            disabled
+          />
+        </div>
+        <div class="input-container">
+          <label for="creation-date" class="input-label">Création</label>
+          <input
+            id="creation-date"
+            type="text"
+            [value]="item.createdAt | date: 'dd/MM/yy'"
+            class="input small-width"
+            disabled
+          />
+        </div>
+      </div>
+
+      <!-- <mat-form-field class="delivery-date">
+        <mat-label>Date de livraison</mat-label>
         <input
           matInput
-          type="text"
-          [value]="item.targetDeliveryDate | date: 'd/M/yy'"
+          [ngxMatDatetimePicker]="picker"
+          value="item.deliveryDate | date: 'dd/MM/yy hh:mm'"
+          [min]="minDate"
+          required
         />
-      </mat-form-field>
-      <mat-form-field class="input-info" appearance="fill">
-        <mat-label>N° facture</mat-label>
-        <input matInput type="text" [value]="item.billRef" />
-      </mat-form-field>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker
+          #picker
+          [showSeconds]="false"
+          [stepMinute]="30"
+        >
+        </ngx-mat-datetime-picker>
+      </mat-form-field> -->
+
+      <div class="input-container">
+        <label for="delivery-date" class="input-label"
+          >Date livraison
+          <div class="label-icons-container">
+            <button
+              *ngIf="deliveryDate.dirty"
+              mat-icon-button
+              (click)="prepareUpdate('deliveryDate')"
+              class="save-icon"
+            >
+              <mat-icon>save_as</mat-icon>
+            </button>
+            <button
+              *ngIf="deliveryDate.dirty"
+              mat-icon-button
+              (click)="resetInput('deliveryDate')"
+              class="reset-button"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </label>
+        <div class="delivery-date-input-wrapper">
+          <input
+            id="delivery-date"
+            [ngxMatDatetimePicker]="picker"
+            [formControl]="deliveryDate"
+            [min]="minDate"
+            required
+            class="input medium-width"
+            (keyup.enter)="onEnterUp('deliveryDate')"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+        </div>
+
+        <ngx-mat-datetime-picker
+          #picker
+          [showSeconds]="false"
+          [stepMinute]="30"
+        >
+        </ngx-mat-datetime-picker>
+      </div>
+
+      <div class="input-container">
+        <label for="update-date" class="input-label"
+          >Dernière modification</label
+        >
+        <input
+          id="update-date"
+          type="text"
+          [value]="item.updatedAt | date: 'dd/MM/yy hh:mm'"
+          class="input full-width"
+          disabled
+        />
+      </div>
     </div>
 
     <div class="second-col column">
@@ -38,35 +117,111 @@
         ></app-localization-list>
       </div>
 
-      <mat-form-field *ngIf="itemType === 'paint'" class="input-info">
-        <mat-label>Couleur</mat-label>
-        <input matInput type="text" [value]="item.color" [readonly]="true" />
-      </mat-form-field>
-      <mat-form-field
+      <div *ngIf="itemType === 'paint'" class="input-container">
+        <label for="color" class="input-label">Couleur</label>
+        <input
+          id="color"
+          type="text"
+          [value]="item.color !== '' ? item.color : 'Non renseignée'"
+          class="input full-width"
+        />
+      </div>
+
+      <div
         *ngIf="itemType === 'paint' || itemType === 'repair'"
-        class="input-info"
+        class="input-container"
       >
-        <mat-label>Description vélo</mat-label>
+        <label for="bike-description" class="input-label">
+          Description vélo
+          <div class="label-icons-container">
+            <button
+              *ngIf="bikeDescription.dirty"
+              mat-icon-button
+              (click)="prepareUpdate('bikeDescription')"
+              class="save-icon"
+            >
+              <mat-icon>save_as</mat-icon>
+            </button>
+            <button
+              *ngIf="bikeDescription.dirty"
+              mat-icon-button
+              (click)="resetInput('bikeDescription')"
+              class="reset-button"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </label>
         <input
-          matInput
+          id="bike-description"
           type="text"
-          [value]="item.bikeDescription"
-          [readonly]="true"
+          [formControl]="bikeDescription"
+          class="input full-width"
+          (keyup.enter)="onEnterUp('bikeDescription')"
         />
-      </mat-form-field>
-      <mat-form-field class="input-info">
-        <mat-label>Commentaire</mat-label>
-        <input matInput [value]="item.comment" [readonly]="true" />
-      </mat-form-field>
-      <mat-form-field class="input-info">
-        <mat-label>V+1</mat-label>
+      </div>
+
+      <div class="input-container">
+        <label for="comment" class="input-label">
+          Commentaire
+          <div class="label-icons-container">
+            <button
+              *ngIf="comment.dirty"
+              mat-icon-button
+              (click)="prepareUpdate('comment')"
+              class="save-icon"
+            >
+              <mat-icon>save_as</mat-icon>
+            </button>
+            <button
+              *ngIf="comment.dirty"
+              mat-icon-button
+              (click)="resetInput('comment')"
+              class="reset-button"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </label>
         <input
-          matInput
+          id="comment"
           type="text"
-          [value]="item.commercialOpportunity"
-          [readonly]="true"
+          [formControl]="comment"
+          class="input full-width"
+          (keyup.enter)="onEnterUp('comment')"
         />
-      </mat-form-field>
+      </div>
+
+      <div class="input-container">
+        <label for="commercialOpportunity" class="input-label">
+          V+1
+          <div class="label-icons-container">
+            <button
+              *ngIf="commercialOpportunity.dirty"
+              mat-icon-button
+              (click)="prepareUpdate('commercialOpportunity')"
+              class="save-icon"
+            >
+              <mat-icon>save_as</mat-icon>
+            </button>
+            <button
+              *ngIf="commercialOpportunity.dirty"
+              mat-icon-button
+              (click)="resetInput('commercialOpportunity')"
+              class="reset-button"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </label>
+        <input
+          id="commercialOpportunity"
+          type="text"
+          [formControl]="commercialOpportunity"
+          class="input full-width"
+          (keyup.enter)="onEnterUp('commercialOpportunity')"
+        />
+      </div>
     </div>
 
     <div class="third-col column">
@@ -84,5 +239,4 @@
   <ng-template #noSelection>
     <p class="no-selection-message">Aucune selection</p>
   </ng-template>
-  <mat-icon (click)="openEditDialog()" class="edit-icon">edit</mat-icon>
 </div>

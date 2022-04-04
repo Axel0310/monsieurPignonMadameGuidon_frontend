@@ -6,7 +6,9 @@
       (click)="toggleExpansionPanel()"
       >filter_list</mat-icon
     >
+    <img *ngIf="!(isMobileView$ | async)" class="shop-logo" src="assets/images/logo.png">
     <h1 class="overview-header-title">Liste des {{ itemsTypeTranslation }}s</h1>
+
 
     <ng-template #filters>
       <mat-form-field appearance="fill" class="overview-header-search">
@@ -17,7 +19,7 @@
         </button>
       </mat-form-field>
 
-      <div>
+      <div class="filters-container">
         <mat-label>Filtrer : </mat-label>
         <mat-radio-group
           [value]="selectedState$ | async"
@@ -102,7 +104,7 @@
           <input
             matInput
             type="text"
-            [value]="selectedItem.targetDeliveryDate | date: 'd/M/yy'"
+            [value]="selectedItem.deliveryDate | date: 'd/M/yy'"
             [readonly]="true"
           />
         </mat-form-field>

@@ -165,6 +165,11 @@ export class RepairService {
       .patch<Repair>(`${this.API_URL}/${id}`, { ...updates })
       .subscribe((updatedRepair) => {
         console.log(updatedRepair);
+        let repairs: Repair[] = this.repairs$.value;
+        const indexOfUpdatedRepair = repairs.findIndex(repair => repair._id == updatedRepair._id)
+        repairs.splice(indexOfUpdatedRepair, 1, updatedRepair)
+        this.repairs$.next(repairs)
+        console.log(repairs)
       });
   }
 
