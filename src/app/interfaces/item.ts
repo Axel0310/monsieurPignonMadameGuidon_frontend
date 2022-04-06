@@ -11,4 +11,5 @@ export interface Item {
   commercialOpportunity?: string;
   createdAt: Date;
   updatedAt: Date;
+  status: string;
 }

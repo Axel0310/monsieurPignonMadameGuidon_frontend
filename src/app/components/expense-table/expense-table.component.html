@@ -1,33 +1,67 @@
-<table class="expenses-table">
-  <thead>
-    <tr>
-      <th>Produits/Services</th>
-      <th>Prix</th>
-      <th>Quantité</th>
-      <th *ngIf="products">Fournisseur</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="products; else expenseTable">
-      <tr *ngFor="let product of products">
-        <td class="name-cell">{{ product.name }}</td>
-        <td class="price-cell">{{ product.price | currency }}</td>
-        <td class="quantity-cell">{{ product.quantity }}</td>
-        <td>{{ product.provider.name }}</td>
+<div class="expenses-table-cont">
+  <table class="expenses-table">
+    <thead>
+      <tr>
+        <th *ngIf="isEditEnabled" class="action-column"></th>
+        <th>Produits/Services</th>
+        <th>Prix</th>
+        <th>Quantité</th>
+        <th *ngIf="isOrder">Fournisseur</th>
       </tr>
-    </ng-container>
-    <ng-template #expenseTable>
-      <tr *ngFor="let expense of expenses">
-        <td class="name-cell">{{ expense.name }}</td>
-        <td class="price-cell">{{ expense.price | currency }}</td>
-        <td class="quantity-cell">{{ expense.quantity }}</td>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="!isEditEnabled; else editForm">
+        <tr *ngFor="let expense of itemExpenses">
+          <td class="name-cell">{{ expense.name }}</td>
+          <td class="price-cell">{{ expense.price | currency }}</td>
+          <td class="quantity-cell">{{ expense.quantity }}</td>
+          <td *ngIf="isOrder">{{ expense.provider.name }}</td>
+        </tr>
+      </ng-container>
+      <ng-template #editForm>
+        <tr *ngFor="let f of expensesForm.controls; let i = index">
+          <ng-container [formGroup]="f">
+            <td *ngIf="isEditEnabled" class="action-column">
+              <mat-icon *ngIf="!hasOneExpense" (click)="removeExpense(i)" class="icons delete-icon">delete</mat-icon>
+            </td>
+            <td class="name-cell">
+              <input type="text" formControlName="name" required class="name-input" [ngClass]="{'invalid-input': f.controls.name.invalid}">
+            </td>
+            <td class="price-cell">
+              <input type="number" formControlName="price" required class="price-input" (change)="updateTotalPrice(expensesForm.value)" min="0" [ngClass]="{'invalid-input': f.controls.price.invalid}">
+            </td>
+            <td class="quantity-cell">
+              <input type="number" formControlName="quantity" required class="quantity-input" (change)="updateTotalPrice(expensesForm.value)" min="1" [ngClass]="{'invalid-input': f.controls.quantity.invalid}">
+            </td>
+            <td *ngIf="isOrder">
+              <input type="text" formControlName="provider" required [ngClass]="{'invalid-input': f.controls.provider.invalid}">
+            </td>
+          </ng-container>
+        </tr>
+      </ng-template>
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td *ngIf="isEditEnabled" class="action-column">
+          <mat-icon *ngIf="isEditEnabled" (click)="addExpense()" class="icons add-item-icon">add_circle_outline</mat-icon>
+        </td>
+        <td>Total</td>
+        <td class="quantity-cell">{{ totalPrice | currency }}</td>
       </tr>
-    </ng-template>
-  </tbody>
-  <tfoot>
-    <tr class="total-row">
-      <td>Total</td>
-      <td class="quantity-cell">{{ totalPrice | currency }}</td>
-    </tr>
-  </tfoot>
-</table>
+    </tfoot>
+  </table>
+  <div class="action-icons-container">
+    <mat-icon *ngIf="!isEditEnabled" (click)="copyToClipboard()" class="icons"
+      >content_copy</mat-icon
+    >
+    <mat-icon *ngIf="!isEditEnabled" (click)="enableEditing()" class="icons"
+      >edit</mat-icon
+    >
+    <mat-icon *ngIf="isEditEnabled" (click)="onUpdateValidation()" class="icons save-icon"
+      >save_as</mat-icon
+    >
+    <mat-icon *ngIf="isEditEnabled" (click)="disableEditing()" class="icons reset-icon"
+      >close</mat-icon
+    >
+  </div>
+</div>

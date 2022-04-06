@@ -1,39 +1,113 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Expense } from 'src/app/interfaces/expense';
 import { Product } from 'src/app/interfaces/product';
 
 @Component({
   selector: 'app-expense-table',
   templateUrl: './expense-table.component.html',
-  styleUrls: ['./expense-table.component.scss']
+  styleUrls: ['./expense-table.component.scss'],
 })
-export class ExpenseTableComponent implements OnInit, OnChanges {
+export class ExpenseTableComponent implements OnChanges {
+  @Input() itemExpenses: Product[] | Expense[] = [];
+  @Input() isOrder = false;
+  @Output() sendUpdatedExpensesEvent: EventEmitter<{expenses?: Expense[]} | {products?: Product[]}> = new EventEmitter<{expenses?: Expense[]} | {products?: Product[]}>();
 
-@Input() products: Product[] | undefined = undefined;
-@Input() expenses: Expense[] | undefined = undefined;
+  public totalPrice: number = 0;
+  public isEditEnabled = false;
+  public hasOneExpense = true;
 
-public totalPrice: number = 0;
+  expensesForm = this.fb.array([]);
 
-ngOnInit() {
-  if(this.products) {
-    this.totalPrice = this.calculateTotalPrice(this.products);
-  } else if(this.expenses) {
-    this.totalPrice = this.calculateTotalPrice(this.expenses);
+  constructor(private fb: FormBuilder) {}
+
+  ngOnChanges() {
+    if(this.isEditEnabled) {
+      this.disableEditing();
+    }
+    this.updateTotalPrice(this.itemExpenses);
   }
-}
 
-ngOnChanges() {
-  if(this.products) {
-    this.totalPrice = this.calculateTotalPrice(this.products);
-  } else if(this.expenses) {
-    this.totalPrice = this.calculateTotalPrice(this.expenses);
+  private updateTotalPrice(list: Expense[]): void {
+    this.totalPrice = list.reduce((total: number, item: Product | Expense) => {
+      return total + item.price * item.quantity;
+    }, 0);
   }
-}
 
-private calculateTotalPrice(list: any[]): number {
-  return list.reduce((total, item) => {
-    return total + (item.price * item.quantity);
-  }, 0)
-}
+  copyToClipboard() {
+    const getContentToCopy = () => {
+      let content: string = '';
+      this.itemExpenses.forEach((item: Expense) => {
+        content = content + `${item.name},${item.price},${item.quantity};`;
+      });
+      return content;
+    };
 
+    navigator.clipboard.writeText(getContentToCopy()).then(
+      function () {
+        console.log('Copied into clipboard');
+      },
+      function () {
+        console.log('Failed to copy into clipboard');
+      }
+    );
+  }
+
+  enableEditing() {
+    this.isEditEnabled = true;
+    this.itemExpenses.forEach((item: Expense | Product) => {
+      this.expensesForm.push(this.fb.group({
+        name: [item.name, [Validators.required]],
+        quantity: [item.quantity, [Validators.required]],
+        price: [item.price, [Validators.required]],
+        ...(this.isOrder && {provider: (item as Product).provider})
+      }))
+    })
+    this.updateHasOneExpense();
+  }
+
+  disableEditing() {
+    this.isEditEnabled = false;
+    this.expensesForm.clear();
+    this.updateTotalPrice(this.itemExpenses);
+  }
+
+  addExpense() {
+    const newExpense = this.fb.group({
+      name: ['', [Validators.required]],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      price: [0, [Validators.required, Validators.min(0)]],
+      ...(this.isOrder && {provider: ['', [Validators.required]]})
+    })
+    this.expensesForm.push(newExpense);
+    this.updateHasOneExpense();
+  }
+
+  removeExpense(index: number) {
+    this.expensesForm.removeAt(index);
+    this.updateTotalPrice(this.expensesForm.value);
+    this.updateHasOneExpense();
+  }
+
+  updateHasOneExpense() {
+    this.hasOneExpense = this.expensesForm.length < 2;
+  }
+
+  onUpdateValidation() {
+    if(this.expensesForm.valid) {
+      this.expensesForm.controls.forEach(expenseControl => {
+        expenseControl.setValue(
+          {
+            ...expenseControl.value,
+            name: expenseControl.value.name.trim(),
+          }
+        )
+      })
+      this.sendUpdatedExpensesEvent.emit({
+        ...(!this.isOrder && {expenses: this.expensesForm.value as Expense[]}),
+        ...(this.isOrder && {products: this.expensesForm.value as Product[]})
+      })
+      this.disableEditing();
+    }
+  }
 }

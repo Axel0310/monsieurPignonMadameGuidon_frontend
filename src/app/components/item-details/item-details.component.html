@@ -24,25 +24,6 @@
           />
         </div>
       </div>
-
-      <!-- <mat-form-field class="delivery-date">
-        <mat-label>Date de livraison</mat-label>
-        <input
-          matInput
-          [ngxMatDatetimePicker]="picker"
-          value="item.deliveryDate | date: 'dd/MM/yy hh:mm'"
-          [min]="minDate"
-          required
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker
-          #picker
-          [showSeconds]="false"
-          [stepMinute]="30"
-        >
-        </ngx-mat-datetime-picker>
-      </mat-form-field> -->
-
       <div class="input-container">
         <label for="delivery-date" class="input-label"
           >Date livraison
@@ -74,6 +55,7 @@
             required
             class="input medium-width"
             (keyup.enter)="onEnterUp('deliveryDate')"
+            readonly
           />
           <mat-datepicker-toggle
             matSuffix
@@ -225,15 +207,11 @@
     </div>
 
     <div class="third-col column">
-      <div class="expenses-table-cont">
-        <app-expense-table
-          [products]="item.products"
-          [expenses]="item.expenses"
-        ></app-expense-table>
-        <mat-icon (click)="copyToClipboard()" class="clipboard-icon"
-          >content_copy</mat-icon
-        >
-      </div>
+      <app-expense-table
+        [itemExpenses]="item.expenses"
+        [isOrder]="isOrder"
+        (sendUpdatedExpensesEvent)="updateItem($event)"
+      ></app-expense-table>
     </div>
   </ng-container>
   <ng-template #noSelection>

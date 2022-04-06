@@ -118,22 +118,6 @@
     max-width: 100%;
   }
 
-  .expenses-table-cont {
-    position: relative;
-
-    .clipboard-icon {
-      position: absolute;
-      top: 0;
-      right: -15px;
-      cursor: pointer;
-      font-size: 20px;
-
-      &:hover {
-        color: $color-primary-main;
-      }
-    }
-  }
-
   .no-selection-message {
     margin: auto;
   }
@@ -156,5 +140,10 @@
 
   .mat-form-field-appearance-fill .mat-form-field-flex {
     padding: 0 !important;
+  }
+
+  .invalid-input {
+    border-color: $color-failure;
+    background-color: $color-failure-light;
   }
 }

@@ -1,0 +1,5 @@
+<div class="notification-container" [ngClass]="{'success': notification.type === 'success', 'failure': notification.type === 'failure'}">
+  <mat-icon>check_circle</mat-icon>
+  <p class="msg">{{ notification.message }}</p>
+  <mat-icon (click)="closeNotification()" class="close-icon">close</mat-icon>
+</div>

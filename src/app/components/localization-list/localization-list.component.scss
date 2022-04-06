@@ -1,9 +1,11 @@
 .localization-list {
     display: flex;
     flex-direction: column;
+    font-size: small !important;
 }
 
 h3 {
     font-weight: bolder;
     margin: 0;
+    font-size: small;
 }

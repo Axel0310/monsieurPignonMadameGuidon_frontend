@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-item-details',
@@ -12,12 +13,14 @@ export class ItemDetailsComponent implements OnChanges {
   @Output() updateItemEvent = new EventEmitter<any>();
 
 
-  minDate: Date = new Date();
+  public minDate: Date = new Date();
 
   bikeDescription = new FormControl('');
   comment = new FormControl('');
   commercialOpportunity = new FormControl('');
-  deliveryDate = new FormControl(this.minDate);
+  deliveryDate = new FormControl(this.minDate, Validators.required);
+
+  public isOrder = false
 
   ngOnChanges() {
     if(this.item) {
@@ -25,30 +28,14 @@ export class ItemDetailsComponent implements OnChanges {
        this.comment.setValue(this.item.comment !== '' ? this.item.comment : 'Non renseignée')
        this.commercialOpportunity.setValue(this.item.commercialOpportunity !== '' ? this.item.commercialOpportunity : 'Non renseignée')
        this.deliveryDate.setValue(this.item.deliveryDate)
+       this.isOrder = this.itemType === 'order'
     }
   }
 
-  copyToClipboard() {
-    const getContentToCopy = () => {
-      let content: string = '';
-      this.item.expenses.forEach((expense: any) => {
-        content =
-          content + `${expense.name},${expense.price},${expense.quantity};`;
-      });
-      return content;
-    };
-
-    navigator.clipboard.writeText(getContentToCopy()).then(
-      function () {
-        console.log('Copied into clipboard');
-      },
-      function () {
-        console.log('Failed to copy into clipboard');
-      }
-    );
-  }
-
   prepareUpdate(fieldName: keyof ItemDetailsComponent) {
+    if(fieldName !== 'deliveryDate') {
+      this[fieldName].setValue(this[fieldName].value.trim())
+    }
       this.updateItem({[fieldName]: this[fieldName].value});
       this[fieldName].reset();
   }
@@ -58,8 +45,8 @@ export class ItemDetailsComponent implements OnChanges {
   }
 
   updateItem(update: any) {
-    console.log(update)
     this.updateItemEvent.emit(update);
+    (document.activeElement as HTMLElement)?.blur();
   }
 
   onEnterUp(fieldName: keyof ItemDetailsComponent) {

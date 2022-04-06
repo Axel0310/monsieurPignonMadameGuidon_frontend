@@ -1,6 +1,12 @@
 <app-overview
-  [items]="paints$ | async"
-  [itemsType]="'paint'"
-  (updateStatusFilterEvent)="filterByStatus($event)"
-  (updateItemEvent)="updatePaint($event)"
+[items]="paints$ | async"
+[itemsType]="'paint'"
+[filteredStatus$]="filteredStatus$"
+[selectedState$]="selectedState$"
+[canLoadMoreHistory$]="canLoadMoreHistory$"
+(updateStatusFilterEvent)="updateStatusFilter($event)"
+(updateStateFilterEvent)="updateStateFilter($event)"
+(updateItemEvent)="updatePaint($event)"
+(searchEvent)="searchPaints($event)"
+(loadMoreHistoryEvent)="loadMoreHistory()"
 ></app-overview>

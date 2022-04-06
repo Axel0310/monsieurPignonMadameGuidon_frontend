@@ -1,8 +1,9 @@
 <app-nav-bar *ngIf="($isLoggedIn$ | async) && !($isMobileView | async)"></app-nav-bar>
-
-<!-- <img  class="shop-logo" src="assets/images/logo.png"> -->
 <app-mobile-top-navbar *ngIf="($isLoggedIn$ | async) && ($isMobileView | async)"></app-mobile-top-navbar>
 <div class="content" [class.loggedIn]="$isLoggedIn$ | async" [class.mobileView]="($isMobileView | async)">
+    <div class="notifications-container">
+        <app-notification *ngFor="let notif of ($notificationsList | async); let i = index" [notification]="notif" [index]="i"></app-notification>
+    </div>
     <router-outlet></router-outlet>
 </div>
 <app-mobile-bottom-navbar *ngIf="($isLoggedIn$ | async) && ($isMobileView | async)"></app-mobile-bottom-navbar>

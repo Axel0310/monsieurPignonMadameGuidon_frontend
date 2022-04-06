@@ -1,32 +1,89 @@
 @import "../../../styles/variables";
+.expenses-table-cont {
+  position: relative;
 
-.expenses-table {
-  th,
-  td {
-    padding-right: 20px;
+  .expenses-table {
+    th,
+    td {
+      padding-right: 20px;
+    }
+
+    .action-column {
+      padding: 0;
+    }
+
+    .name-cell {
+      max-width: 200px;
+    }
+
+    .price-cell {
+      text-align: end;
+    }
+
+    .quantity-cell {
+      text-align: center;
+    }
+
+    .total-row {
+      font-weight: bold;
+    }
+
+    thead {
+      color: $color-primary-dark;
+    }
+
+    tfoot {
+      color: $color-primary-main;
+    }
   }
 
-  .name-cell {
-    max-width: 200px;
+  .action-icons-container {
+    position: absolute;
+    top: 0;
+    right: -15px;
+    display: flex;
+    flex-direction: column;
   }
 
-  .price-cell {
-    text-align: end;
+  .icons {
+    cursor: pointer;
+    font-size: 20px;
+    color: $color-secondary-main;
+
+    &:hover,
+    &.add-item-icon:hover {
+      color: $color-primary-main;
+    }
+
+    &.delete-icon:hover {
+      color: $color-failure;
+    }
+
+    &.save-icon {
+      color: $color-success;
+    }
+
+    &.reset-icon {
+      color: $color-failure;
+    }
   }
 
-  .quantity-cell {
+  .name-input {
+    width: 180px;
+  }
+
+  .price-input {
+    width: 50px;
     text-align: center;
   }
 
-  .total-row {
-    font-weight: bold;
+  .quantity-input {
+    width: 35px;
+    text-align: center;
   }
 
-  thead {
-    color: $color-primary-dark;
-  }
-
-  tfoot {
-    color: $color-primary-main;
+  .invalid-input {
+    border-color: $color-failure;
+    background-color: $color-failure-light;
   }
 }

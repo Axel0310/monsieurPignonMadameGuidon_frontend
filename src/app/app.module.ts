@@ -60,6 +60,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { ScreenSizeService } from './services/screen-size.service';
 import { ItemsTableComponent } from './components/items-table/items-table.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { NotificationService } from './services/notification.service';
+import { NotificationComponent } from './components/notification/notification.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -90,6 +92,7 @@ registerLocaleData(localeFr, 'fr');
     MobileTopNavbarComponent,
     ItemDetailsComponent,
     ItemsTableComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -128,6 +131,7 @@ registerLocaleData(localeFr, 'fr');
       multi: true,
     },
     AuthenticationService,
+    NotificationService,
     OrderService,
     PaintService,
     ProviderService,

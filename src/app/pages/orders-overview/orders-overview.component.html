@@ -1,6 +1,12 @@
 <app-overview
-  [items]="orders$ | async"
-  [itemsType]="'order'"
-  (updateStatusFilterEvent)="filterByStatus($event)"
-  (updateItemEvent)="updateOrder($event)"
+[items]="orders$ | async"
+[itemsType]="'order'"
+[filteredStatus$]="filteredStatus$"
+[selectedState$]="selectedState$"
+[canLoadMoreHistory$]="canLoadMoreHistory$"
+(updateStatusFilterEvent)="updateStatusFilter($event)"
+(updateStateFilterEvent)="updateStateFilter($event)"
+(updateItemEvent)="updateOrder($event)"
+(searchEvent)="searchOrders($event)"
+(loadMoreHistoryEvent)="loadMoreHistory()"
 ></app-overview>

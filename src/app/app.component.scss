@@ -1,19 +1,26 @@
 @import "../styles/variables";
 
 .content {
-  width: 100vw; 
+  width: 100vw;
   height: 100vh;
   right: 0;
   position: absolute;
 
   &.loggedIn {
-    width: calc(100vw - #{$nav-bar-width}); 
+    width: calc(100vw - #{$nav-bar-width});
   }
 
   &.mobileView {
     padding: $mobile-nav-bar-height 0;
     width: 100vw;
     position: initial;
+  }
+
+  .notifications-container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 10;
   }
 }
 

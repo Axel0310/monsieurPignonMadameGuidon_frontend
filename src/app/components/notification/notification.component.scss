@@ -1,0 +1,30 @@
+@import "../../../styles/variables";
+
+.notification-container {
+  border-radius: 10px;
+  color: $color-content-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  margin-top: 5px;
+
+  &.success {
+    background-color: $color-success;
+  }
+
+  &.failure {
+    background-color: $color-failure;
+  }
+
+  .msg {
+    margin: 0px 5px;
+  }
+
+  .close-icon {
+    cursor: pointer;
+    &:hover {
+      color: $color-primary-dark;
+    }
+  }
+}
