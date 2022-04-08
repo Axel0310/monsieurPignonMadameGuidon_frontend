@@ -62,6 +62,7 @@ import { ItemsTableComponent } from './components/items-table/items-table.compon
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { NotificationService } from './services/notification.service';
 import { NotificationComponent } from './components/notification/notification.component';
+import { CreateItemComponent } from './components/forms/create-repair copy/create-item.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -92,7 +93,8 @@ registerLocaleData(localeFr, 'fr');
     MobileTopNavbarComponent,
     ItemDetailsComponent,
     ItemsTableComponent,
-    NotificationComponent
+    NotificationComponent,
+    CreateItemComponent
   ],
   imports: [
     BrowserModule,

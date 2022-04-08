@@ -1,20 +1,19 @@
-<form [formGroup]="newRepairForm" (input)="onRepairFormChange()">
-  <table formArrayName="expenses">
+<form [formGroup]="newItemForm" (input)="onItemFormChange()">
+  <table formArrayName="{{ expensesType }}">
     <thead>
       <th></th>
       <th>Produits/Service</th>
       <th>Prix</th>
       <th>Quantité</th>
+      <th *ngIf="itemType === 'order'">Fournisseur</th>
     </thead>
     <tbody>
-      <tr *ngFor="let expense of expenses.controls; let i = index">
+      <tr *ngFor="let expense of expensesOrProducts.controls; let i = index">
         <ng-container [formGroupName]="i">
           <td>
-            <fa-icon
-              [icon]="faTrashAlt"
-              (click)="removeExpense(i)"
-              class="delete-icon"
-            ></fa-icon>
+            <mat-icon (click)="removeExpense(i)" class="delete-icon"
+              >delete</mat-icon
+            >
           </td>
           <td>
             <mat-form-field appearance="fill">
@@ -23,7 +22,13 @@
           </td>
           <td>
             <mat-form-field appearance="fill" class="number-input">
-              <input matInput type="number" formControlName="price" required (change)="updateTotalPrice()"/>
+              <input
+                matInput
+                type="number"
+                formControlName="price"
+                required
+                (change)="updateTotalPrice()"
+              />
             </mat-form-field>
           </td>
           <td>
@@ -37,10 +42,24 @@
               />
             </mat-form-field>
           </td>
+          <td *ngIf="itemType === 'order'">
+            <mat-form-field appearance="fill">
+              <select matNativeControl formControlName="provider" required>
+                <option
+                  *ngFor="let provider of providersList | async"
+                  [value]="provider._id"
+                >
+                  {{ provider.name }}
+                </option>
+              </select>
+            </mat-form-field>
+          </td>
         </ng-container>
       </tr>
       <tr>
-        <td colspan="4" class="total-price">Total: {{totalPrice | currency}}</td>
+        <td colspan="4" class="total-price">
+          Total: {{ totalPrice | currency }}
+        </td>
       </tr>
     </tbody>
   </table>
@@ -52,14 +71,31 @@
       <mat-form-field appearance="fill" class="input">
         <mat-label>Statut</mat-label>
         <select matNativeControl formControlName="status" required>
-          <option value="A faire">A faire</option>
-          <option value="Fait">Fait</option>
+          <option *ngIf="itemType === 'repair'" value="A faire">A faire</option>
+          <option *ngIf="itemType === 'repair'" value="Fait">Fait</option>
+          <option *ngIf="itemType === 'order'" value="A commander">
+            A commander
+          </option>
+          <option *ngIf="itemType === 'order'" value="Panier">Panier</option>
+          <option *ngIf="itemType === 'order'" value="Commandé">
+            Commandé
+          </option>
+          <option *ngIf="itemType === 'paint'" value="En attente">
+            En attente
+          </option>
+          <option *ngIf="itemType === 'paint'" value="En peinture">
+            En peinture
+          </option>
           <option value="Client notifié">Client notifié</option>
           <option value="Livré">Livré</option>
         </select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="input">
+      <mat-form-field
+        *ngIf="itemType === 'repair'"
+        appearance="fill"
+        class="input"
+      >
         <mat-label>Localisation</mat-label>
         <select matNativeControl formControlName="localization" required>
           <option value="En boutique">En boutique</option>
@@ -70,30 +106,36 @@
     </div>
 
     <div>
-      <!-- <mat-form-field appearance="fill" class="input">
-        <mat-label>Date de livraison estimée</mat-label>
+      <mat-form-field>
+        <mat-label>Date de livraison</mat-label>
         <input
           matInput
-          [matDatepicker]="picker"
+          [ngxMatDatetimePicker]="picker"
+          formControlName="deliveryDate"
           [min]="minDate"
-          formControlName="targetDeliveryDate"
           required
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field> -->
-      <mat-form-field>
-        <mat-label>Date de livraison</mat-label>
-        <input matInput [ngxMatDatetimePicker]="picker" formControlName="targetDeliveryDate"
-           [min]="minDate" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #picker [showSeconds]="false" [stepMinute]="30">
+        <ngx-mat-datetime-picker
+          #picker
+          [showSeconds]="false"
+          [stepMinute]="30"
+        >
         </ngx-mat-datetime-picker>
-     </mat-form-field>
+      </mat-form-field>
 
       <mat-form-field appearance="fill" class="input">
         <mat-label>Description vélo</mat-label>
         <input matInput formControlName="bikeDescription" required />
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="itemType === 'paint'"
+        appearance="fill"
+        class="input"
+      >
+        <mat-label>Couleur</mat-label>
+        <input matInput formControlName="color" required />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="input">

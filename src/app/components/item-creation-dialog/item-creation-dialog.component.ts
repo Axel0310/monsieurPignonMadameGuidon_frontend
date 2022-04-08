@@ -26,7 +26,9 @@ export class ItemCreationDialogComponent implements OnInit {
   public _paintBeingCreated: Paint | undefined;
   public _repairBeingCreated: Repair | undefined;
 
-  public isFormValid: boolean = false;
+  public isItemFormValid: boolean = false;
+  public isClientFormValid: boolean = false;
+  private clientToBeCreated: Client | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<ItemCreationDialogComponent>,
@@ -54,33 +56,53 @@ export class ItemCreationDialogComponent implements OnInit {
   }
 
   onCreateClick(): void {
+    if(this.clientToBeCreated) {
+      this.clientService.createClient(this.clientToBeCreated).subscribe(createdClient => {
+        if(createdClient) {
+          this.clientService.setCurrentClient(createdClient);
+          this.createItem()
+        }
+      })
+    } else {
+      this.createItem()
+    }
+    
+  }
+
+  createItem() {
     switch (this.data.itemType) {
       case 'order':
         this._orderBeingCreated = this.orderService.getOrderBeingCreated();
-        this.orderService.createOrder().subscribe((createdOrder) => {
+        this.orderService.createOrder().subscribe((createdOrder: Order) => {
           if (createdOrder) this.dialogRef.close();
         });
         break;
       case 'paint':
         this._paintBeingCreated = this.paintService.getPaintBeingCreated();
-        this.paintService.createPaint().subscribe((createdPaint) => {
+        this.paintService.createPaint().subscribe((createdPaint: Paint) => {
           if (createdPaint) this.dialogRef.close();
         });
         break;
       case 'repair':
         this._repairBeingCreated = this.repairService.getRepairBeingCreated();
-        this.repairService.createRepair().subscribe((createdRepair) => {
+        this.repairService.createRepair().subscribe((createdRepair: Repair) => {
           if (createdRepair) this.dialogRef.close();
         });
         break;
     }
   }
 
-  updateIsFormValid(isFormValid: boolean) {
-    this.isFormValid = isFormValid;
+  updateIsItemFormValid(isItemFormValid: boolean) {
+    this.isItemFormValid = isItemFormValid;
+  }
+
+  updateClientFormInfo(clientFormInfo: {isClientFormValid: boolean, newClient: Client}) {
+    this.isClientFormValid = clientFormInfo.isClientFormValid;
+    this.clientToBeCreated = clientFormInfo.newClient;
   }
 
   onClickClose(): void {
     this.dialogRef.close();
   }
+
 }

@@ -9,7 +9,7 @@
   <form
     *ngIf="clientFormSelector === 'newClient'; else existingClientForm"
     [formGroup]="newClientForm"
-    (ngSubmit)="onCreateClient(stepper)"
+    (change)="onClientFormChange()"
   >
     <mat-form-field appearance="fill">
       <mat-label>Prénom</mat-label>
@@ -30,8 +30,6 @@
       <input matInput formControlName="phone" required placeholder="..." />
       <mat-error *ngIf="phone.hasError('required')">Téléphone requis</mat-error>
     </mat-form-field>
-
-    <button mat-button [disabled]="!newClientForm.valid">Créer client</button>
   </form>
 
   <ng-template #existingClientForm>

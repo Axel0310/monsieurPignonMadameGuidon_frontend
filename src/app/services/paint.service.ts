@@ -32,6 +32,10 @@ export class PaintService extends GenericItemService {
     return super.getItems() as Observable<Paint[]>;
   }
 
+  createPaint(): Observable<Paint> {
+    return super.createItem() as Observable<Paint>;
+  }
+
   updatePaint(id: string, updates: object): void {
     super.updateItem(id, updates)
   }
@@ -42,6 +46,14 @@ export class PaintService extends GenericItemService {
 
   fetchPaintsHistory(): void {
     super.fetchItemsHistory();
+  }
+
+  setPaintBeingCreated(paint: Paint) {
+    super.setItemBeingCreated(paint);
+  }
+
+  getPaintBeingCreated(): Paint | undefined {
+    return super.getItemBeingCreated() as Paint;
   }
 }
 // export class PaintService {

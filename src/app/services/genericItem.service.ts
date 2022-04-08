@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Client } from '../interfaces/client';
 import { Item } from '../interfaces/item';
@@ -15,7 +15,7 @@ import { NotificationService } from './notification.service';
 })
 export class GenericItemService {
   private API_URL: string = environment.API_URL;
-  private ItemUrl: string;
+  private itemUrl: string;
 
   private items$: BehaviorSubject<Item[]> = new BehaviorSubject<Item[]>([]);
 
@@ -41,15 +41,15 @@ export class GenericItemService {
     private authService: AuthenticationService,
     private clientService: ClientService,
     private notifService: NotificationService,
-    @Inject('itemUrl') private url: string,
+    @Inject('url') private url: string,
   ) {
     this._currentShop = this.authService.getLoggedShop().value;
     this.clientService.currentClient$.subscribe(
       (client) => (this._currentClient = client)
     );
+    this.itemUrl = this.url;
     this.fetchOngoingItems();
     this.fetchItemsHistory();
-    this.ItemUrl = this.url;
   }
 
   getItems(): Observable<Item[]> {
@@ -112,7 +112,7 @@ export class GenericItemService {
 
   fetchOngoingItems() {
     this.http
-      .get<Item[]>(`${this.API_URL}/${this.ItemUrl}/status/ongoing`)
+      .get<Item[]>(`${this.API_URL}/${this.itemUrl}/status/ongoing`)
       .subscribe((fetchedItems) => {
         this.items$.next(fetchedItems);
       });
@@ -121,7 +121,7 @@ export class GenericItemService {
   fetchItemsHistory() {
     if (this.canLoadMoreHistory$) {
       this.http
-        .get<Item[]>(`${this.API_URL}/${this.ItemUrl}/status/closed/${this.historyIndex}`)
+        .get<Item[]>(`${this.API_URL}/${this.itemUrl}/status/closed/${this.historyIndex}`)
         .subscribe((fetchedItemsHistory) => {
           if (fetchedItemsHistory.length > 0) {
             this.itemsHistory$.next([
@@ -138,25 +138,32 @@ export class GenericItemService {
     }
   }
 
-  setRepairBeingCreated(item: Item) {
+  setItemBeingCreated(item: Item) {
     this.itemBeingCreated.next(item);
   }
 
-  getRepairBeingCreated(): Item | undefined {
+  getItemBeingCreated(): Item | undefined {
     return this.itemBeingCreated.value;
   }
 
-  createItem() {
-    return this.http.post<Item>(`${this.API_URL}/${this.ItemUrl}/create`, {
+  createItem(): Observable<Item> {
+    return this.http.post<Item>(`${this.API_URL}/${this.itemUrl}/create`, {
       shop: this._currentShop?._id,
       client: this._currentClient?._id,
       ...this.itemBeingCreated.value,
-    });
+    }).pipe(
+      tap(createdItem => {
+        let items: Item[] = this.items$.value;
+        items.unshift(createdItem);
+        this.items$.next(items)
+        this.notifService.pushNotification('success', 'Item créé')
+      })
+    )
   }
 
   updateItem(id: string, updates: object) {
     this.http
-      .patch<Item>(`${this.API_URL}/${this.ItemUrl}/${id}`, { ...updates })
+      .patch<Item>(`${this.API_URL}/${this.itemUrl}/${id}`, { ...updates })
       .subscribe((updatedItem) => {
         let items: Item[] = this.items$.value;
         const indexOfUpdatedItem = items.findIndex(item => item._id == updatedItem._id)
@@ -170,9 +177,8 @@ export class GenericItemService {
     this.searchQuery = query;
     if (this.searchQuery !== '') {
       this.http
-        .get<Item[]>(`${this.API_URL}/${this.ItemUrl}/search/${this.searchQuery}`)
+        .get<Item[]>(`${this.API_URL}/${this.itemUrl}/search/${this.searchQuery}`)
         .subscribe((fetchedItems) => {
-          console.log(fetchedItems);
           this.searchedItems$.next(fetchedItems);
         });
     } else {

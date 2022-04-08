@@ -32,6 +32,10 @@ export class RepairService extends GenericItemService {
     return super.getItems() as Observable<Repair[]>;
   }
 
+  createRepair(): Observable<Repair> {
+    return super.createItem() as Observable<Repair>;
+  }
+
   updateRepair(id: string, updates: object): void {
     super.updateItem(id, updates)
   }
@@ -42,6 +46,14 @@ export class RepairService extends GenericItemService {
 
   fetchRepairsHistory(): void {
     super.fetchItemsHistory();
+  }
+
+  setRepairBeingCreated(repair: Repair) {
+    super.setItemBeingCreated(repair);
+  }
+
+  getRepairBeingCreated(): Repair | undefined {
+    return super.getItemBeingCreated() as Repair;
   }
 }
 // export class RepairService {

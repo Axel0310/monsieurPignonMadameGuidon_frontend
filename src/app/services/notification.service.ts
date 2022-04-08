@@ -6,14 +6,7 @@ import { Notification } from '../interfaces/notification'
   providedIn: 'root',
 })
 export class NotificationService {
-  private notificationsList: BehaviorSubject<Notification[]> = new BehaviorSubject<Notification[]>([{
-      type: 'success',
-      message: 'Item a été mis à jour'
-  },
-  {
-    type: 'failure',
-    message: 'Item na pas pu être mis à jour'
-}]);
+  private notificationsList: BehaviorSubject<Notification[]> = new BehaviorSubject<Notification[]>([]);
 
   public getNotificationsList(): Observable<Notification[]> {
       return this.notificationsList.asObservable();

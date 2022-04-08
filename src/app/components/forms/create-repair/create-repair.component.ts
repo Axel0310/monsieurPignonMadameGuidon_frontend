@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RepairService } from 'src/app/services/repair.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';

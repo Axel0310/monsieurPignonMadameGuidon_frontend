@@ -11,7 +11,10 @@ import { ClientService } from 'src/app/services/client.service';
 })
 export class SelectClientComponent {
 
-  @Output() createItem = new EventEmitter();
+  @Output() clientFormChangeEvent = new EventEmitter<{
+    isClientFormValid: boolean,
+    newClient: Client,
+  }>();
 
   public clientFormSelector: 'newClient' | 'existingClient' = 'existingClient';
 
@@ -57,12 +60,16 @@ export class SelectClientComponent {
     this.fetchedClients.next([]);
   }
 
-  onCreateClient() {
-    this.clientService
-      .createClient({ ...this.newClientForm.value })
-      .subscribe((clientCreated) => {
-        this.clientService.setCurrentClient(clientCreated);
-        this.createItem.emit();
-      });
+  onClientFormChange() {
+    this.clientFormChangeEvent.emit({
+      isClientFormValid: this.newClientForm.valid,
+      newClient: this.newClientForm.value,
+    });
+    // this.clientService
+    //   .createClient({ ...this.newClientForm.value })
+    //   .subscribe((clientCreated) => {
+    //     this.clientService.setCurrentClient(clientCreated);
+    //     this.validateClientEvent.emit();
+    //   });
   }
 }

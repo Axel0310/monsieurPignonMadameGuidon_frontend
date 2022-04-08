@@ -32,6 +32,10 @@ export class OrderService extends GenericItemService {
     return super.getItems() as Observable<Order[]>;
   }
 
+  createOrder(): Observable<Order> {
+    return super.createItem() as Observable<Order>;
+  }
+
   updateOrder(id: string, updates: object): void {
     super.updateItem(id, updates)
   }
@@ -42,6 +46,14 @@ export class OrderService extends GenericItemService {
 
   fetchOrdersHistory(): void {
     super.fetchItemsHistory();
+  }
+
+  setOrderBeingCreated(order: Order) {
+    super.setItemBeingCreated(order);
+  }
+
+  getOrderBeingCreated(): Order | undefined {
+    return super.getItemBeingCreated() as Order;
   }
 }
 // export class OrderService {
