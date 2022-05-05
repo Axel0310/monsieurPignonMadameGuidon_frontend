@@ -12,8 +12,8 @@ export class NotificationService {
       return this.notificationsList.asObservable();
   }
 
-  public pushNotification(type: 'success' | 'failure', message: string) {
-      this.notificationsList.next([...this.notificationsList.value, {type, message}])
+  public pushNotification(type: 'success' | 'failure', message: string, errMsg?: string) {
+      this.notificationsList.next([...this.notificationsList.value, {type, message, errMsg}])
       setTimeout(() => {
         this.removeOldestNotification()
       }, 5000)

@@ -16,7 +16,8 @@ export class OverviewComponent implements OnInit {
   @Input() itemsType!: 'order' | 'paint' | 'repair';
   @Input() selectedState$!: Observable<string>;
   @Input() filteredStatus$!: Observable<string[]>;
-  @Input() canLoadMoreHistory$!: Observable<string[]>;
+  @Input() canLoadMoreHistory$!: Observable<boolean>;
+  @Input() isLoading$!: Observable<boolean>;
   @Output() updateStatusFilterEvent = new EventEmitter<string>();
   @Output() updateStateFilterEvent = new EventEmitter<string>();
   @Output() updateItemEvent = new EventEmitter<any>();

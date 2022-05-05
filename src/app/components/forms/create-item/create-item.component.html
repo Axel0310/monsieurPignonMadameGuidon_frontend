@@ -11,14 +11,19 @@
       <tr *ngFor="let expense of expensesOrProducts.controls; let i = index">
         <ng-container [formGroupName]="i">
           <td>
-            <mat-icon (click)="removeExpense(i)" class="delete-icon"
+            <mat-icon *ngIf="!hasOneExpense" (click)="removeExpense(i)" class="delete-icon"
               >delete</mat-icon
             >
           </td>
           <td>
             <mat-form-field appearance="fill">
-              <input matInput formControlName="name" required />
+              <input matInput formControlName="name" required [matAutocomplete]="productAutocomplete" (input)="onProductNameChange(expense.value.name)"/>
             </mat-form-field>
+            <mat-autocomplete #productAutocomplete="matAutocomplete" (optionSelected)="fillProductInfo($event.option.value, i)">
+              <mat-option *ngFor="let product of (filteredProducts$ | async)" [value]="product._id">
+                {{product.name}}
+              </mat-option>
+            </mat-autocomplete>
           </td>
           <td>
             <mat-form-field appearance="fill" class="number-input">
@@ -28,6 +33,7 @@
                 formControlName="price"
                 required
                 (change)="updateTotalPrice()"
+                min="0"
               />
             </mat-form-field>
           </td>
@@ -39,6 +45,7 @@
                 formControlName="quantity"
                 required
                 (change)="updateTotalPrice()"
+                min="1"
               />
             </mat-form-field>
           </td>
@@ -57,7 +64,7 @@
         </ng-container>
       </tr>
       <tr>
-        <td colspan="4" class="total-price">
+        <td colspan="3" class="total-price">
           Total: {{ totalPrice | currency }}
         </td>
       </tr>

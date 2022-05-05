@@ -79,9 +79,12 @@
     ></tr>
   </table>
 
-  <ng-container *ngIf="items.length === 0">
+  <ng-container *ngIf="!(isLoading$ | async) && items.length === 0">
       <p class="message">Aucune réparation</p>
   </ng-container>
+  <ng-container *ngIf="(isLoading$ | async)">
+    <app-loader></app-loader>
+</ng-container>
   <ng-container *ngIf="displayLoadMoreHistory$ | async">
     <p (click)="loadMoreHistory()" class="message load-more-history">Afficher plus</p>
 </ng-container>

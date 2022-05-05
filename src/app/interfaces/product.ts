@@ -1,4 +1,4 @@
-import { Provider } from '@angular/core';
+import { Provider } from './provider'
 import { Expense } from './expense';
 
 export interface Product extends Expense {

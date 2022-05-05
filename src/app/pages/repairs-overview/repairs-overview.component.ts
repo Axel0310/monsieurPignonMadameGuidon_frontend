@@ -14,12 +14,14 @@ export class RepairsOverviewComponent {
   filteredStatus$: Observable<string[]>;
   selectedState$: Observable<string>;
   canLoadMoreHistory$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
 
   constructor(private repairService: RepairService) { 
     this.repairs$ = this.repairService.getRepairs();
     this.filteredStatus$ = this.repairService.getFilteredStatus();
     this.selectedState$ = this.repairService.getSelectedState();
     this.canLoadMoreHistory$ = this.repairService.getCanLoadMoreHistory();
+    this.isLoading$ = this.repairService.isLoading$
   }
 
   updateStatusFilter(status: string) {

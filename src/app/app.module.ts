@@ -42,9 +42,11 @@ import { CreatePaintComponent } from './components/forms/create-paint/create-pai
 import { CreateRepairComponent } from './components/forms/create-repair/create-repair.component';
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import { ProviderService } from './services/provider.service';
+import { ProductService } from './services/product.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { ManageProvidersComponent } from './components/forms/manage-providers/manage-providers.component';
+import { ManageProductsComponent } from './components/forms/manage-products/manage-products.component';
 import { ManagePasswordComponent } from './components/forms/manage-password/manage-password.component';
 import { ShopService } from './services/shop.service';
 import { PhoneFormatPipe } from './pipes/phone-format.pipe';
@@ -62,7 +64,10 @@ import { ItemsTableComponent } from './components/items-table/items-table.compon
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { NotificationService } from './services/notification.service';
 import { NotificationComponent } from './components/notification/notification.component';
-import { CreateItemComponent } from './components/forms/create-repair copy/create-item.component';
+import { CreateItemComponent } from './components/forms/create-item/create-item.component';
+import {MatSelectModule} from '@angular/material/select';
+import { AdminValidationDialogComponent } from './components/admin-validation-dialog/admin-validation-dialog.component';
+import { LoaderComponent } from './components/loader/loader.component'
 
 registerLocaleData(localeFr, 'fr');
 
@@ -94,7 +99,10 @@ registerLocaleData(localeFr, 'fr');
     ItemDetailsComponent,
     ItemsTableComponent,
     NotificationComponent,
-    CreateItemComponent
+    CreateItemComponent,
+    ManageProductsComponent,
+    AdminValidationDialogComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -125,6 +133,7 @@ registerLocaleData(localeFr, 'fr');
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
+    MatSelectModule
   ],
   providers: [
     {
@@ -137,6 +146,7 @@ registerLocaleData(localeFr, 'fr');
     OrderService,
     PaintService,
     ProviderService,
+    ProductService,
     RepairService,
     ShopService,
     ScreenSizeService,

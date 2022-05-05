@@ -1,0 +1,20 @@
+<div class="item-creation-dialog-cont">
+  <i class="material-icons close-icon" (click)="onClickClose()">close</i>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <label for="adminPassword">Entrez mot de passe admin</label>
+      <input
+        id="adminPassword"
+        matInput
+        placeholder="..."
+        [formControl]="adminPassword"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onValidate()" [disabled]="false">
+      Valider
+    </button>
+  </div>
+</div>

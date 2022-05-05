@@ -12,6 +12,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
+import { GenericItemService } from 'src/app/services/genericItem.service';
 
 @Component({
   selector: 'app-items-table',
@@ -23,6 +24,7 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() itemsType!: string;
   @Input() selectedItem!: any;
   @Input() displayLoadMoreHistory$!: Observable<boolean>;
+  @Input() isLoading$!: Observable<boolean>;
   @Output() selectItemEvent = new EventEmitter<any>();
   @Output() loadMoreHistoryEvent = new EventEmitter();
 

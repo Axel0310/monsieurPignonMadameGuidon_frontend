@@ -208,7 +208,7 @@
 
     <div class="third-col column">
       <app-expense-table
-        [itemExpenses]="item.expenses"
+        [itemExpenses]="isOrder === true ? item.products : item.expenses"
         [isOrder]="isOrder"
         (sendUpdatedExpensesEvent)="updateItem($event)"
       ></app-expense-table>

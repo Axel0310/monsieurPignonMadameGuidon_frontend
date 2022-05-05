@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AdminValidationDialogComponent } from '../admin-validation-dialog/admin-validation-dialog.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -30,6 +31,25 @@ export class NavBarComponent {
     const dialogRef = this.dialog.open(ItemCreationDialogComponent, {
       width: '80vw',
       data: { itemType: itemType },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  navigateToParameters(): void {
+    if(this.authService.isAdminEnabled) {
+      console.log('admin => ', this.authService.isAdminEnabled)
+      this.router.navigate(['/parameters']);
+    } else {
+      this.openAdminValidationDialog();
+    }
+  }
+
+  openAdminValidationDialog(): void {
+    const dialogRef = this.dialog.open(AdminValidationDialogComponent, {
+      width: '80vw',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

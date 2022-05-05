@@ -2,6 +2,8 @@
 
 .menu-content {
     padding: 10px;
+    position: relative;
+    height: 100%;
 
     @media (max-width: $screen-md) {
         padding: 10px 0;

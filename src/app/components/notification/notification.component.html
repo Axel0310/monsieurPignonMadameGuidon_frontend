@@ -1,5 +1,24 @@
-<div class="notification-container" [ngClass]="{'success': notification.type === 'success', 'failure': notification.type === 'failure'}">
+<div
+  class="notification-container"
+  [ngClass]="{
+    success: notification.type === 'success',
+    failure: notification.type === 'failure'
+  }"
+>
   <mat-icon>check_circle</mat-icon>
   <p class="msg">{{ notification.message }}</p>
+  <br />
+  <ng-container *ngIf="notification.type === 'failure'">
+    <ng-container
+      *ngIf="notification.errMsg; then errMsgDisplay; else genericErrorMsg"
+    ></ng-container>
+    <ng-template #errMsgDisplay>
+      <p class="msg">Erreur : {{ notification.errMsg }}</p>
+    </ng-template>
+    <ng-template #genericErrorMsg>
+      <p class="msg">Une erreur est survenue</p>
+    </ng-template>
+  </ng-container>
+
   <mat-icon (click)="closeNotification()" class="close-icon">close</mat-icon>
 </div>

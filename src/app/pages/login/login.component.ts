@@ -13,8 +13,8 @@ export class LoginComponent {
   constructor(private auth: AuthenticationService, private http: HttpClient) {}
 
   signinForm = new FormGroup({
-    identifier: new FormControl('Toulouse_Shop', Validators.required),
-    password: new FormControl('pass', Validators.required),
+    identifier: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
   });
 
   onSubmit() {

@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Shop } from '../interfaces/shop';
 import { handleError } from '../helpers/handleError';
 import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,9 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   private API_URL = environment.API_URL;
   private loggedShop$ = new BehaviorSubject<Shop | undefined>(undefined);
+  private _isAdminEnabled = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private notifService: NotificationService) {}
 
   signin(identifier: string, password: string): Observable<Shop> {
     return this.http
@@ -48,5 +50,29 @@ export class AuthenticationService {
         });
     }
     return this.loggedShop$;
+  }
+
+  checkAdminPassword(password: string): Promise<boolean> {
+
+    return this.http.post(`${this.API_URL}/auth/checking`, { inputPassword: password }).toPromise()
+    .then(res => {
+      this._isAdminEnabled = true;
+      setTimeout(() => {
+        this.disableAdmin()
+      }, 300000)
+      return this.isAdminEnabled;
+    })
+    .catch( err => {
+      this.notifService.pushNotification('failure', 'Accès refusé', err.error.message)
+      return false
+    })
+  }
+
+  get isAdminEnabled() {
+    return this._isAdminEnabled;
+  }
+
+  private disableAdmin() {
+    this._isAdminEnabled = false;
   }
 }

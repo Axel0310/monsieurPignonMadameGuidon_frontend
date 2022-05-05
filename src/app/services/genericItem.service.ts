@@ -16,6 +16,7 @@ import { NotificationService } from './notification.service';
 export class GenericItemService {
   private API_URL: string = environment.API_URL;
   private itemUrl: string;
+  private _isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private items$: BehaviorSubject<Item[]> = new BehaviorSubject<Item[]>([]);
 
@@ -111,10 +112,12 @@ export class GenericItemService {
   }
 
   fetchOngoingItems() {
+    this._isLoading$.next(true);
     this.http
       .get<Item[]>(`${this.API_URL}/${this.itemUrl}/status/ongoing`)
       .subscribe((fetchedItems) => {
         this.items$.next(fetchedItems);
+        this._isLoading$.next(false);
       });
   }
 
@@ -184,5 +187,9 @@ export class GenericItemService {
     } else {
       this.searchedItems$.next([]);
     }
+  }
+
+  get isLoading$() {
+    return this._isLoading$.asObservable();
   }
 }

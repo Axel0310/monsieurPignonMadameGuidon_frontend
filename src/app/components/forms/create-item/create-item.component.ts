@@ -4,9 +4,12 @@ import { RepairService } from 'src/app/services/repair.service';
 import { Expense } from 'src/app/interfaces/expense';
 import { OrderService } from 'src/app/services/order.service';
 import { PaintService } from 'src/app/services/paint.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Provider } from 'src/app/interfaces/provider';
 import { ProviderService } from 'src/app/services/provider.service';
+import { Product } from 'src/app/interfaces/product';
+import { ProductService } from 'src/app/services/product.service';
+import { filter, map, startWith, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-item',
@@ -20,6 +23,13 @@ export class CreateItemComponent implements OnChanges {
 
   minDate: Date = new Date();
   defaultDate: Date = this.minDate;
+
+  private existingProducts$: Observable<Product[]>;
+  private productNameInput$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public filteredProducts$: Observable<Product[]>;
+  private _filteredProducts$: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
+
+  public hasOneExpense = true;
 
   genericExpenseObj = {
     name: ['', [Validators.required]],
@@ -60,17 +70,19 @@ export class CreateItemComponent implements OnChanges {
   expensesOrProducts: FormArray = this.newItemForm.get('expenses') as FormArray;
   expensesType: 'expenses' | 'products' = 'expenses';
 
-  templateContext = {
-    expenses: this.expensesFormArray,
-  }
-
   totalPrice: number = 0;
 
   public providersList: Observable<Provider[]> | undefined;
 
-  constructor(private fb: FormBuilder, private repairService: RepairService, private orderService: OrderService, private paintService: PaintService, private providerService: ProviderService) {
+  constructor(private fb: FormBuilder, private repairService: RepairService, private orderService: OrderService, private paintService: PaintService, private providerService: ProviderService, private productService: ProductService) {
     this.defaultDate.setMinutes(0);
     this.defaultDate.setHours(this.defaultDate.getHours() + 1);
+    this.existingProducts$ = this.productService.getProducts();
+
+    this.filteredProducts$ = combineLatest([this.existingProducts$, this.productNameInput$]).pipe(
+      map(([existingProducts, filterValue]) => this._filter(existingProducts, filterValue)),
+      tap(products => this._filteredProducts$.next(products))
+    )
   }
   
   ngOnChanges() {
@@ -88,9 +100,13 @@ export class CreateItemComponent implements OnChanges {
     this.providersList = this.itemType === 'order' ? this.providerService.getProviders() : undefined;
     this.expensesOrProducts = this.itemType === 'order' ? this.newItemForm.get('products') as FormArray : this.newItemForm.get('expenses') as FormArray;
     this.expensesType = this.itemType === 'order' ? 'products' : 'expenses';
-    this.templateContext.expenses = this.expensesFormArray;
     const defaultStatus = this.itemType === 'order' ? 'A commander' : this.itemType === 'repair' ? 'A faire' : 'En attente';
     this.newItemForm.get('status')?.setValue(defaultStatus)
+  }
+
+  private _filter(products: Product[], value: string): Product[] {
+    const filterValue = value.toLowerCase();
+    return  products.filter(product => product.name.toLowerCase().includes(filterValue))
   }
 
   addExpense() {
@@ -99,11 +115,13 @@ export class CreateItemComponent implements OnChanges {
       ...(this.itemType !== 'order' && this.genericExpenseObj),
     })
     this.expensesOrProducts.push(newExpenseFormControl);
+    this.updateHasOneExpense();
   }
 
   removeExpense(index: number) {
     this.expensesOrProducts.removeAt(index);
     this.updateTotalPrice();
+    this.updateHasOneExpense();
   }
 
   onItemFormChange() {
@@ -119,6 +137,24 @@ export class CreateItemComponent implements OnChanges {
 
   updateTotalPrice() {
     this.totalPrice = this.expensesOrProducts.value.reduce((total: number, expense: Expense) => total + expense.price * expense.quantity, 0);
+  }
+
+  onProductNameChange(nameInput: string) {
+    this.productNameInput$.next(nameInput);
+  }
+
+  fillProductInfo(productId: string, index: number) {
+    const selectedProduct = this._filteredProducts$.value.find(prod => String(prod._id) === String(productId))
+    const formControl = (this.expensesOrProducts.controls[index] as FormGroup).controls
+    formControl.name.setValue(selectedProduct?.name)
+    formControl.price.setValue(selectedProduct?.price)
+    if(this.itemType === 'order') {
+      formControl.provider.setValue(selectedProduct?.provider._id)
+    }
+  }
+
+  updateHasOneExpense() {
+    this.hasOneExpense = this.expensesOrProducts.length < 2;
   }
 
 }
