@@ -151,6 +151,7 @@ export class CreateItemComponent implements OnChanges {
     if(this.itemType === 'order') {
       formControl.provider.setValue(selectedProduct?.provider._id)
     }
+    this.updateTotalPrice();
   }
 
   updateHasOneExpense() {

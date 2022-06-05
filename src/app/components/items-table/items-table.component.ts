@@ -43,6 +43,7 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
         'provider',
         'status',
         'deliveryDate',
+        'creationDate',
       ];
     } else if (this.itemsType === 'paint') {
       this.displayedColumns = [
@@ -50,8 +51,9 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
         'phone',
         'bikeDescription',
         'status',
-        'deliveryDate',
         'color',
+        'deliveryDate',
+        'creationDate',
       ];
     } else {
       this.displayedColumns = [
@@ -60,6 +62,7 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
         'bikeDescription',
         'status',
         'deliveryDate',
+        'creationDate',
       ];
     }
   }
@@ -98,6 +101,10 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
           return item.products[0].provider.name;
         case 'deliveryDate': {
           const date = new Date(item.deliveryDate);
+          return date;
+        }
+        case 'creationDate': {
+          const date = new Date(item.createdAt);
           return date;
         }
         default: {

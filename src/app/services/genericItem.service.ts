@@ -51,6 +51,7 @@ export class GenericItemService {
     this.itemUrl = this.url;
     this.fetchOngoingItems();
     this.fetchItemsHistory();
+    this.itemsHistory$.subscribe(items => console.log('obs updated => ', items))
   }
 
   getItems(): Observable<Item[]> {
@@ -133,7 +134,7 @@ export class GenericItemService {
             ]);
           }
           //value to be aligned with backend one
-          if (fetchedItemsHistory.length < 1) {
+          if (fetchedItemsHistory.length < 50) {
             this.canLoadMoreHistory$.next(false);
           }
         });
@@ -168,12 +169,40 @@ export class GenericItemService {
     this.http
       .patch<Item>(`${this.API_URL}/${this.itemUrl}/${id}`, { ...updates })
       .subscribe((updatedItem) => {
-        let items: Item[] = this.items$.value;
-        const indexOfUpdatedItem = items.findIndex(item => item._id == updatedItem._id)
-        items.splice(indexOfUpdatedItem, 1, updatedItem)
-        this.items$.next(items)
-        this.notifService.pushNotification('success', 'Item mis à jour')
+        this.updateItemsLists(updatedItem)
       });
+  }
+
+  updateItemsLists(updatedItem: Item) {
+    let items: Item[] = this.items$.value;
+    let itemsHistory: Item[] = this.itemsHistory$.value;
+    let indexOfUpdatedItem: number; 
+    if(this.selectedState$.value === 'ongoing') {
+      indexOfUpdatedItem = items.findIndex(item => item._id == updatedItem._id);
+      const originalItem = items[indexOfUpdatedItem];
+      if(originalItem.status !== 'Livré' && updatedItem.status === 'Livré') {
+        items.splice(indexOfUpdatedItem, 1);
+        itemsHistory = [updatedItem, ...itemsHistory];
+        this.itemsHistory$.next(itemsHistory);
+      } else {
+        items.splice(indexOfUpdatedItem, 1, updatedItem);
+      }
+      this.items$.next(items);
+    } else {
+      indexOfUpdatedItem = itemsHistory.findIndex(item => item._id == updatedItem._id);
+      const originalItem = itemsHistory[indexOfUpdatedItem];
+      if(originalItem.status === 'Livré' && updatedItem.status !== 'Livré') {
+        itemsHistory.splice(indexOfUpdatedItem, 1);
+        items = [updatedItem, ...items];
+        this.items$.next(items);
+      } else {
+        itemsHistory.splice(indexOfUpdatedItem, 1, updatedItem);
+      }
+      console.log(itemsHistory)
+      this.itemsHistory$.next(itemsHistory);
+    }
+    
+    this.notifService.pushNotification('success', 'Item mis à jour');
   }
 
   searchItems(query: string) {

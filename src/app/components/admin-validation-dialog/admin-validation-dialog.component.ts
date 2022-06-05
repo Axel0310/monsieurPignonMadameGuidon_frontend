@@ -18,7 +18,7 @@ export class AdminValidationDialogComponent {
   async onValidate() {
     const isPasswordValid = await this.authService.checkAdminPassword(this.adminPassword.value);
     if(isPasswordValid) {
-      this.router.navigate(['/parameters']);
+      this.router.navigate(['/parametres']);
       this.dialogRef.close();
     }
   }

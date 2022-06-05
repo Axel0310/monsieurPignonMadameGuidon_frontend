@@ -16,14 +16,22 @@ export class AuthenticationService {
   private loggedShop$ = new BehaviorSubject<Shop | undefined>(undefined);
   private _isAdminEnabled = false;
 
-  constructor(private http: HttpClient, private router: Router, private notifService: NotificationService) {}
+  constructor(private http: HttpClient, private router: Router, private notifService: NotificationService) {
+    this.loadShopFromLocalStorage();
+  }
+
+
 
   signin(identifier: string, password: string): Observable<Shop> {
     return this.http
       .post<Shop>(`${this.API_URL}/auth/signin`, { identifier, password })
       .pipe(
         tap(
-          (shop) => (this.loggedShop$.next(shop), this.router.navigate(['/repairs-overview']))
+          shop => {
+            this.loggedShop$.next(shop);
+            localStorage.setItem('loggedShop', JSON.stringify(shop))
+            this.router.navigate(['/reparations'])
+          }
         ),
         catchError(handleError)
       );
@@ -31,24 +39,21 @@ export class AuthenticationService {
 
   logout(): Observable<any> {
     return this.http.get(`${this.API_URL}/auth/logout`).pipe(
-      tap(() => this.loggedShop$.next(undefined)),
+      tap(() => {
+        this.loggedShop$.next(undefined);
+        localStorage.removeItem('loggedShop')
+      }),
       catchError(handleError)
     );
   }
 
   isLoggedIn(): Observable<boolean> {
     console.log('loggedin => ', this.loggedShop$.value);
-    return this.getLoggedShop().pipe(map((shop) => !!shop));
+    this.checkSessionCookie();
+    return this.loggedShop$.asObservable().pipe(map((shop) => !!shop));
   }
 
   getLoggedShop(): BehaviorSubject<Shop | undefined> {
-    if (this.loggedShop$.value === undefined) {
-      this.http
-        .get<Shop>(`${this.API_URL}/auth/isLoggedIn`)
-        .subscribe((shop) => {
-          this.loggedShop$.next(shop)
-        });
-    }
     return this.loggedShop$;
   }
 
@@ -74,5 +79,37 @@ export class AuthenticationService {
 
   private disableAdmin() {
     this._isAdminEnabled = false;
+  }
+
+  loadShopFromLocalStorage() {
+    const rawShopFromLocalStorage: string | null = localStorage.getItem('loggedShop');
+    const shopFromLocalStorage: Shop | undefined = rawShopFromLocalStorage ? JSON.parse(rawShopFromLocalStorage) : undefined;
+    if(shopFromLocalStorage) {
+      this.loggedShop$.next(shopFromLocalStorage)
+    }
+  }
+
+  getSessionCookie(): string | undefined {
+    let ca: Array<string> = document.cookie.split(';');
+    console.log(document.cookie);
+    let caLen: number = ca.length;
+    let cookieName = 'connect.sid';
+    let c: string;
+
+    for (let i: number = 0; i < caLen; i += 1) {
+      c = ca[i].replace(/^\s+/g, '');
+      if (c.indexOf(cookieName) == 0) {
+        return c.substring(cookieName.length, c.length);
+      }
+    }
+    return undefined;
+  }
+
+  checkSessionCookie() {
+    const sessionCookie = this.getSessionCookie();
+    if(!sessionCookie) {
+      localStorage.removeItem('loggedShop');
+      this.loggedShop$.next(undefined)
+    }
   }
 }

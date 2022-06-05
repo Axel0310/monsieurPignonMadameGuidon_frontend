@@ -41,7 +41,7 @@ export class NavBarComponent {
   navigateToParameters(): void {
     if(this.authService.isAdminEnabled) {
       console.log('admin => ', this.authService.isAdminEnabled)
-      this.router.navigate(['/parameters']);
+      this.router.navigate(['/parametres']);
     } else {
       this.openAdminValidationDialog();
     }
