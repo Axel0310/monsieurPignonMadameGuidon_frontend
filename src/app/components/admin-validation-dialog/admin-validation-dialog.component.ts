@@ -11,7 +11,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class AdminValidationDialogComponent {
 
-  adminPassword = new FormControl('', Validators.required);
+  adminPassword = new FormControl('adminPass', Validators.required);
 
   constructor(public dialogRef: MatDialogRef<AdminValidationDialogComponent>, private authService: AuthenticationService, private router: Router) { }
 

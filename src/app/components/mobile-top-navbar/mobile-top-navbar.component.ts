@@ -18,7 +18,6 @@ export class MobileTopNavbarComponent {
   onLogout() {
     this.authService.logout().subscribe((outcome) => {
       if (outcome.message === 'Succesfully disconnected.') {
-        console.log('ok');
         this.router.navigate(['login']);
       }
     });

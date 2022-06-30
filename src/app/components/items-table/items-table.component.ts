@@ -68,9 +68,6 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.canLoadMoreHistory) {
-      console.log(changes.canLoadMoreHistory)
-    }
     if (changes.items && this.items) {
       this.dataSource.data = this.items;
       const previousSelectedItem = this.getItemById(this.selectedItem?._id);
@@ -92,13 +89,13 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
         case 'phone':
           return item.client.phone;
         case 'product':
-          return item.products[0].name;
+          return item.expenses[0].name;
         case 'unitPrice':
-          return item.products[0].price;
+          return item.expenses[0].price;
         case 'quantity':
-          return item.products[0].quantity;
+          return item.expenses[0].quantity;
         case 'provider':
-          return item.products[0].provider.name;
+          return item.expenses[0].provider.name;
         case 'deliveryDate': {
           const date = new Date(item.deliveryDate);
           return date;

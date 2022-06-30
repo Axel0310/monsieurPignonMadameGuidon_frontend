@@ -51,7 +51,6 @@ export class GenericItemService {
     this.itemUrl = this.url;
     this.fetchOngoingItems();
     this.fetchItemsHistory();
-    this.itemsHistory$.subscribe(items => console.log('obs updated => ', items))
   }
 
   getItems(): Observable<Item[]> {

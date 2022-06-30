@@ -1,0 +1,61 @@
+@import "../../../../styles/variables";
+
+.new-client-form {
+  display: flex;
+  align-items: center;
+}
+
+.client-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  max-height: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  overflow: scroll;
+  display: block;
+  width: fit-content;
+
+  thead tr {
+    background-color: $color-primary-dark;
+    color: $color-content-light;
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: 10px 20px;
+  }
+
+  tr td:first-child {
+    padding: 10px 0px 10px 5px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+
+  tbody tr:last-of-type {
+    border-bottom: 2px solid $color-primary-dark;
+  }
+}
+
+.icons {
+  cursor: pointer;
+  font-size: 20px;
+  color: $color-secondary-main;
+
+  &.edit-icon:hover {
+    color: $color-primary-main;
+  }
+
+  &.delete-icon:hover, &.reset-icon:hover {
+    color: $color-failure;
+  }
+
+  &.save-icon:hover {
+    color: $color-success;
+  }
+}

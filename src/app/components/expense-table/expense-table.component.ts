@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Expense } from 'src/app/interfaces/expense';
-import { Product } from 'src/app/interfaces/product';
 
 @Component({
   selector: 'app-expense-table',
@@ -9,13 +8,13 @@ import { Product } from 'src/app/interfaces/product';
   styleUrls: ['./expense-table.component.scss'],
 })
 export class ExpenseTableComponent implements OnChanges {
-  @Input() itemExpenses: Product[] | Expense[] = [];
-  @Input() isOrder = false;
-  @Output() sendUpdatedExpensesEvent: EventEmitter<{expenses?: Expense[]} | {products?: Product[]}> = new EventEmitter<{expenses?: Expense[]} | {products?: Product[]}>();
+  @Input() itemExpenses: Expense[] = [];
+  @Output() sendUpdatedExpensesEvent: EventEmitter<{expenses?: Expense[]} > = new EventEmitter<{expenses?: Expense[]}>();
 
   public totalPrice: number = 0;
   public isEditEnabled = false;
   public hasOneExpense = true;
+  public hasAtLeastOneProvider = true;
 
   expensesForm = this.fb.array([]);
 
@@ -26,10 +25,11 @@ export class ExpenseTableComponent implements OnChanges {
       this.disableEditing();
     }
     this.updateTotalPrice(this.itemExpenses);
+    this.updateHasAtLeastOneProvider();
   }
 
   private updateTotalPrice(list: Expense[]): void {
-    this.totalPrice = list.reduce((total: number, item: Product | Expense) => {
+    this.totalPrice = list.reduce((total: number, item: Expense) => {
       return total + item.price * item.quantity;
     }, 0);
   }
@@ -55,12 +55,12 @@ export class ExpenseTableComponent implements OnChanges {
 
   enableEditing() {
     this.isEditEnabled = true;
-    this.itemExpenses.forEach((item: Expense | Product) => {
+    this.itemExpenses.forEach((item: Expense) => {
       this.expensesForm.push(this.fb.group({
         name: [item.name, [Validators.required]],
         quantity: [item.quantity, [Validators.required]],
         price: [item.price, [Validators.required]],
-        ...(this.isOrder && {provider: (item as Product).provider})
+        provider: item.provider,
       }))
     })
     this.updateHasOneExpense();
@@ -77,7 +77,7 @@ export class ExpenseTableComponent implements OnChanges {
       name: ['', [Validators.required]],
       quantity: [1, [Validators.required, Validators.min(1)]],
       price: [0, [Validators.required, Validators.min(0)]],
-      ...(this.isOrder && {provider: ['', [Validators.required]]})
+      provider: ['',],
     })
     this.expensesForm.push(newExpense);
     this.updateHasOneExpense();
@@ -104,10 +104,13 @@ export class ExpenseTableComponent implements OnChanges {
         )
       })
       this.sendUpdatedExpensesEvent.emit({
-        ...(!this.isOrder && {expenses: this.expensesForm.value as Expense[]}),
-        ...(this.isOrder && {products: this.expensesForm.value as Product[]})
+        expenses: this.expensesForm.value,
       })
       this.disableEditing();
     }
+  }
+
+  updateHasAtLeastOneProvider() {
+    this.hasAtLeastOneProvider = !!this.itemExpenses.find(expense => expense.provider)
   }
 }

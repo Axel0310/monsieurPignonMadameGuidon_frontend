@@ -1,19 +1,41 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="providerForm">
+<form class="new-provider-form" (ngSubmit)="createProvider()">
   <mat-form-field appearance="fill">
     <mat-label>Créer un fournisseur</mat-label>
-    <input matInput formControlName="name" />
+    <input matInput [formControl]="newProvider" />
   </mat-form-field>
-  <button mat-raised-button color="primary" [disabled]="!providerForm.valid">
+  <button mat-raised-button color="primary" [disabled]="!newProvider.valid">
     Créer
   </button>
 </form>
 <mat-list class="providers-list">
-  <mat-list-item *ngFor="let provider of ((providers$ | async) | orderBy:'name')">
-    <fa-icon
-      [icon]="faTrashAlt"
-      (click)="deleteProvider(provider._id)"
-      class="delete-icon"
-    ></fa-icon>
-    <span>{{ provider.name }}</span>
+  <mat-list-item *ngFor="let provider of providers$ | async | orderBy: 'name'">
+    <ng-container
+      *ngIf="
+        providerBeingUpdated && provider._id === providerBeingUpdated._id;
+        then editingMode;
+        else displayMode
+      "
+    >
+    </ng-container>
+
+    <ng-template #displayMode>
+      <mat-icon (click)="deleteProvider(provider._id)" class="icons delete-icon"
+        >delete</mat-icon
+      >
+      <mat-icon (click)="toggleEditing(provider)" class="icons edit-icon"
+        >edit</mat-icon
+      >
+      <span>{{ provider.name }}</span>
+    </ng-template>
+
+    <ng-template #editingMode>
+      <mat-icon (click)="updateProvider()" class="icons save-icon"
+        >save_as</mat-icon
+      >
+      <mat-icon (click)="toggleEditing()" class="icons reset-icon"
+        >close</mat-icon
+      >
+      <input type="text" [formControl]="updatedProvider" />
+    </ng-template>
   </mat-list-item>
 </mat-list>

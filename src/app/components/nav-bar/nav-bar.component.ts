@@ -15,7 +15,6 @@ export class NavBarComponent {
   onLogout() {
     this.authService.logout().subscribe((outcome) => {
       if (outcome.message === 'Succesfully disconnected.') {
-        console.log('ok');
         this.router.navigate(['login']);
       }
     });
@@ -40,7 +39,6 @@ export class NavBarComponent {
 
   navigateToParameters(): void {
     if(this.authService.isAdminEnabled) {
-      console.log('admin => ', this.authService.isAdminEnabled)
       this.router.navigate(['/parametres']);
     } else {
       this.openAdminValidationDialog();

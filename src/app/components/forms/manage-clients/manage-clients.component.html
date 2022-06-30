@@ -1,0 +1,67 @@
+<form class="new-client-form" (ngSubmit)="createClient()" [formGroup]="newClientForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Nom</mat-label>
+    <input matInput formControlName="lastName" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Prénom</mat-label>
+    <input matInput formControlName="firstName" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Téléphone</mat-label>
+    <input matInput formControlName="phone" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" [disabled]="!newClientForm.valid">
+    Créer
+  </button>
+</form>
+<table class="client-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Téléphone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clients$ | async | orderBy: 'lastName'">
+      <ng-container
+        *ngIf="clientBeingUpdated && client._id === clientBeingUpdated._id; then editingMode; else displayMode"
+      >
+      </ng-container>
+      <ng-template #displayMode>
+        <td>
+          <mat-icon (click)="deleteClient(client._id)" class="icons delete-icon"
+            >delete</mat-icon
+          >
+          <mat-icon (click)="toggleEditing(client)" class="icons edit-icon"
+            >edit</mat-icon
+          >
+        </td>
+        <td>{{ client.lastName }}</td>
+        <td>{{ client.firstName }}</td>
+        <td>{{ client.phone }}</td>
+      </ng-template>
+      <ng-template #editingMode [formGroup]="updatedClientForm">
+        <td>
+          <mat-icon (click)="updateClient()" class="icons save-icon"
+            >save_as</mat-icon
+          >
+          <mat-icon (click)="toggleEditing()" class="icons reset-icon"
+            >close</mat-icon
+          >
+        </td>
+        <td>
+          <input type="text" formControlName="lastName" />
+        </td>
+        <td>
+          <input type="text" formControlName="firstName" />
+        </td>
+        <td>
+          <input type="text" formControlName="phone" />
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>

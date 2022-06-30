@@ -37,17 +37,15 @@ import { AuthenticationService } from './services/authentication.service';
 import { PaintService } from './services/paint.service';
 import { RepairService } from './services/repair.service';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { CreateOrderComponent } from './components/forms/create-order/create-order.component';
-import { CreatePaintComponent } from './components/forms/create-paint/create-paint.component';
-import { CreateRepairComponent } from './components/forms/create-repair/create-repair.component';
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import { ProviderService } from './services/provider.service';
-import { ProductService } from './services/product.service';
+import { ExpenseService } from './services/expense.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { ManageProvidersComponent } from './components/forms/manage-providers/manage-providers.component';
-import { ManageProductsComponent } from './components/forms/manage-products/manage-products.component';
+import { ManageExpensesComponent } from './components/forms/manage-expenses/manage-expenses.component';
 import { ManagePasswordComponent } from './components/forms/manage-password/manage-password.component';
+import { ManageClientsComponent } from './components/forms/manage-clients/manage-clients.component';
 import { ShopService } from './services/shop.service';
 import { PhoneFormatPipe } from './pipes/phone-format.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
@@ -87,11 +85,9 @@ registerLocaleData(localeFr, 'fr');
     ItemCreationDialogComponent,
     LocalizationListComponent,
     ExpenseTableComponent,
-    CreateOrderComponent,
-    CreatePaintComponent,
-    CreateRepairComponent,
     ManageProvidersComponent,
     ManagePasswordComponent,
+    ManageClientsComponent,
     PhoneFormatPipe,
     OrderByPipe,
     MobileBottomNavbarComponent,
@@ -100,7 +96,7 @@ registerLocaleData(localeFr, 'fr');
     ItemsTableComponent,
     NotificationComponent,
     CreateItemComponent,
-    ManageProductsComponent,
+    ManageExpensesComponent,
     AdminValidationDialogComponent,
     LoaderComponent
   ],
@@ -146,7 +142,7 @@ registerLocaleData(localeFr, 'fr');
     OrderService,
     PaintService,
     ProviderService,
-    ProductService,
+    ExpenseService,
     RepairService,
     ShopService,
     ScreenSizeService,

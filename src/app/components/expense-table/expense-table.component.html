@@ -6,7 +6,7 @@
         <th>Produits/Services</th>
         <th>Prix</th>
         <th>Quantité</th>
-        <th *ngIf="isOrder">Fournisseur</th>
+        <th *ngIf="hasAtLeastOneProvider || isEditEnabled">Fournisseur</th>
       </tr>
     </thead>
     <tbody>
@@ -15,7 +15,11 @@
           <td class="name-cell">{{ expense.name }}</td>
           <td class="price-cell">{{ expense.price | currency }}</td>
           <td class="quantity-cell">{{ expense.quantity }}</td>
-          <td *ngIf="isOrder">{{ expense.provider.name }}</td>
+          <td *ngIf="hasAtLeastOneProvider">
+            <span *ngIf="expense.provider">
+              {{ expense.provider.name }}
+            </span>
+          </td>
         </tr>
       </ng-container>
       <ng-template #editForm>
@@ -33,7 +37,7 @@
             <td class="quantity-cell">
               <input type="number" formControlName="quantity" required class="quantity-input" (change)="updateTotalPrice(expensesForm.value)" min="1" [ngClass]="{'invalid-input': f.controls.quantity.invalid}">
             </td>
-            <td *ngIf="isOrder">
+            <td>
               <input type="text" formControlName="provider" required [ngClass]="{'invalid-input': f.controls.provider.invalid}">
             </td>
           </ng-container>

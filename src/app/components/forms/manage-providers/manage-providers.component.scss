@@ -1,11 +1,8 @@
 @import "../../../../styles/variables";
 
-.delete-icon {
-  margin-right: 10px;
-
-  &:hover {
-    color: red;
-  }
+.new-provider-form {
+  display: flex;
+  align-items: center;
 }
 
 .providers-list {
@@ -20,5 +17,31 @@
     max-width: none;
     width: 100vw;
     height: 350px;
+  }
+
+  mat-list-item {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  mat-list-item:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+}
+
+.icons {
+  cursor: pointer;
+  font-size: 20px;
+  color: $color-secondary-main;
+
+  &.edit-icon:hover {
+    color: $color-primary-main;
+  }
+
+  &.delete-icon:hover, &.reset-icon:hover {
+    color: $color-failure;
+  }
+
+  &.save-icon:hover {
+    color: $color-success;
   }
 }

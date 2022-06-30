@@ -20,15 +20,12 @@ export class ItemDetailsComponent implements OnChanges {
   commercialOpportunity = new FormControl('');
   deliveryDate = new FormControl(this.minDate, Validators.required);
 
-  public isOrder = false
-
   ngOnChanges() {
     if(this.item) {
        this.bikeDescription.setValue(this.item.bikeDescription !== '' ? this.item.bikeDescription : 'Non renseignée');
        this.comment.setValue(this.item.comment !== '' ? this.item.comment : 'Non renseignée')
        this.commercialOpportunity.setValue(this.item.commercialOpportunity !== '' ? this.item.commercialOpportunity : 'Non renseignée')
        this.deliveryDate.setValue(this.item.deliveryDate)
-       this.isOrder = this.itemType === 'order'
     }
   }
 

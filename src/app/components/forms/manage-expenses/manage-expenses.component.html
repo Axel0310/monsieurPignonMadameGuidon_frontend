@@ -1,0 +1,91 @@
+<form class="new-expense-form" (ngSubmit)="createExpense()" [formGroup]="newExpenseForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Nom</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Prix</mat-label>
+    <input type="number" min="0" matInput formControlName="price" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Référence</mat-label>
+    <input matInput formControlName="reference" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Fournisseur</mat-label>
+    <mat-select formControlName="provider">
+      <mat-option
+        *ngFor="let provider of providers$ | async"
+        [value]="provider._id"
+      >
+        {{ provider.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" [disabled]="!newExpenseForm.valid">
+    Créer
+  </button>
+</form>
+
+<table class="expenses-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Nom</th>
+      <th>Prix</th>
+      <th>Référence</th>
+      <th>Fournisseur</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let expense of expenses$ | async | orderBy: 'name'">
+      <ng-container
+        *ngIf="expenseBeingUpdated && expense._id === expenseBeingUpdated._id; then editingMode; else displayMode"
+      >
+      </ng-container>
+      <ng-template #displayMode>
+        <td>
+          <mat-icon (click)="deleteExpense(expense._id)" class="icons delete-icon"
+            >delete</mat-icon
+          >
+          <mat-icon (click)="toggleEditing(expense)" class="icons edit-icon"
+            >edit</mat-icon
+          >
+        </td>
+        <td>{{ expense.name }}</td>
+        <td>{{ expense.price }}</td>
+        <td>{{ expense.reference }}</td>
+        <td>
+          <ng-container *ngIf="expense.provider">
+            {{ expense.provider.name }}
+          </ng-container>
+        </td>
+      </ng-template>
+      <ng-template #editingMode [formGroup]="updatedExpenseForm">
+        <td>
+          <mat-icon (click)="updateExpense()" class="icons save-icon"
+            >save_as</mat-icon
+          >
+          <mat-icon (click)="toggleEditing()" class="icons reset-icon"
+            >close</mat-icon
+          >
+        </td>
+        <td>
+          <input type="text" formControlName="name" />
+        </td>
+        <td>
+          <input type="number" min="0" formControlName="price" />
+        </td>
+        <td>
+          <input type="text" formControlName="reference" />
+        </td>
+        <td>
+          <select name="provider" formControlName="provider">
+            <option value=""></option>
+            <option *ngFor="let provider of providers$ | async" [value]="provider._id">{{ provider.name }}</option>
+          </select>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>

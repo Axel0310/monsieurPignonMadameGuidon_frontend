@@ -1,14 +1,14 @@
 <form [formGroup]="newItemForm" (input)="onItemFormChange()">
-  <table formArrayName="{{ expensesType }}">
+  <table formArrayName="expenses">
     <thead>
       <th></th>
       <th>Produits/Service</th>
       <th>Prix</th>
       <th>Quantité</th>
-      <th *ngIf="itemType === 'order'">Fournisseur</th>
+      <th>Fournisseur</th>
     </thead>
     <tbody>
-      <tr *ngFor="let expense of expensesOrProducts.controls; let i = index">
+      <tr *ngFor="let expense of expensesFormArray.controls; let i = index">
         <ng-container [formGroupName]="i">
           <td>
             <mat-icon *ngIf="!hasOneExpense" (click)="removeExpense(i)" class="delete-icon"
@@ -17,11 +17,11 @@
           </td>
           <td>
             <mat-form-field appearance="fill">
-              <input matInput formControlName="name" required [matAutocomplete]="productAutocomplete" (input)="onProductNameChange(expense.value.name)"/>
+              <input matInput formControlName="name" required [matAutocomplete]="expenseAutocomplete" (input)="onExpenseNameChange(expense.value.name)"/>
             </mat-form-field>
-            <mat-autocomplete #productAutocomplete="matAutocomplete" (optionSelected)="fillProductInfo($event.option.value, i)">
-              <mat-option *ngFor="let product of (filteredProducts$ | async)" [value]="product._id">
-                {{product.name}}
+            <mat-autocomplete #expenseAutocomplete="matAutocomplete" (optionSelected)="fillExpenseInfo($event.option.value, i)">
+              <mat-option *ngFor="let expense of (filteredExpenses$ | async)" [value]="expense._id">
+                {{expense.name}}
               </mat-option>
             </mat-autocomplete>
           </td>
@@ -49,7 +49,7 @@
               />
             </mat-form-field>
           </td>
-          <td *ngIf="itemType === 'order'">
+          <td>
             <mat-form-field appearance="fill">
               <select matNativeControl formControlName="provider" required>
                 <option
@@ -71,7 +71,7 @@
     </tbody>
   </table>
 
-  <p (click)="addExpense()" class="new-line">+ Ajouter un produit</p>
+  <p (click)="addExpense()" class="new-line">+ Ajouter une dépense</p>
 
   <div class="other-inputs">
     <div>
@@ -147,7 +147,7 @@
 
       <mat-form-field appearance="fill" class="input">
         <mat-label>Référence facture</mat-label>
-        <input matInput formControlName="billRef" required />
+        <input matInput formControlName="billRef"/>
       </mat-form-field>
     </div>
 

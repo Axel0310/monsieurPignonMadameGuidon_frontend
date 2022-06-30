@@ -48,7 +48,6 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    console.log('loggedin => ', this.loggedShop$.value);
     this.checkSessionCookie();
     return this.loggedShop$.asObservable().pipe(map((shop) => !!shop));
   }
@@ -91,7 +90,6 @@ export class AuthenticationService {
 
   getSessionCookie(): string | undefined {
     let ca: Array<string> = document.cookie.split(';');
-    console.log(document.cookie);
     let caLen: number = ca.length;
     let cookieName = 'connect.sid';
     let c: string;

@@ -7,9 +7,8 @@ import { PaintService } from 'src/app/services/paint.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Provider } from 'src/app/interfaces/provider';
 import { ProviderService } from 'src/app/services/provider.service';
-import { Product } from 'src/app/interfaces/product';
-import { ProductService } from 'src/app/services/product.service';
-import { filter, map, startWith, tap } from 'rxjs/operators';
+import { ExpenseService } from 'src/app/services/expense.service';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-item',
@@ -24,10 +23,10 @@ export class CreateItemComponent implements OnChanges {
   minDate: Date = new Date();
   defaultDate: Date = this.minDate;
 
-  private existingProducts$: Observable<Product[]>;
-  private productNameInput$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public filteredProducts$: Observable<Product[]>;
-  private _filteredProducts$: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
+  private existingExpenses$: Observable<Expense[]>;
+  private expenseNameInput$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public filteredExpenses$: Observable<Expense[]>;
+  private _filteredExpenses$: BehaviorSubject<Expense[]> = new BehaviorSubject<Expense[]>([]);
 
   public hasOneExpense = true;
 
@@ -35,91 +34,69 @@ export class CreateItemComponent implements OnChanges {
     name: ['', [Validators.required]],
     quantity: [1, [Validators.required]],
     price: [0, [Validators.required]],
+    provider: [''],
   }
 
-  genericProductObj = {
-    ...this.genericExpenseObj,
-    provider: ['', [Validators.required]],
-  }
-
-  expensesFormArray = this.fb.array([
-      this.fb.group({
-        ...this.genericExpenseObj,
-      }),
-    ])
-  
-
-  productsFormArray = this.fb.array([
-      this.fb.group({
-        ...this.genericProductObj,
-      }),
-    ])
-  
+  genericExpensesFormArray = this.fb.array([
+    this.fb.group({
+      ...this.genericExpenseObj,
+    }),
+  ])
 
   newItemForm: FormGroup = this.fb.group({
-    expenses: this.expensesFormArray,
-    products: this.productsFormArray,
+    expenses: this.genericExpensesFormArray,
     bikeDescription: ['', [Validators.required]],
     status: ['', [Validators.required]],
     deliveryDate: [this.defaultDate, [Validators.required]],
-    billRef: ['', [Validators.required]],
+    billRef: [''],
     comment: [''],
     commercialOpportunity: ['']
   });
 
-  expensesOrProducts: FormArray = this.newItemForm.get('expenses') as FormArray;
-  expensesType: 'expenses' | 'products' = 'expenses';
+  public expensesFormArray: FormArray = this.newItemForm.get('expenses') as FormArray;
 
   totalPrice: number = 0;
 
   public providersList: Observable<Provider[]> | undefined;
 
-  constructor(private fb: FormBuilder, private repairService: RepairService, private orderService: OrderService, private paintService: PaintService, private providerService: ProviderService, private productService: ProductService) {
+  constructor(private fb: FormBuilder, private repairService: RepairService, private orderService: OrderService, private paintService: PaintService, private providerService: ProviderService, private expenseService: ExpenseService) {
     this.defaultDate.setMinutes(0);
     this.defaultDate.setHours(this.defaultDate.getHours() + 1);
-    this.existingProducts$ = this.productService.getProducts();
+    this.existingExpenses$ = this.expenseService.getExpenses();
 
-    this.filteredProducts$ = combineLatest([this.existingProducts$, this.productNameInput$]).pipe(
-      map(([existingProducts, filterValue]) => this._filter(existingProducts, filterValue)),
-      tap(products => this._filteredProducts$.next(products))
+    this.filteredExpenses$ = combineLatest([this.existingExpenses$, this.expenseNameInput$]).pipe(
+      map(([existingExpenses, filterValue]) => this._filter(existingExpenses, filterValue)),
+      tap(products => this._filteredExpenses$.next(products))
     )
   }
   
   ngOnChanges() {
-    if(this.itemType === 'order') {
-      this.newItemForm.removeControl('expenses');
-    } else {
-      this.newItemForm.removeControl('products');
-      if(this.itemType === 'repair') {
-        this.newItemForm.addControl('localization', this.fb.control('En boutique', [Validators.required]));
-      } else {
-        this.newItemForm.addControl('color', this.fb.control('', [Validators.required]));
-      }
+    if(this.itemType === 'repair') {
+      this.newItemForm.addControl('localization', this.fb.control('En boutique', [Validators.required]));
+    } else if(this.itemType === 'paint') {
+      this.newItemForm.addControl('color', this.fb.control('', [Validators.required]));
     }
-
-    this.providersList = this.itemType === 'order' ? this.providerService.getProviders() : undefined;
-    this.expensesOrProducts = this.itemType === 'order' ? this.newItemForm.get('products') as FormArray : this.newItemForm.get('expenses') as FormArray;
-    this.expensesType = this.itemType === 'order' ? 'products' : 'expenses';
+    
+    this.providersList = this.providerService.getProviders();
     const defaultStatus = this.itemType === 'order' ? 'A commander' : this.itemType === 'repair' ? 'A faire' : 'En attente';
     this.newItemForm.get('status')?.setValue(defaultStatus)
   }
 
-  private _filter(products: Product[], value: string): Product[] {
+  private _filter(expenses: Expense[], value: string): Expense[] {
     const filterValue = value.toLowerCase();
-    return  products.filter(product => product.name.toLowerCase().includes(filterValue))
+    return  expenses.filter(expense => expense.name.toLowerCase().includes(filterValue))
   }
 
   addExpense() {
     const newExpenseFormControl = this.fb.group({
-      ...(this.itemType === 'order' && this.genericProductObj),
-      ...(this.itemType !== 'order' && this.genericExpenseObj),
+      ...this.genericExpenseObj,
     })
-    this.expensesOrProducts.push(newExpenseFormControl);
+    this.expensesFormArray.push(newExpenseFormControl);
     this.updateHasOneExpense();
   }
 
   removeExpense(index: number) {
-    this.expensesOrProducts.removeAt(index);
+    this.expensesFormArray.removeAt(index);
     this.updateTotalPrice();
     this.updateHasOneExpense();
   }
@@ -132,94 +109,30 @@ export class CreateItemComponent implements OnChanges {
     } else {
       this.paintService.setPaintBeingCreated(this.newItemForm.value);
     }
+    console.log('isFormValid => ', this.newItemForm)
     this.isFormValid.emit(this.newItemForm.valid);
   }
 
   updateTotalPrice() {
-    this.totalPrice = this.expensesOrProducts.value.reduce((total: number, expense: Expense) => total + expense.price * expense.quantity, 0);
+    this.totalPrice = this.expensesFormArray.value.reduce((total: number, expense: Expense) => total + expense.price * expense.quantity, 0);
   }
 
-  onProductNameChange(nameInput: string) {
-    this.productNameInput$.next(nameInput);
+  onExpenseNameChange(nameInput: string) {
+    this.expenseNameInput$.next(nameInput);
   }
 
-  fillProductInfo(productId: string, index: number) {
-    const selectedProduct = this._filteredProducts$.value.find(prod => String(prod._id) === String(productId))
-    const formControl = (this.expensesOrProducts.controls[index] as FormGroup).controls
-    formControl.name.setValue(selectedProduct?.name)
-    formControl.price.setValue(selectedProduct?.price)
-    if(this.itemType === 'order') {
-      formControl.provider.setValue(selectedProduct?.provider._id)
-    }
+  fillExpenseInfo(productId: string, index: number) {
+    const selectedExpense = this._filteredExpenses$.value.find(prod => String(prod._id) === String(productId))
+    const formControl = (this.expensesFormArray.controls[index] as FormGroup).controls
+    formControl.name.setValue(selectedExpense?.name)
+    formControl.price.setValue(selectedExpense?.price)
+    formControl.provider.setValue(selectedExpense?.provider?._id)
     this.updateTotalPrice();
+    this.onItemFormChange();
   }
 
   updateHasOneExpense() {
-    this.hasOneExpense = this.expensesOrProducts.length < 2;
+    this.hasOneExpense = this.expensesFormArray.length < 2;
   }
 
 }
-
-// export class CreateRepairComponent {
-
-//   @Output() isFormValid = new EventEmitter<boolean>();
-
-//   minDate: Date = new Date();
-//   defaultDate: Date = this.minDate;
-
-  
-
-//   newItemForm = this.fb.group({
-//     expenses: this.fb.array([
-//       this.fb.group({
-//         name: ['', [Validators.required]],
-//         quantity: [1, [Validators.required]],
-//         price: [0, [Validators.required]],
-//       }),
-//     ]),
-//     bikeDescription: ['', [Validators.required]],
-//     localization: ['En boutique', [Validators.required]],
-//     status: ['A faire', [Validators.required]],
-//     deliveryDate: [this.defaultDate, [Validators.required]],
-//     billRef: ['', [Validators.required]],
-//     comment: [''],
-//     commercialOpportunity: [''],
-//   });
-
-//   expenses = this.newItemForm.get('expenses') as FormArray;
-
-  
-
-//   faTrashAlt = faTrashAlt;
-
-//   totalPrice: number = 0;
-
-//   constructor(private fb: FormBuilder, private repairService: RepairService) {
-//     this.defaultDate.setMinutes(0);
-//     this.defaultDate.setHours(this.defaultDate.getHours() + 1);
-//   }
-
-//   addExpense() {
-//     const expense = this.fb.group({
-//       name: ['', [Validators.required]],
-//       quantity: [1, [Validators.required]],
-//       price: [0, [Validators.required]],
-//     })
-//     this.expenses.push(expense);
-//   }
-
-//   removeExpense(index: number) {
-//     this.expenses.removeAt(index);
-//     this.updateTotalPrice();
-//   }
-
-//   onRepairFormChange() {
-//     this.repairService.setRepairBeingCreated(this.newItemForm.value);
-//     this.isFormValid.emit(this.newItemForm.valid);
-//   }
-
-//   updateTotalPrice() {
-//     this.totalPrice = this.expenses.value.reduce((total: number, expense: Expense) => total + expense.price * expense.quantity, 0);
-//   }
-
-// }
