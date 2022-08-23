@@ -14,10 +14,9 @@ export class ClientService {
   private clients$: BehaviorSubject<Client[]> = new BehaviorSubject<Client[]>(
     []
   );
-  private currentClient: BehaviorSubject<Client | undefined> =
-    new BehaviorSubject<Client | undefined>(undefined);
-  public currentClient$: Observable<Client | undefined> =
-    this.currentClient.asObservable();
+  public currentClient$: BehaviorSubject<Client | undefined> = new BehaviorSubject<Client | undefined>(undefined);
+
+  public clientToBeCreated$: BehaviorSubject<Client | undefined> = new BehaviorSubject<Client | undefined>(undefined);
 
   constructor(
     private http: HttpClient,
@@ -31,11 +30,19 @@ export class ClientService {
   }
 
   setCurrentClient(client: Client) {
-    this.currentClient.next(client);
+    this.currentClient$.next(client);
   }
 
   resetCurrentClient() {
-    this.currentClient.next(undefined);
+    this.currentClient$.next(undefined);
+  }
+
+  setClientToBeCreated(client: Client) {
+    this.clientToBeCreated$.next(client);
+  }
+
+  resetClientToBeCreated() {
+    this.clientToBeCreated$.next(undefined);
   }
 
   fetchClients() {
@@ -48,11 +55,12 @@ export class ClientService {
     return this.clients$.asObservable();
   }
 
-  createClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(`${this.API_URL}/create`, { ...client }).pipe(
+  createClient(): Observable<Client> {
+    return this.http.post<Client>(`${this.API_URL}/create`, { ...this.clientToBeCreated$.value }).pipe(
       tap((createdClient) => {
         this.notifService.pushNotification('success', 'Le client a été créé');
         this.addClientToList(createdClient);
+        this.currentClient$.next(createdClient)
       }),
       catchError((err) => {
         this.notifService.pushNotification(

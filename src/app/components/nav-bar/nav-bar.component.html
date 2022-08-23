@@ -1,11 +1,15 @@
 <nav class="nav-bar-cont">
   <div>
     <div class="nav-category">
-      <a routerLink="/reparations" routerLinkActive="active">
+      <div class="link" (click)="navigateToAllRepairsOverview()" [class.active]="router.url === '/reparations'">
         <mat-icon>handyman</mat-icon>
         <p>Réparations</p>
-      </a>
-      <div class="create-link" (click)="openItemCreationDialog('repair')">
+      </div>
+      <div class="sub-link" (click)="navigateToToDoRepairsOverview()">
+        <mat-icon>build</mat-icon>
+        <p>A faire</p>
+      </div>
+      <div class="sub-link" (click)="openItemCreationDialog('repair')">
         <mat-icon>add_circle_outline</mat-icon>
         <p>Créer</p>
       </div>
@@ -16,7 +20,7 @@
         <mat-icon>local_shipping</mat-icon>
         <p>Commandes</p>
       </a>
-      <div class="create-link" (click)="openItemCreationDialog('order')">
+      <div class="sub-link" (click)="openItemCreationDialog('order')">
         <mat-icon>add_circle_outline</mat-icon>
         <p>Créer</p>
       </div>
@@ -27,7 +31,7 @@
         <mat-icon>format_paint</mat-icon>
         <p>Peintures</p>
       </a>
-      <div class="create-link" (click)="openItemCreationDialog('paint')">
+      <div class="sub-link" (click)="openItemCreationDialog('paint')">
         <mat-icon>add_circle_outline</mat-icon>
         <p>Créer</p>
       </div>

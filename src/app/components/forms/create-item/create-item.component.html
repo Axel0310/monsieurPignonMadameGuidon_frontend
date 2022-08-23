@@ -1,4 +1,4 @@
-<form [formGroup]="newItemForm" (input)="onItemFormChange()">
+<form [formGroup]="newItemForm">
   <table formArrayName="expenses">
     <thead>
       <th></th>
@@ -51,7 +51,8 @@
           </td>
           <td>
             <mat-form-field appearance="fill">
-              <select matNativeControl formControlName="provider" required>
+              <select matNativeControl formControlName="provider">
+                <option value=""></option>
                 <option
                   *ngFor="let provider of providersList | async"
                   [value]="provider._id"

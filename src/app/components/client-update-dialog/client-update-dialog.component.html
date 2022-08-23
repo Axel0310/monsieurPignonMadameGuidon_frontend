@@ -1,0 +1,19 @@
+<div class="client-update-dialog-cont">
+  <h1 mat-dialog-title>Mettre à jour le client</h1>
+  <i class="material-icons close-icon" (click)="onClickClose()">close</i>
+  <div mat-dialog-content>
+    <app-select-client
+      (isClientFormValidEvent)="updateIsClientFormValid($event)"
+    ></app-select-client>
+
+    <div mat-dialog-actions>
+      <button
+        mat-button
+        (click)="onValidate()"
+        [disabled]="!(selectedClient$ | async) && !isClientFormValid"
+      >
+        Valider
+      </button>
+    </div>
+  </div>
+</div>

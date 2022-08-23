@@ -7,12 +7,12 @@
     <mat-icon>handyman</mat-icon>
     <mat-menu #repairMenu>
       <button mat-menu-item>
-        <a mat-menu-item routerLink="/reparations">
+        <a routerLink="/reparations">
           <mat-icon>manage_search</mat-icon>
           <span>Gérer</span>
         </a>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="openItemCreationDialog('repair')">
         <mat-icon>add_circle_outline</mat-icon>
         <span>Créer</span>
       </button>
@@ -27,12 +27,12 @@
     <mat-icon>local_shipping</mat-icon>
     <mat-menu #orderMenu>
       <button mat-menu-item>
-        <a mat-menu-item routerLink="/commandes">
+        <a routerLink="/commandes">
           <mat-icon>manage_search</mat-icon>
           <span>Gérer</span>
         </a>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="openItemCreationDialog('order')">
         <mat-icon>add_circle_outline</mat-icon>
         <span>Créer</span>
       </button>
@@ -47,12 +47,12 @@
     <mat-icon>format_paint</mat-icon>
     <mat-menu #paintMenu>
       <button mat-menu-item>
-        <a mat-menu-item routerLink="/peintures">
+        <a routerLink="/peintures">
           <mat-icon>manage_search</mat-icon>
           <span>Gérer</span>
         </a>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="openItemCreationDialog('paint')">
         <mat-icon>add_circle_outline</mat-icon>
         <span>Créer</span>
       </button>

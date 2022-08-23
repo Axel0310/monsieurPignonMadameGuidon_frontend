@@ -17,6 +17,7 @@
 
   .active {
     border-radius: 50%;
-    box-shadow: 0 0 5px $color-primary-dark;
+    box-shadow: 0 0 10px $color-primary-dark;
+    color: $color-primary-dark;
   }
 }

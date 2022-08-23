@@ -1,7 +1,5 @@
 <mat-toolbar class="top-nav-bar">
   <mat-icon (click)="onLogout()">logout</mat-icon>
   <img class="shop-logo" src="assets/images/logo.png">
-  <a routerLink="/parametres" routerLinkActive="active">
-    <mat-icon>settings</mat-icon>
-  </a>
+  <mat-icon (click)="navigateToParameters()" [class.active]="router.url === '/parametres'">settings</mat-icon>
 </mat-toolbar>

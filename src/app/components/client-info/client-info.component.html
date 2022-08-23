@@ -1,6 +1,24 @@
 <div class="client-info-container">
-  <h3 class="title">Client</h3>
-  <p><span class="info-title">Prénom : </span>{{ client.firstName }}</p>
-  <p><span class="info-title">Nom : </span>{{ client.lastName }}</p>
-  <p><span class="info-title">Téléphone : </span>{{ client.phone | phoneFormat }}</p>
+  <h3 class="title">Client
+    <mat-icon (click)="openEditClientDialog()" class="icons">edit</mat-icon>
+  </h3>
+  <p><span class="info-title">Prénom : </span>
+    <ng-container *ngIf="client && client.firstName; else undefinedInfo">
+      {{ client.firstName }}
+    </ng-container>
+  </p>
+  <p><span class="info-title">Nom : </span>
+    <ng-container *ngIf="client && client.lastName; else undefinedInfo">
+      {{ client.lastName }}
+    </ng-container>
+  </p>
+  <p><span class="info-title">Téléphone : </span>
+    <ng-container *ngIf="client && client.phone; else undefinedInfo">
+      {{ client.phone | phoneFormat }}
+    </ng-container>  
+  </p>
 </div>
+
+<ng-template #undefinedInfo>
+  Non défini
+</ng-template>

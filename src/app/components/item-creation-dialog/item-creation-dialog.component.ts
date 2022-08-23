@@ -20,7 +20,8 @@ export interface DialogData {
   styleUrls: ['./item-creation-dialog.component.scss'],
 })
 export class ItemCreationDialogComponent implements OnInit {
-  public selectedClient: Observable<Client | undefined>;
+  public selectedClient$: Observable<Client | undefined>;
+  public clientToBeCreated$: Observable<Client | undefined>;
 
   public _orderBeingCreated: Order | undefined;
   public _paintBeingCreated: Paint | undefined;
@@ -28,7 +29,6 @@ export class ItemCreationDialogComponent implements OnInit {
 
   public isItemFormValid: boolean = false;
   public isClientFormValid: boolean = false;
-  private clientToBeCreated: Client | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<ItemCreationDialogComponent>,
@@ -38,7 +38,8 @@ export class ItemCreationDialogComponent implements OnInit {
     private paintService: PaintService,
     private repairService: RepairService
   ) {
-    this.selectedClient = this.clientService.currentClient$;
+    this.selectedClient$ = this.clientService.currentClient$;
+    this.clientToBeCreated$ = this.clientService.clientToBeCreated$;
   }
 
   ngOnInit(): void {
@@ -56,17 +57,15 @@ export class ItemCreationDialogComponent implements OnInit {
   }
 
   onCreateClick(): void {
-    if(this.clientToBeCreated) {
-      this.clientService.createClient(this.clientToBeCreated).subscribe(createdClient => {
+    if(this.isClientFormValid) {
+      this.clientService.createClient().subscribe(createdClient => {
         if(createdClient) {
-          this.clientService.setCurrentClient(createdClient);
           this.createItem()
         }
       })
     } else {
       this.createItem()
     }
-    
   }
 
   createItem() {
@@ -96,9 +95,8 @@ export class ItemCreationDialogComponent implements OnInit {
     this.isItemFormValid = isItemFormValid;
   }
 
-  updateClientFormInfo(clientFormInfo: {isClientFormValid: boolean, newClient: Client}) {
-    this.isClientFormValid = clientFormInfo.isClientFormValid;
-    this.clientToBeCreated = clientFormInfo.newClient;
+  updateIsClientFormValid(isNewClientFormValid: boolean) {
+    this.isClientFormValid = isNewClientFormValid;
   }
 
   onClickClose(): void {

@@ -111,6 +111,10 @@ export class GenericItemService {
     this.filteredStatus$.next(statusFilter);
   }
 
+  setStatusFilter(statusList: string[]): void {
+    this.filteredStatus$.next(statusList);
+  }
+
   fetchOngoingItems() {
     this._isLoading$.next(true);
     this.http
@@ -197,7 +201,6 @@ export class GenericItemService {
       } else {
         itemsHistory.splice(indexOfUpdatedItem, 1, updatedItem);
       }
-      console.log(itemsHistory)
       this.itemsHistory$.next(itemsHistory);
     }
     

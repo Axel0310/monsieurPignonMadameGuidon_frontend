@@ -1,7 +1,7 @@
 <div class="item-details">
   <ng-container *ngIf="item; else noSelection">
     <div class="first-col column">
-      <app-client-info [client]="item.client"></app-client-info>
+      <app-client-info [client]="item.client" (updateItemClientEvent)="updateItem($event)"></app-client-info>
       <div class="inputs-wrapper-flex">
         <div class="input-container">
           <label for="bill-number" class="input-label">N° facture</label>
@@ -100,11 +100,31 @@
       </div>
 
       <div *ngIf="itemType === 'paint'" class="input-container">
-        <label for="color" class="input-label">Couleur</label>
+        <label for="color" class="input-label">
+          Couleur
+          <div class="label-icons-container">
+            <button
+              *ngIf="color.dirty"
+              mat-icon-button
+              (click)="prepareUpdate('color')"
+              class="save-icon"
+            >
+              <mat-icon>save_as</mat-icon>
+            </button>
+            <button
+              *ngIf="color.dirty"
+              mat-icon-button
+              (click)="resetInput('color')"
+              class="reset-button"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </label>
         <input
           id="color"
           type="text"
-          [value]="item.color !== '' ? item.color : 'Non renseignée'"
+          [formControl]="color"
           class="input full-width"
         />
       </div>

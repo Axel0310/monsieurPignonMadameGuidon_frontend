@@ -1,5 +1,5 @@
 <div class="client-selection-form">
-  <mat-radio-group [(ngModel)]="clientFormSelector">
+  <mat-radio-group [(ngModel)]="clientFormSelector" (change)="resetClientSelection($event.value)">
     <mat-radio-button value="existingClient" checked
       >Client existant</mat-radio-button
     >
@@ -9,7 +9,7 @@
   <form
     *ngIf="clientFormSelector === 'newClient'; else existingClientForm"
     [formGroup]="newClientForm"
-    (change)="onClientFormChange()"
+    (change)="onNewClientFormChange()"
   >
     <mat-form-field appearance="fill">
       <mat-label>Prénom</mat-label>

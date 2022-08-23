@@ -36,9 +36,6 @@ export class ManageExpensesComponent {
   constructor(private expensesService: ExpenseService, private providerService: ProviderService) {
     this.expenses$ = this.expensesService.getExpenses();
     this.providers$ = this.providerService.getProviders();
-    this.expenses$.subscribe(p => {
-      console.log(p)
-    })
   }
 
   createExpense() {

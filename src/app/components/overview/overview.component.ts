@@ -91,9 +91,6 @@ export class OverviewComponent implements OnInit {
 
   updateItem(updates: any) {
     this.updateItemEvent.emit({ id: this.selectedItem?._id, updates });
-    if (updates.status) {
-      // this.selectedStatus = updates.status;
-    }
   }
 
   onSearch() {

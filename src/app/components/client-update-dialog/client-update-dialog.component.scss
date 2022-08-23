@@ -1,6 +1,4 @@
-@import "../../../styles/variables";
-
-.item-creation-dialog-cont {
+.client-update-dialog-cont {
     position: relative;
 
   .close-icon {
@@ -18,9 +16,14 @@
   .mat-dialog-content {
     max-height: 80vh;
 
-    mat-stepper .mat-horizontal-content-container {
-      padding: 0 !important;
-      overflow: visible !important;
+    .mat-horizontal-content-container {
+      padding: 0;
+    }
+
+    .mat-dialog-actions {
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
     }
   }
 

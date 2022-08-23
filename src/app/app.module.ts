@@ -66,6 +66,7 @@ import { CreateItemComponent } from './components/forms/create-item/create-item.
 import {MatSelectModule} from '@angular/material/select';
 import { AdminValidationDialogComponent } from './components/admin-validation-dialog/admin-validation-dialog.component';
 import { LoaderComponent } from './components/loader/loader.component'
+import { ClientUpdateDialogComponent } from './components/client-update-dialog/client-update-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -98,7 +99,8 @@ registerLocaleData(localeFr, 'fr');
     CreateItemComponent,
     ManageExpensesComponent,
     AdminValidationDialogComponent,
-    LoaderComponent
+    LoaderComponent,
+    ClientUpdateDialogComponent,
   ],
   imports: [
     BrowserModule,

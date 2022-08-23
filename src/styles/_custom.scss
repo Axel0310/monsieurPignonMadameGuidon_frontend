@@ -34,6 +34,11 @@
   }
 }
 
+.mat-horizontal-content-container {
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
 .mat-expansion-panel-body {
   padding: 0 24px 0 !important;
 }

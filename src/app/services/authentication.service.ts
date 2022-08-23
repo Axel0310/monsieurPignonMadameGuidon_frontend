@@ -29,11 +29,19 @@ export class AuthenticationService {
         tap(
           shop => {
             this.loggedShop$.next(shop);
-            localStorage.setItem('loggedShop', JSON.stringify(shop))
-            this.router.navigate(['/reparations'])
+            localStorage.setItem('loggedShop', JSON.stringify(shop));
+            this.router.navigate(['/reparations']);
+            this.notifService.pushNotification('success', 'Vous êtes connecté');
           }
         ),
-        catchError(handleError)
+        catchError((err) => {
+          this.notifService.pushNotification(
+            'failure',
+            "Echec de connexion",
+            err.error.message
+          );
+          throw err;
+        })
       );
   }
 

@@ -15,17 +15,21 @@ export class ItemDetailsComponent implements OnChanges {
 
   public minDate: Date = new Date();
 
-  bikeDescription = new FormControl('');
+  bikeDescription = new FormControl('', Validators.required);
   comment = new FormControl('');
   commercialOpportunity = new FormControl('');
   deliveryDate = new FormControl(this.minDate, Validators.required);
+  color = new FormControl('', Validators.required);
 
   ngOnChanges() {
     if(this.item) {
        this.bikeDescription.setValue(this.item.bikeDescription !== '' ? this.item.bikeDescription : 'Non renseignée');
-       this.comment.setValue(this.item.comment !== '' ? this.item.comment : 'Non renseignée')
-       this.commercialOpportunity.setValue(this.item.commercialOpportunity !== '' ? this.item.commercialOpportunity : 'Non renseignée')
-       this.deliveryDate.setValue(this.item.deliveryDate)
+       this.comment.setValue(this.item.comment !== '' ? this.item.comment : 'Non renseignée');
+       this.commercialOpportunity.setValue(this.item.commercialOpportunity !== '' ? this.item.commercialOpportunity : 'Non renseignée');
+       this.deliveryDate.setValue(this.item.deliveryDate);
+       if(this.itemType === "paint") {
+         this.color.setValue(this.item.color);
+       }
     }
   }
 
@@ -42,6 +46,7 @@ export class ItemDetailsComponent implements OnChanges {
   }
 
   updateItem(update: any) {
+    console.log('update => ', update)
     this.updateItemEvent.emit(update);
     (document.activeElement as HTMLElement)?.blur();
   }

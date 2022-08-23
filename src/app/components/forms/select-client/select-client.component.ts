@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client } from 'src/app/interfaces/client';
@@ -9,12 +9,9 @@ import { ClientService } from 'src/app/services/client.service';
   templateUrl: './select-client.component.html',
   styleUrls: ['./select-client.component.scss'],
 })
-export class SelectClientComponent {
+export class SelectClientComponent implements OnDestroy {
 
-  @Output() clientFormChangeEvent = new EventEmitter<{
-    isClientFormValid: boolean,
-    newClient: Client,
-  }>();
+  @Output() isClientFormValidEvent = new EventEmitter<boolean>();
 
   public clientFormSelector: 'newClient' | 'existingClient' = 'existingClient';
 
@@ -60,16 +57,23 @@ export class SelectClientComponent {
     this.fetchedClients.next([]);
   }
 
-  onClientFormChange() {
-    this.clientFormChangeEvent.emit({
-      isClientFormValid: this.newClientForm.valid,
-      newClient: this.newClientForm.value,
-    });
-    // this.clientService
-    //   .createClient({ ...this.newClientForm.value })
-    //   .subscribe((clientCreated) => {
-    //     this.clientService.setCurrentClient(clientCreated);
-    //     this.validateClientEvent.emit();
-    //   });
+  onNewClientFormChange() {
+    this.clientService.setClientToBeCreated(this.newClientForm.value)
+    this.isClientFormValidEvent.emit(this.newClientForm.valid);
+  }
+
+  resetClientSelection(clientFormSelected: 'existingClient' | 'newClient') {
+    if(clientFormSelected === 'existingClient') {
+      this.clientService.resetClientToBeCreated();
+      this.newClientForm.reset();
+      this.isClientFormValidEvent.emit(false);
+    } else {
+      this.clientService.resetCurrentClient();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.clientService.resetCurrentClient();
+    this.clientService.resetClientToBeCreated();
   }
 }

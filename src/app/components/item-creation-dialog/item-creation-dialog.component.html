@@ -3,10 +3,6 @@
   <i class="material-icons close-icon" (click)="onClickClose()">close</i>
   <div mat-dialog-content>
     <mat-stepper #stepper>
-      <!-- <mat-step [stepControl]="" [label]="data.itemType === 'order' ? 'Commande' : data.itemType === 'paint' ? 'Peinture' : 'Réparation'" [ngSwitch]="data.itemType"> -->
-        <!-- <app-create-order *ngSwitchCase="'order'" (isFormValid)="updateIsItemFormValid($event)"></app-create-order>
-        <app-create-paint *ngSwitchCase="'paint'" (isFormValid)="updateIsItemFormValid($event)"></app-create-paint>
-        <app-create-repair *ngSwitchCase="'repair'" (isFormValid)="updateIsItemFormValid($event)"></app-create-repair> -->
       <mat-step [stepControl]="" [label]="data.itemType === 'order' ? 'Commande' : data.itemType === 'paint' ? 'Peinture' : 'Réparation'">
         <app-create-item [itemType]="data.itemType" (isFormValid)="updateIsItemFormValid($event)"></app-create-item>
         <div mat-dialog-actions>
@@ -14,11 +10,11 @@
         </div>
       </mat-step>
       <mat-step [stepControl]="" label="Client">
-        <app-select-client (clientFormChangeEvent)="updateClientFormInfo($event)"></app-select-client>
+        <app-select-client (isClientFormValidEvent)="updateIsClientFormValid($event)"></app-select-client>
         
         <div mat-dialog-actions>
           <button mat-button matStepperPrevious>Précécent</button>
-          <button mat-button (click)="onCreateClick()" [disabled]="!(selectedClient | async) && !isClientFormValid">Valider</button>
+          <button mat-button (click)="onCreateClick()" [disabled]="!(selectedClient$ | async) && !isClientFormValid">Valider</button>
         </div>
       </mat-step>
     </mat-stepper>

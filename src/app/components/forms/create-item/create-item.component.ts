@@ -15,7 +15,7 @@ import { map, tap } from 'rxjs/operators';
   templateUrl: './create-item.component.html',
   styleUrls: ['./create-item.component.scss']
 })
-export class CreateItemComponent implements OnChanges {
+export class CreateItemComponent implements OnInit {
 
   @Input() itemType!: string
   @Output() isFormValid = new EventEmitter<boolean>();
@@ -69,17 +69,21 @@ export class CreateItemComponent implements OnChanges {
       tap(products => this._filteredExpenses$.next(products))
     )
   }
-  
-  ngOnChanges() {
+
+  ngOnInit() {
+    this.providersList = this.providerService.getProviders();
     if(this.itemType === 'repair') {
       this.newItemForm.addControl('localization', this.fb.control('En boutique', [Validators.required]));
     } else if(this.itemType === 'paint') {
       this.newItemForm.addControl('color', this.fb.control('', [Validators.required]));
     }
     
-    this.providersList = this.providerService.getProviders();
     const defaultStatus = this.itemType === 'order' ? 'A commander' : this.itemType === 'repair' ? 'A faire' : 'En attente';
     this.newItemForm.get('status')?.setValue(defaultStatus)
+
+    this.newItemForm.valueChanges.subscribe(value => {
+      this.onItemFormChange();
+    })
   }
 
   private _filter(expenses: Expense[], value: string): Expense[] {
@@ -109,7 +113,6 @@ export class CreateItemComponent implements OnChanges {
     } else {
       this.paintService.setPaintBeingCreated(this.newItemForm.value);
     }
-    console.log('isFormValid => ', this.newItemForm)
     this.isFormValid.emit(this.newItemForm.valid);
   }
 

@@ -32,7 +32,8 @@ export class ManageClientsComponent {
   }
 
   createClient() {
-    this.clientService.createClient(this.newClientForm.value).subscribe(createdClient => {
+    this.clientService.setClientToBeCreated(this.newClientForm.value)
+    this.clientService.createClient().subscribe(createdClient => {
       if(createdClient) {
         this.newClientForm.reset();
      }
@@ -65,5 +66,4 @@ export class ManageClientsComponent {
       this.updatedClientForm.reset;
     }
   }
-
 }

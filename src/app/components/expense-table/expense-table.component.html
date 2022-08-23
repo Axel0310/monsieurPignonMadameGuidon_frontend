@@ -38,7 +38,15 @@
               <input type="number" formControlName="quantity" required class="quantity-input" (change)="updateTotalPrice(expensesForm.value)" min="1" [ngClass]="{'invalid-input': f.controls.quantity.invalid}">
             </td>
             <td>
-              <input type="text" formControlName="provider" required [ngClass]="{'invalid-input': f.controls.provider.invalid}">
+              <select formControlName="provider">
+                <option value=""></option>
+                <option
+                  *ngFor="let provider of providersList$ | async"
+                  [value]="provider._id"
+                >
+                  {{ provider.name }}
+                </option>
+              </select>
             </td>
           </ng-container>
         </tr>
@@ -55,9 +63,6 @@
     </tfoot>
   </table>
   <div class="action-icons-container">
-    <mat-icon *ngIf="!isEditEnabled" (click)="copyToClipboard()" class="icons"
-      >content_copy</mat-icon
-    >
     <mat-icon *ngIf="!isEditEnabled" (click)="enableEditing()" class="icons"
       >edit</mat-icon
     >

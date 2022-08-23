@@ -5,7 +5,10 @@
     failure: notification.type === 'failure'
   }"
 >
-  <mat-icon>check_circle</mat-icon>
+  <mat-icon *ngIf="notification.type === 'success'; else failureIcon">check_circle</mat-icon>
+  <ng-template #failureIcon>
+    <mat-icon >report</mat-icon>
+  </ng-template>
   <p class="msg">{{ notification.message }}</p>
   <br />
   <ng-container *ngIf="notification.type === 'failure'">

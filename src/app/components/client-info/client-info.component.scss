@@ -15,9 +15,12 @@
         left: 5px;
         font-weight: bold;
         background-color: $color-background-dark;
-        width: 50px;
+        width: 80px;
         text-align: center;
         font-size: small;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
     }
 
     .info-title {
@@ -28,5 +31,15 @@
     p {
         margin: 0;
     }
+
+    .icons {
+        cursor: pointer;
+        font-size: 20px;
+        color: $color-secondary-main;
+    
+        &:hover {
+          color: $color-primary-main;
+        }
+      }
 
 }

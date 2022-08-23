@@ -4,6 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ItemCreationDialogComponent } from '../item-creation-dialog/item-creation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminValidationDialogComponent } from '../admin-validation-dialog/admin-validation-dialog.component';
+import { RepairService } from 'src/app/services/repair.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -22,7 +23,8 @@ export class NavBarComponent {
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router,
+    public router: Router,
+    private repairService: RepairService,
     public dialog: MatDialog
   ) {}
 
@@ -53,5 +55,19 @@ export class NavBarComponent {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
+  }
+
+  navigateToToDoRepairsOverview() {
+    this.repairService.setStatusFilter(['Fait', 'Client notifié']);
+    if(this.router.url !== '/reparations') {
+      this.router.navigate(['/reparations']);
+    }
+  }
+
+  navigateToAllRepairsOverview() {
+    this.repairService.setStatusFilter([]);
+    if(this.router.url !== '/reparations') {
+      this.router.navigate(['/reparations']);
+    }
   }
 }

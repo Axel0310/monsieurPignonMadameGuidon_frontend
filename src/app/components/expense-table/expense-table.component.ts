@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Expense } from 'src/app/interfaces/expense';
+import { ProviderService } from 'src/app/services/provider.service';
 
 @Component({
   selector: 'app-expense-table',
@@ -15,10 +16,11 @@ export class ExpenseTableComponent implements OnChanges {
   public isEditEnabled = false;
   public hasOneExpense = true;
   public hasAtLeastOneProvider = true;
+  public providersList$ = this.providerService.getProviders();
 
   expensesForm = this.fb.array([]);
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private providerService: ProviderService) {}
 
   ngOnChanges() {
     if(this.isEditEnabled) {
@@ -34,25 +36,6 @@ export class ExpenseTableComponent implements OnChanges {
     }, 0);
   }
 
-  copyToClipboard() {
-    const getContentToCopy = () => {
-      let content: string = '';
-      this.itemExpenses.forEach((item: Expense) => {
-        content = content + `${item.name},${item.price},${item.quantity};`;
-      });
-      return content;
-    };
-
-    navigator.clipboard.writeText(getContentToCopy()).then(
-      function () {
-        console.log('Copied into clipboard');
-      },
-      function () {
-        console.log('Failed to copy into clipboard');
-      }
-    );
-  }
-
   enableEditing() {
     this.isEditEnabled = true;
     this.itemExpenses.forEach((item: Expense) => {
@@ -60,7 +43,7 @@ export class ExpenseTableComponent implements OnChanges {
         name: [item.name, [Validators.required]],
         quantity: [item.quantity, [Validators.required]],
         price: [item.price, [Validators.required]],
-        provider: item.provider,
+        provider: [item.provider?._id],
       }))
     })
     this.updateHasOneExpense();

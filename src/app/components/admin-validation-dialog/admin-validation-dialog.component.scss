@@ -1,6 +1,10 @@
 .item-creation-dialog-cont {
   position: relative;
 
+  input {
+    height: 30px;
+  }
+
   .close-icon {
     position: absolute;
     top: -20px;
