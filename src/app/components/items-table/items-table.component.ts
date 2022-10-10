@@ -12,7 +12,6 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
-import { GenericItemService } from 'src/app/services/genericItem.service';
 
 @Component({
   selector: 'app-items-table',
@@ -82,6 +81,7 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.sort.sort({ id: 'deliveryDate', start: 'desc', disableClear: false });
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'client':
