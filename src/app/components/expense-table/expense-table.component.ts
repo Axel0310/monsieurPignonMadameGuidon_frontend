@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Expense } from 'src/app/interfaces/expense';
-import { ProviderService } from 'src/app/services/provider.service';
 
 @Component({
   selector: 'app-expense-table',
@@ -15,19 +14,16 @@ export class ExpenseTableComponent implements OnChanges {
   public totalPrice: number = 0;
   public isEditEnabled = false;
   public hasOneExpense = true;
-  public hasAtLeastOneProvider = true;
-  public providersList$ = this.providerService.getProviders();
 
   expensesForm = this.fb.array([]);
 
-  constructor(private fb: FormBuilder, private providerService: ProviderService) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges() {
     if(this.isEditEnabled) {
       this.disableEditing();
     }
     this.updateTotalPrice(this.itemExpenses);
-    this.updateHasAtLeastOneProvider();
   }
 
   private updateTotalPrice(list: Expense[]): void {
@@ -43,7 +39,6 @@ export class ExpenseTableComponent implements OnChanges {
         name: [item.name, [Validators.required]],
         quantity: [item.quantity, [Validators.required]],
         price: [item.price, [Validators.required]],
-        provider: [item.provider?._id],
       }))
     })
     this.updateHasOneExpense();
@@ -60,7 +55,6 @@ export class ExpenseTableComponent implements OnChanges {
       name: ['', [Validators.required]],
       quantity: [1, [Validators.required, Validators.min(1)]],
       price: [0, [Validators.required, Validators.min(0)]],
-      provider: ['',],
     })
     this.expensesForm.push(newExpense);
     this.updateHasOneExpense();
@@ -91,9 +85,5 @@ export class ExpenseTableComponent implements OnChanges {
       })
       this.disableEditing();
     }
-  }
-
-  updateHasAtLeastOneProvider() {
-    this.hasAtLeastOneProvider = !!this.itemExpenses.find(expense => expense.provider)
   }
 }

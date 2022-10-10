@@ -1,6 +1,7 @@
 @import "../../../styles/variables";
 .expenses-table-cont {
   position: relative;
+  max-height: 270px;
 
   .expenses-table {
     th,
