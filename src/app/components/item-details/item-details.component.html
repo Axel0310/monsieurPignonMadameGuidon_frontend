@@ -88,7 +88,7 @@
     <div class="second-col column">
       <div class="status-cont">
         <app-status-list
-          [status]="item.status"
+          [status$]="itemStatus$"
           [itemType]="itemType"
           (statusUpdatedEvent)="updateItem($event)"
         ></app-status-list>

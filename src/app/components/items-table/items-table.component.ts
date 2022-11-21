@@ -81,7 +81,7 @@ export class ItemsTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.sort.sort({ id: 'deliveryDate', start: 'desc', disableClear: false });
+    this.sort.sort({ id: 'deliveryDate', start: 'asc', disableClear: false });
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'client':

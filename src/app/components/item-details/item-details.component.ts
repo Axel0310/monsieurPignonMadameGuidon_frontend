@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/services/notification.service';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-item-details',
@@ -14,6 +14,7 @@ export class ItemDetailsComponent implements OnChanges {
 
 
   public minDate: Date = new Date();
+  public itemStatus$: ReplaySubject<string> = new ReplaySubject<string>();
 
   bikeDescription = new FormControl('', Validators.required);
   comment = new FormControl('');
@@ -23,13 +24,14 @@ export class ItemDetailsComponent implements OnChanges {
 
   ngOnChanges() {
     if(this.item) {
-       this.bikeDescription.setValue(this.item.bikeDescription !== '' ? this.item.bikeDescription : 'Non renseignée');
-       this.comment.setValue(this.item.comment !== '' ? this.item.comment : 'Non renseignée');
-       this.commercialOpportunity.setValue(this.item.commercialOpportunity !== '' ? this.item.commercialOpportunity : 'Non renseignée');
-       this.deliveryDate.setValue(this.item.deliveryDate);
-       if(this.itemType === "paint") {
-         this.color.setValue(this.item.color);
-       }
+      this.itemStatus$.next(this.item.status);
+      this.bikeDescription.setValue(this.item.bikeDescription !== '' ? this.item.bikeDescription : 'Non renseignée');
+      this.comment.setValue(this.item.comment !== '' ? this.item.comment : 'Non renseignée');
+      this.commercialOpportunity.setValue(this.item.commercialOpportunity !== '' ? this.item.commercialOpportunity : 'Non renseignée');
+      this.deliveryDate.setValue(this.item.deliveryDate);
+      if(this.itemType === "paint") {
+        this.color.setValue(this.item.color);
+      }
     }
   }
 
@@ -46,7 +48,6 @@ export class ItemDetailsComponent implements OnChanges {
   }
 
   updateItem(update: any) {
-    console.log('update => ', update)
     this.updateItemEvent.emit(update);
     (document.activeElement as HTMLElement)?.blur();
   }
