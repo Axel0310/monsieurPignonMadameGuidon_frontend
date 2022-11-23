@@ -17,6 +17,7 @@
 
   .mat-dialog-content {
     max-height: 80vh;
+    overflow: visible;
 
     mat-stepper .mat-horizontal-content-container {
       padding: 0 !important;

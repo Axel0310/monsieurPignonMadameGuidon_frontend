@@ -9,6 +9,14 @@
         <mat-icon>build</mat-icon>
         <p>A faire</p>
       </div>
+      <div class="sub-link" (click)="navigateToDoneRepairsOverview()">
+        <mat-icon>done</mat-icon>
+        <p>Fait</p>
+      </div>
+      <div class="sub-link" (click)="navigateToNotifiedRepairsOverview()">
+        <mat-icon>sms</mat-icon>
+        <p>Notifié</p>
+      </div>
       <div class="sub-link" (click)="openItemCreationDialog('repair')">
         <mat-icon>add_circle_outline</mat-icon>
         <p>Créer</p>

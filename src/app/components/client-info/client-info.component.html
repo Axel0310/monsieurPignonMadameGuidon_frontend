@@ -2,17 +2,17 @@
   <h3 class="title">Client
     <mat-icon (click)="openEditClientDialog()" class="icons">edit</mat-icon>
   </h3>
-  <p><span class="info-title">Prénom : </span>
+  <p>
     <ng-container *ngIf="client && client.firstName; else undefinedInfo">
       {{ client.firstName }}
     </ng-container>
   </p>
-  <p><span class="info-title">Nom : </span>
+  <p>
     <ng-container *ngIf="client && client.lastName; else undefinedInfo">
       {{ client.lastName }}
     </ng-container>
   </p>
-  <p><span class="info-title">Téléphone : </span>
+  <p>
     <ng-container *ngIf="client && client.phone; else undefinedInfo">
       {{ client.phone | phoneFormat }}
     </ng-container>  

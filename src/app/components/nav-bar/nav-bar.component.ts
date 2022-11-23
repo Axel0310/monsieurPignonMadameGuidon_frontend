@@ -64,6 +64,20 @@ export class NavBarComponent {
     }
   }
 
+  navigateToDoneRepairsOverview() {
+    this.repairService.setStatusFilter(['A faire', 'Client notifié']);
+    if(this.router.url !== '/reparations') {
+      this.router.navigate(['/reparations']);
+    }
+  }
+
+  navigateToNotifiedRepairsOverview() {
+    this.repairService.setStatusFilter(['Fait', 'A faire']);
+    if(this.router.url !== '/reparations') {
+      this.router.navigate(['/reparations']);
+    }
+  }
+
   navigateToAllRepairsOverview() {
     this.repairService.setStatusFilter([]);
     if(this.router.url !== '/reparations') {

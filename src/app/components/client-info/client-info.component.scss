@@ -6,6 +6,7 @@
     border-radius: 10px;
     padding: 10px;
     min-width: 230px;
+    max-width: 280px;
     width: fit-content;
     margin: 15px 0 0 0;
 
@@ -21,11 +22,6 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
-    }
-
-    .info-title {
-        font-weight: bold;
-        color: $color-primary-main;
     }
 
     p {
